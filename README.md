@@ -29,7 +29,7 @@ Lo primero que debemos hacer es quitar los dos tornillos que hay en la parte inf
 
 ![]("assets/photo_5775957412656824276_y.jpg")
 
-![](assets/photo_5775957412656824277_y.jpg)
+![]("assets/photo_5775957412656824277_y.jpg")
 
 
 ![]("assets/photo_5775957412656824275_y.jpg")
@@ -42,7 +42,7 @@ Y ya tendríamos acceso directo a la PCB del router.
 
 Una vez abierto el router hay que identificar todos los componentes posibles.
 
-![]("assets/photo_5773698350053441531_y 1.jpg")
+![]("assets/photo_5773698350053441531_y_1.jpg")
 
 #### Cada circulo es una parte interesante de la pcb para nosotros:
 
@@ -75,7 +75,7 @@ Soldar pines a UART no es complicado simplemente necesitaremos:
 
 Aqui vemos como se ha eliminado la **R18** que impide la escritura a través de UART y los pines listos para conectarnos. En este caso hemos conectado el RX, el TX y el GND. El VCC no es necesario porque la alimentación la daremos usando el adaptador de corriente del router.
 
-![]("assets/Pasted image 20230916142036.png")
+![]("assets/Pasted-image-20230916142036.png")
 
 ---
 
@@ -98,20 +98,20 @@ Ahora para conectarnos correctamente lo primero es entender el protocolo [SERIAL
 Ahora nos conectaremos usando algun software como TeraTerm o Putty, en mi caso usare TeraTerm.
 
 1. Lo abrimos y seleccionamos la interfaz COM correspondiente del TTL-USB
-![]("assets/Pasted image 20230916160959.png")
+![]("assets/Pasted-image-20230916160959.png")
 2. Ahora configuramos la interfaz serial dentro de Setup->Serial Port
-   ![]("assets/Pasted image 20230916161256.png")
+   ![]("assets/Pasted-image-20230916161256.png")
 3. Y lo dejamos con esta configuracion de 115200 baudios de velocidad, 8 bits de datos, ninguno de paridad y uno de stop. 
-   ![]("assets/Pasted image 20230916161412.png")
+   ![]("assets/Pasted-image-20230916161412.png")
 4. Ahora para no quedarnos ciegos vamos a la configuración de fuente y aumentamos el tamaño y lo dejamos en 14.
-   ![]("assets/Pasted image 20230916161528.png")
-![]("assets/Pasted image 20230916161613.png")
+   ![]("assets/Pasted-image-20230916161528.png")
+![]("assets/Pasted-image-20230916161613.png")
 
 5. Tras esto enchufamos el router a la corriente y veremos el bootloader cargando.
 
-![]("assets/Pasted image 20230916162016.png")
+![]("assets/Pasted-image-20230916162016.png")
 
-![]("assets/Pasted image 20230916162303.png")
+![]("assets/Pasted-image-20230916162303.png")
 
 Tras esto ya podemos escribir comandos pero antes vamos a ver como se haría con el bus pirate.
 
@@ -123,25 +123,25 @@ Ahora explicaremos paso a paso con el bus pirate:
 
 La configuración del emulador de terminal es la misma que en el USB-to-TTL ahora lo importante es como conectemos los cables, aqui tenemos un esquema de que es cada color:
 
-![](assets/Pasted image 20230916163947.png)
+![](assets/Pasted-image-20230916163947.png)
 
 1.  Ahora debemos conectar el MOSI(GRIS) al RX y el MISO(NEGRO) al TX, el GND(MARRON) al GND del router además de conectar el VPU(VERDE) al 5V(NARANJA) del propio bus pirate
    ![]("assets/photo_5778209212470510399_y.jpg")
 2. Lo siguiente es conectarse usando TeraTerm y con la misma configuración de antes e interactuar con el menu del bus pirate.
 
 Escribimos 'm' y pulsamos intro
-![[assets/Pasted image 20230916172055.png]]
+![]("assets/Pasted-image-20230916172055.png")
 Elegimos el modo 3 (UART)
-![[assets/Pasted image 20230916172117.png]]
+![]("assets/Pasted-image-20230916172117.png")
 Pulsamos enter 4 veces para elegir todo por defecto es decir: Sin bit de paridad, 1 bit de parada , y con el colector abierto (Open Drain) para meterle por VPU esos 5V que necesita.
-![[assets/Pasted image 20230916172153.png]]
+![]("assets/Pasted image-20230916172153.png")
 Pulsamos 'W' mayúscula para dar corriente, pulsamos 'P' mayúscula para activar las resistencias pull-up y solo nos falta activar el live monitor para recibir la shell de UART. 
-![[assets/Pasted image 20230916172445.png]]
+![]("assets/Pasted-image-20230916172445.png")
 Esto lo haremos usando la macro (1) que es el Transparent bridge aunque si ponemos (0) nos saldra la lista de macros.
 
-![[assets/Pasted image 20230916172600.png]]
+![]("assets/Pasted-image-20230916172600.png")
 Ahora conectamos el router a la corriente y obtendremos shell.
-![[assets/Pasted image 20230916172742.png]]
+![]("assets/Pasted-image-20230916172742.png")
 
 --- 
 
@@ -149,21 +149,21 @@ Ahora conectamos el router a la corriente y obtendremos shell.
 
 Lo primero que haremos para extraer el sistema de archivos es instalar un servidor [TFTP](https://bitbucket.org/phjounin/tftpd64/downloads/) (Trivial FIle Transfer Protocol), en mi caso instale la version [Tftpd64-4.62-setup.exe](https://bitbucket.org/phjounin/tftpd64/downloads/Tftpd64-4.62-setup.exe) una vez instalada hay que abrirlo y dejar la configuración de esta manera:
 
-![[assets/Pasted image 20230916173638.png]]
+![]("assets/Pasted-image-20230916173638.png")
 
-![[assets/Pasted image 20230916173656.png]]
+![]("assets/Pasted-image-20230916173656.png")
 
-![[assets/Pasted image 20230916174518.png]]
+![]("assets/Pasted-image-20230916174518.png")
 
 Tras configurarlo nos conectamos al router por wifi o por cable y revisamos que ip nos ha dado:
 
-![[assets/Pasted image 20230916174805.png]]
+![]("")
 
 Con esto ya sabemos que desde el terminal del router tenemos transferir por TFTP a 192.168.0.100 
 
 Para comprobar que estamos conectados al router por red introducimos la puerta de enlace en el navegador:
 
-![[assets/Pasted image 20230916175017.png||700]]
+![]("assets/Pasted-image-20230916175017.png||700")
 
 Una vez conectados es el momento de extraer el sistema de archivos y el firmware completo.
 
@@ -174,7 +174,7 @@ Este router utiliza el subsistema MTD, que se divide en bloques. Concatenamos to
 
 Los bloques se encuentran en el directorio /dev y empiezan por la palabra mtd:
 
-![[assets/Pasted image 20230916181059.png]]
+![]("assets/Pasted image 20230916181059.png")
 
 Copiamos todos los archivos de mtd con el script [transfer.sh](assets/transfer.sh).
 
@@ -202,5 +202,5 @@ Descomprimimos y extraemos con binwalk para después poder analizarlo:
 binwalk -eM firmware
 ```
 
-![[assets/Pasted image 20230919180023.png]]
-![[Pasted image 20230919180039.png]]
+![]("assets/Pasted-image-20230919180023.png")
+![]("assets/Pasted-image-20230919180039.png")
