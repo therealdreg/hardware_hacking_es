@@ -91,7 +91,7 @@ Ahora para conectarnos correctamente lo primero es entender el protocolo [SERIAL
 
 ![](UART.png)
 
-![](assets/photo_5778209212470510371_y.jpg||400)
+![](assets/photo_5778209212470510371_y.jpg)
 
 Ahora nos conectaremos usando algun software como TeraTerm o Putty, en mi caso usare TeraTerm.
 
@@ -135,6 +135,7 @@ La configuración del emulador de terminal es la misma que en el USB-to-TTL ahor
 
 
 Escribimos 'm' y pulsamos intro
+
 ![](assets/Pasted-image-20230916172055.png)
 
 Elegimos el modo 3 (UART)
