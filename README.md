@@ -8,7 +8,7 @@
 
 ### Material Requerido:
 
-- [TP-Link TL-WR841N](https://www.amazon.es/dp/B001FWYGJS?ref=ppx_yo2ov_dt_b_product_details&th=1) 
+- TP-Link TL-WR841N 
 - Soldador Estaño
 - FLux 
 - USB a TTL o Buspirate
@@ -19,7 +19,7 @@
 
 ## Paso 1: Comprar el router.
 
-El modelo que vamos a analizar es el [TP-Link TL-WR841N V14 ]("TP-Link TL-WR841N")
+El modelo que vamos a analizar es el [TP-Link TL-WR841N V14 ](https://www.amazon.es/dp/B001FWYGJS?ref=ppx_yo2ov_dt_b_product_details&th=1)
 
 
 ---
@@ -93,18 +93,20 @@ Ahora para conectarnos correctamente lo primero es entender el protocolo [SERIAL
 
 ![](assets/photo_5778209212470510371_y.jpg||400)
 
-
-
 Ahora nos conectaremos usando algun software como TeraTerm o Putty, en mi caso usare TeraTerm.
 
 1. Lo abrimos y seleccionamos la interfaz COM correspondiente del TTL-USB
+
 ![](assets/Pasted-image-20230916160959.png)
 2. Ahora configuramos la interfaz serial dentro de Setup->Serial Port
-   ![](assets/Pasted-image-20230916161256.png)
+
+![](assets/Pasted-image-20230916161256.png)
 3. Y lo dejamos con esta configuracion de 115200 baudios de velocidad, 8 bits de datos, ninguno de paridad y uno de stop. 
-   ![](assets/Pasted-image-20230916161412.png)
+
+![](assets/Pasted-image-20230916161412.png)
 4. Ahora para no quedarnos ciegos vamos a la configuración de fuente y aumentamos el tamaño y lo dejamos en 14.
-   ![](assets/Pasted-image-20230916161528.png)
+
+![](assets/Pasted-image-20230916161528.png)
 ![](assets/Pasted-image-20230916161613.png)
 
 5. Tras esto enchufamos el router a la corriente y veremos el bootloader cargando.
@@ -126,21 +128,33 @@ La configuración del emulador de terminal es la misma que en el USB-to-TTL ahor
 ![](assets/Pasted-image-20230916163947.png)
 
 1.  Ahora debemos conectar el MOSI(GRIS) al RX y el MISO(NEGRO) al TX, el GND(MARRON) al GND del router además de conectar el VPU(VERDE) al 5V(NARANJA) del propio bus pirate
-   ![](assets/photo_5778209212470510399_y.jpg)
+
+![](assets/photo_5778209212470510399_y.jpg)
+   
 2. Lo siguiente es conectarse usando TeraTerm y con la misma configuración de antes e interactuar con el menu del bus pirate.
+
 
 Escribimos 'm' y pulsamos intro
 ![](assets/Pasted-image-20230916172055.png)
+
 Elegimos el modo 3 (UART)
+
 ![](assets/Pasted-image-20230916172117.png)
+
 Pulsamos enter 4 veces para elegir todo por defecto es decir: Sin bit de paridad, 1 bit de parada , y con el colector abierto (Open Drain) para meterle por VPU esos 5V que necesita.
+
 ![](assets/Pasted image-20230916172153.png)
+
 Pulsamos 'W' mayúscula para dar corriente, pulsamos 'P' mayúscula para activar las resistencias pull-up y solo nos falta activar el live monitor para recibir la shell de UART. 
+
 ![](assets/Pasted-image-20230916172445.png)
+
 Esto lo haremos usando la macro (1) que es el Transparent bridge aunque si ponemos (0) nos saldra la lista de macros.
 
 ![](assets/Pasted-image-20230916172600.png)
+
 Ahora conectamos el router a la corriente y obtendremos shell.
+
 ![](assets/Pasted-image-20230916172742.png)
 
 --- 
@@ -163,7 +177,7 @@ Con esto ya sabemos que desde el terminal del router tenemos transferir por TFTP
 
 Para comprobar que estamos conectados al router por red introducimos la puerta de enlace en el navegador:
 
-![](assets/Pasted-image-20230916175017.png||700)
+![](assets/Pasted-image-20230916175017.png)
 
 Una vez conectados es el momento de extraer el sistema de archivos y el firmware completo.
 
