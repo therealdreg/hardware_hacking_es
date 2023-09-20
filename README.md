@@ -144,7 +144,7 @@ Elegimos el modo 3 (UART)
 
 Pulsamos enter 4 veces para elegir todo por defecto es decir: Sin bit de paridad, 1 bit de parada , y con el colector abierto (Open Drain) para meterle por VPU esos 5V que necesita.
 
-![](assets/Pasted image-20230916172153.png)
+![](assets/Pasted-image-20230916172153.png)
 
 Pulsamos 'W' mayúscula para dar corriente, pulsamos 'P' mayúscula para activar las resistencias pull-up y solo nos falta activar el live monitor para recibir la shell de UART. 
 
