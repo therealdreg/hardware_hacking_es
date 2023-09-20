@@ -189,7 +189,7 @@ Este router utiliza el subsistema MTD, que se divide en bloques. Concatenamos to
 
 Los bloques se encuentran en el directorio /dev y empiezan por la palabra mtd:
 
-![](assets/Pasted image 20230916181059.png)
+![](assets/Pasted-image-20230916181059.png)
 
 Copiamos todos los archivos de mtd con el script [transfer.sh](assets/transfer.sh).
 
