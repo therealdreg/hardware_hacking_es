@@ -98,15 +98,19 @@ Ahora nos conectaremos usando algun software como TeraTerm o Putty, en mi caso u
 1. Lo abrimos y seleccionamos la interfaz COM correspondiente del TTL-USB
 
 ![](assets/Pasted-image-20230916160959.png)
+
 2. Ahora configuramos la interfaz serial dentro de Setup->Serial Port
 
 ![](assets/Pasted-image-20230916161256.png)
+
 3. Y lo dejamos con esta configuracion de 115200 baudios de velocidad, 8 bits de datos, ninguno de paridad y uno de stop. 
 
 ![](assets/Pasted-image-20230916161412.png)
+
 4. Ahora para no quedarnos ciegos vamos a la configuración de fuente y aumentamos el tamaño y lo dejamos en 14.
 
 ![](assets/Pasted-image-20230916161528.png)
+
 ![](assets/Pasted-image-20230916161613.png)
 
 5. Tras esto enchufamos el router a la corriente y veremos el bootloader cargando.
