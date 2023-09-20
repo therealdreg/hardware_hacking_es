@@ -27,12 +27,12 @@ El modelo que vamos a analizar es el [TP-Link TL-WR841N V14 ](TP-Link TL-WR841N)
 
 Lo primero que debemos hacer es quitar los dos tornillos que hay en la parte inferior y después haremos palanca con algún trozo de plástico, yo he usado una púa de guitarra.
 
-![]("assets/photo_5775957412656824276_y.jpg")
+![](assets/photo_5775957412656824276_y.jpg)
 
-![]("assets/photo_5775957412656824277_y.jpg")
+![](assets/photo_5775957412656824277_y.jpg)
 
 
-![]("assets/photo_5775957412656824275_y.jpg")
+![](assets/photo_5775957412656824275_y.jpg)
 
 Y ya tendríamos acceso directo a la PCB del router.
 
@@ -42,7 +42,7 @@ Y ya tendríamos acceso directo a la PCB del router.
 
 Una vez abierto el router hay que identificar todos los componentes posibles.
 
-![]("assets/photo_5773698350053441531_y_1.jpg")
+![](assets/photo_5773698350053441531_y_1.jpg)
 
 #### Cada circulo es una parte interesante de la pcb para nosotros:
 
