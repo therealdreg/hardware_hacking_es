@@ -342,14 +342,3 @@ binwalk -eM firmware
 ![](assets/Pasted-image-20230919180039.png)
 
 
-### U-boot
-
-![](Pasted%20image%2020230922230512.png)
-
-![](Pasted%20image%2020230923011106.png)
-
-![](Pasted%20image%2020230923011114.png)
-
-
-![](Pasted%20image%2020230923011301.png)
-
