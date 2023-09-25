@@ -17,7 +17,7 @@
 
 Usamos este esquema para conectarnos:
 
-![](assets/esquema-buspirate.png)
+![](assets/Esquema-buspirate.png)
 
 schema by David Sánchez 
 
@@ -112,7 +112,7 @@ Tenemos flasheado el CTF de Dreg, para leer la flag de la EEPROM introducimos es
 [0xa1 r:20]
 ```
 
-![](Pasted%20image%2020230921193046.png)
+![](assets/Pasted-image-20230921193046.png)
 
 Para saber mas sobre el protocolo I2C con el bus pirate lee [esto.](http://dangerousprototypes.com/blog/bus-pirate-manual/i2c-guide/)
 
