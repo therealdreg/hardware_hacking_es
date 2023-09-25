@@ -11,9 +11,11 @@
             "id": "6b1d46ceeed7584e",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "assets/i2c-escribir.png"
+                "file": "README.md",
+                "mode": "source",
+                "source": false
               }
             }
           }
@@ -84,7 +86,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "assets/i2c-escribir.png",
+                "file": "README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -101,7 +103,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "assets/i2c-escribir.png",
+                "file": "README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -124,7 +126,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "assets/i2c-escribir.png"
+                "file": "README.md"
               }
             }
           }
@@ -147,16 +149,17 @@
   },
   "active": "6b1d46ceeed7584e",
   "lastOpenFiles": [
-    "README.md",
-    "assets/i2c-escribir.png",
-    "assets/Pasted image 20230923185623.png",
-    "assets/Pasted image 20230923011301.png",
-    "assets/Pasted image 20230923011114.png",
-    "assets/Pasted image 20230923011106.png",
-    "assets/Pasted image 20230922230512.png",
-    "assets/Pasted image 20230921193712.png",
-    "assets/Pasted image 20230921193046.png",
-    "assets/Pasted image 20230921191747.png",
-    "assets/Pasted image 20230921191520.png"
+    "assets/Pasted-image-20230921193712.png",
+    "assets/Pasted-image-20230922230512.png",
+    "assets/Pasted-image-20230923011106.png",
+    "assets/Pasted-image-20230923011114.png",
+    "assets/Pasted-image-20230923011301.png",
+    "assets/Pasted-image-20230923185623.png",
+    "assets/Pasted-image-20230921193046.png",
+    "assets/Pasted-image-20230921191747.png",
+    "assets/Pasted-image-20230921191520.png",
+    "assets/Pasted-image-20230921184258.png",
+    "assets/Pasted-image-20230921184229.png",
+    "README.md"
   ]
 }
