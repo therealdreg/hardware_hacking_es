@@ -17,13 +17,13 @@
 
 Usamos este esquema para conectarnos:
 
-![](Esquema-buspirate.png)
+![](assets/esquema-buspirate.png)
 
 schema by David Sánchez 
 
 Tiene que quedar asi:
 
-![](photo_5793917552844455218_y.jpg)
+![](assets/pines-buspirate.jpg)
 
 ---
 ## Paso 2: Conectarse al I2C con BusPirate
@@ -50,15 +50,15 @@ Ahora nos conectaremos usando algun software como TeraTerm o Putty, en mi caso u
 
 5. Abrimos el menu del buspirate presionando m+enter
 
-![](Pasted-image-20230921191417.png)
+![](assets/Pasted-image-20230921191417.png)
 
 6. Presionamos el 4 y damos enter, dos veces
 
-![](Pasted-image-20230921191520.png)
+![](assets/Pasted-image-20230921191520.png)
 
 Presionamos W mayúscula y P mayúscula y ya podriamos leer la memoria y escribir
 
-![](Pasted-image-20230921191747.png)
+![](assets/Pasted-image-20230921191747.png)
 
 ---
 
@@ -68,7 +68,7 @@ Usamos la macro de búsqueda de direcciones de 7bit para obtener la dirección d
 
 Escribimos (1) y damos a enter
 
-![](Pasted-image-20230923185623.png)
+![](assets/Pasted-image-20230923185623.png)
 
 ## Paso 4:  Como leer y escribir con I2C
 
@@ -76,7 +76,7 @@ Escribimos (1) y damos a enter
 
 Con los corchetes indicamos el principio y el final de cada comando I2C.
 
-![](i2c-escribir.png)
+![](assets/i2c-escribir.png)
 
 El primer byte en hexadecimal es la dirección que indica si escribimos o leemos.
 
@@ -118,7 +118,7 @@ Para saber mas sobre el protocolo I2C con el bus pirate lee [esto.](http://dange
 
 Usamos un conversor de [hexadecimal](https://gchq.github.io/CyberChef/) y obtenemos este resultado.
 
-![](Pasted-image-20230921193712.png)
+![](assets/Pasted-image-20230921193712.png)
 
 ---
 # Hacking Router TP-Link TL-WR841N

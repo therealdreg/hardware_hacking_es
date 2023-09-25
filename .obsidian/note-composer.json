@@ -1,0 +1,4 @@
+{
+  "askBeforeMerging": true,
+  "template": "{{content}}-{{date:DD-MM-YYYY}}"
+}
