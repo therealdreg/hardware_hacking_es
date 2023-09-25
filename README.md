@@ -3,7 +3,122 @@
 - Discord: https://discord.gg/wkWr6Dj46D 
 - Telegram: https://t.me/hardwarehackinges
 
+---
 
+# Hacking EEPROM AT24C256 I2C 5V
+
+### Material Requerido:
+
+- [BusPiratev3](https://www.adafruit.com/product/237)
+- [EEPROM AT24C256 I2C 5V](https://es.aliexpress.com/item/4000099529430.html?spm=a2g0o.productlist.main.1.2bd56c2cd7dFX0&algo_pvid=a2da1f90-95d1-4099-8463-9e25238687ec)
+- [Pinzas BusPirate](https://www.adafruit.com/product/238)
+
+## Paso 1: Conectar pinzas a EEPROM
+
+Usamos este esquema para conectarnos:
+
+![](Pasted%20image%2020230921184311.png)
+schema by David Sánchez 
+
+Tiene que quedar asi:
+
+![](photo_5793917552844455218_y.jpg)
+
+---
+## Paso 2: Conectarse al I2C con BusPirate
+
+Ahora nos conectaremos usando algun software como TeraTerm o Putty, en mi caso usare TeraTerm.
+
+1. Lo abrimos y seleccionamos la interfaz COM correspondiente del BusPirate
+
+![](assets/Pasted-image-20230916160959.png)
+
+2. Ahora configuramos la interfaz serial dentro de Setup->Serial Port
+
+![](assets/Pasted-image-20230916161256.png)
+
+3. Y lo dejamos con esta configuracion de 115200 baudios de velocidad, 8 bits de datos, ninguno de paridad y uno de stop. 
+
+![](assets/Pasted-image-20230916161412.png)
+
+4. Ahora para no quedarnos ciegos vamos a la configuración de fuente y aumentamos el tamaño y lo dejamos en 14.
+
+![](assets/Pasted-image-20230916161528.png)
+
+![](assets/Pasted-image-20230916161613.png)
+
+5. Abrimos el menu del buspirate presionando m+enter
+
+![](Pasted%20image%2020230921191417.png)
+6. Presionamos el 4 y damos enter, dos veces
+
+![](Pasted%20image%2020230921191520.png)
+
+Presionamos W mayúscula y P mayúscula y ya podriamos leer la memoria y escribir
+
+![](Pasted%20image%2020230921191747.png)
+
+---
+
+## Paso 3:  Localizar direcciones I2C
+
+Usamos la macro de búsqueda de direcciones de 7bit para obtener la dirección de escritura y de lectura.
+
+Escribimos (1) y damos a enter
+
+![](Pasted%20image%2020230923185623.png)
+
+## Paso 4:  Como leer y escribir con I2C
+
+#### Como escribir I2C
+
+Con los corchetes indicamos el principio y el final de cada comando I2C.
+
+![](i2c-escribir.png)
+
+El primer byte en hexadecimal es la dirección que indica si escribimos o leemos.
+
+Los dos siguientes bytes son la direccion donde se va a escribir. 
+
+Los bytes 0x41 0x41 0x41 son el contenido que se escribira en la dirección selecionada de manera consecutiva.
+
+#### Como leer I2C
+
+Para leer una dirección tenemos que usar la direccion de escritura de la eeprom.
+
+Hay que escribir la direccion para luego poder leer el contenido aunque no sobreescribamos nada.
+
+Se sigue el mismo patrón que escribiendo pero sin Bytes de contenido.
+
+```i2c
+[0xA0 0x00 0x69]
+```
+
+Después de seleccionar la direccion 0x69 escribimos el byte de lectura y una r para leer un byte, en el caso que queramos leer varios bytes escribimos 'r:(numero de veces)' para que sea una lectura secuencial.
+
+```i2c
+[0xa1 r:20]
+```
+
+---
+
+Tenemos flasheado el CTF de Dreg, para leer la flag de la EEPROM introducimos estos comandos:
+
+```bash
+[0xA0 0x00 0x69]
+
+[0xa1 r:20]
+```
+
+![](Pasted%20image%2020230921193046.png)
+
+Para saber mas sobre el protocolo I2C con el bus pirate lee [esto.](http://dangerousprototypes.com/blog/bus-pirate-manual/i2c-guide/)
+
+Usamos un conversor de [hexadecimal](https://gchq.github.io/CyberChef/) y obtenemos este resultado.
+
+![](Pasted%20image%2020230921193712.png)
+
+---
 # Hacking Router TP-Link TL-WR841N
 
 ### Material Requerido:
@@ -223,3 +338,16 @@ binwalk -eM firmware
 
 ![](assets/Pasted-image-20230919180023.png)
 ![](assets/Pasted-image-20230919180039.png)
+
+
+### U-boot
+
+![](Pasted%20image%2020230922230512.png)
+
+![](Pasted%20image%2020230923011106.png)
+
+![](Pasted%20image%2020230923011114.png)
+
+
+![](Pasted%20image%2020230923011301.png)
+
