@@ -340,5 +340,3 @@ binwalk -eM firmware
 
 ![](assets/Pasted-image-20230919180023.png)
 ![](assets/Pasted-image-20230919180039.png)
-
-
