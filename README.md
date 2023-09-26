@@ -23,7 +23,8 @@ Al desplegarlo obtendremos los puertos previos a conectar el Bus Pirate
 
 ![](assets/Encontrar-Puerto-COM-Bus_Pirate_1.png)
 
-Al conectar el Bus Pirate aparece el nuevo puerto COM que tendremos que utilizar en el caso de la imagen (USB Serial Port COM4).
+Al conectar el Bus Pirate aparece el nuevo puerto COM que tendremos que utilizar.
+En el caso de la imagen USB Serial Port COM4.
 
 ![](assets/Encontrar-Puerto-COM-Bus_Pirate_2.png)
 
