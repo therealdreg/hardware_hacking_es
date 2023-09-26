@@ -145,6 +145,9 @@ Usamos un conversor de [hexadecimal](https://gchq.github.io/CyberChef/) y obtene
 ![](assets/Pasted-image-20230921193712.png)
 
 ---
+
+# Hacking FLASH SPI
+
 # Hacking Router TP-Link TL-WR841N
 
 ### Material Requerido:
