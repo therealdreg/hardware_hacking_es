@@ -5,6 +5,30 @@
 
 ---
 
+# Encontrar puerto COM para el Bus Pirate
+
+**Importante hacer estos pasos antes de conectar el Bus Pirate, o en su defecto extraerlo previamente a los pasos siguientes**
+
+La manera más rápida y eficaz es abrir el **Administrador de Dispositivos** (device manager) buscándolo en el sistema.
+
+También podemos usar la secuencia **win+r** escribiendo devmgmt 
+
+![](assets/Abrir_Administrador_Dispositivos_1.png)
+
+![](assets/Abrir_Administrador_Dispositivos_2.png)
+
+Una vez se nos abra el administrador de dispositivos nos interesa la parte **Puertos (COM y LPT)**. 
+
+Al desplegarlo obtendremos los puertos previos a conectar el Bus Pirate
+
+![](assets/Encontrar-Puerto-COM-Bus_Pirate_1.png)
+
+Ahora muy sencillo, al conectar el Bus Pirate a nuestro ordenador encontraremos se le asignará un puerto al dispositivo y es el que tendremos que utilizar
+
+![](assets/Encontrar-Puerto-COM-Bus_Pirate_2.png)
+
+---
+
 # Hacking EEPROM AT24C256 I2C 5V
 
 ### Material Requerido:
