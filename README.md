@@ -95,6 +95,7 @@ Escribimos (1) y damos a enter
 
 ![](assets/Pasted-image-20230923185623.png)
 
+---
 ## Paso 4:  Como leer y escribir con I2C
 
 #### Como escribir I2C
@@ -147,7 +148,73 @@ Usamos un conversor de [hexadecimal](https://gchq.github.io/CyberChef/) y obtene
 
 ---
 
-# Hacking FLASH SPI
+# Hacking FLASH SPI Winbond 25Q64FVSIG
+
+### Material Requerido:
+
+- [BusPiratev3](https://www.adafruit.com/product/237)
+- [SPI FLASH 25Q64FVSIG 3,3V](https://es.aliexpress.com/item/4000099529430.html?spm=a2g0o.productlist.main.1.2bd56c2cd7dFX0&algo_pvid=a2da1f90-95d1-4099-8463-9e25238687ec)
+- [Pinzas BusPirate](https://www.adafruit.com/product/238)
+
+---
+## Paso 1: Conectar pinzas a SPI FLASH
+
+Usamos este esquema para conectarnos:
+
+![](assets/Pasted-image-20230927175605.png)
+
+schema by David Sánchez 
+
+Tiene que quedar asi:
+
+![](assets/buspirate-spi-1.jpg)
+
+---
+## Paso 2: Identificar la SPI Flash
+
+![](assets/buspirate-spi-3.jpg)
+
+El modelo es [W25Q64FVSIG](https://html.alldatasheet.com/html-pdf/511943/WINBOND/25Q64FVSIG/2115/7/25Q64FVSIG.html) aunque en la herramienta del flashrom indicaremos que es la **W25Q64JV-.Q** y funcionara correctamente.
+
+## Paso 3: Extraer contenido SPI Flash
+
+Descargamos el ultimo release del flashrom desde este [repositorio.](https://github.com/therealdreg/flashrom_build_windows_x64) 
+
+Conectamos el bus pirate y revisamos el numero del puerto COM.
+
+Descomprimimos y abrimos una terminal en el mismo directorio y ejecutamos este comando escribiendo el puerto COM correspondiente.
+
+```cmd
+flashrom.exe --progress -V -c "W25Q64JV-.Q" -p buspirate_spi:dev=COM6 -r flash_content.img
+```
+
+Si no funciona reconecta el buspirate y ejecuta este comando:
+
+```cmd
+flashrom.exe --progress -VV -c "W25Q64JV-.Q" -p buspirate_spi:dev=COM6,spispeed=1M -r flash_contenido.img
+```
+
+Obtendremos este archivo:
+
+![](assets/Pasted-image-20230927205528.png)
+
+---
+## Paso 4: Extracción de la imagen
+
+La abrimos con binwalk y la descomprimimos con este comando.
+
+```bash
+binwalk -eM flash_contenido.img
+```
+
+![](assets/Pasted-image-20230927210655.png)
+
+![](assets/Pasted-image-20230927210920.png)
+
+Ahora revisamos lo extraído y buscamos la flag. 
+
+---
+
 
 # Hacking Router TP-Link TL-WR841N
 
