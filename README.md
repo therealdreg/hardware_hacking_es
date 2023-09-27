@@ -148,7 +148,7 @@ Usamos un conversor de [hexadecimal](https://gchq.github.io/CyberChef/) y obtene
 
 ---
 
-# Hacking FLASH SPI 25Q64FVSIG
+# Hacking FLASH SPI Winbond 25Q64FVSIG
 
 ### Material Requerido:
 
@@ -174,7 +174,7 @@ Tiene que quedar asi:
 
 ![](assets/buspirate-spi-3.jpg)
 
-El modelo es [W25Q64JV.](https://html.alldatasheet.com/html-pdf/511943/WINBOND/25Q64FVSIG/2115/7/25Q64FVSIG.html)
+El modelo es [W25Q64FVSIG](https://html.alldatasheet.com/html-pdf/511943/WINBOND/25Q64FVSIG/2115/7/25Q64FVSIG.html) aunque en la herramienta del flashrom indicaremos que es la **W25Q64JV-.Q** y funcionara correctamente.
 
 ## Paso 3: Extraer contenido SPI Flash
 
