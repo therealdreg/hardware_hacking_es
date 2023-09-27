@@ -172,7 +172,7 @@ Tiene que quedar asi:
 ---
 ## Paso 2: Identificar la SPI Flash
 
-![](buspirate-spi-3.jpg)
+![](assets/buspirate-spi-3.jpg)
 
 El modelo es [W25Q64JV.](https://html.alldatasheet.com/html-pdf/511943/WINBOND/25Q64FVSIG/2115/7/25Q64FVSIG.html)
 
