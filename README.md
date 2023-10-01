@@ -576,7 +576,7 @@ Lo hacemos funcionar en [OPEN DRAIN](https://www.analog.com/en/design-center/glo
 
 <img src="assets\Archivos_PullUpPullDown\pullUpBusPirate.png" alt="pullUpBusPirate" width="700"/>
 
-Cuando el pin se deja flotando, el Pull-Up nos permite proporcionar 2.8V al chip, es decir, un 1. Si dejamos el pin flotando, el chip interpretará un 0 en la entrada.
+Cuando el pin se deja flotando, el Pull-Up nos permite proporcionar 2.8V al chip, es decir, un 1. Si dejamos el pin conectado a GND el chip interpretará un 0 en la entrada.
 
 ## Por si se te antojan algunos detalles...
 
