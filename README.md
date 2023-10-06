@@ -465,7 +465,7 @@ Ahora que ya sabemos cual de los pines es el GND es momento de conectar el anali
 
 ## Paso 2: Conectar Analizador
 
-Conectamos el GND del router al del analizador lógico y los pines que creamos que pueden ser el UART del router a 2 pines del analizador.
+Conectamos el GND del router al del analizador lógico y los pines que pueden ser el UART del router a 2 pines del analizador.
 
 Aquí vemos los diferentes canales, yo conectare el GND, 5 y el 7 que en el Logic Pro son el 4 y el 6.
 
@@ -518,6 +518,11 @@ Tras esto seleccionamos la terminal y podremos ver todo el contenido de la seña
 
 ![](assets/Pasted-image-20231004184837.png)
 
+Ahora veremos lo que recibimos del puerto UART seleccionando el modo terminal en vez de tabla de datos.
+
+Aqui tenemos el arranque del u-boot:
+
+![](Pasted-image-20231006183705.png)
 
 ---
 
