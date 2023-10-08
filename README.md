@@ -436,6 +436,96 @@ binwalk -eM firmware
 ![](assets/Pasted-image-20230919180023.png)
 ![](assets/Pasted-image-20230919180039.png)
 
+---
+
+# Buscando UART con Analizador Lógico
+
+### Material Requerido:
+
+- [Analizador Lógico](https://www.amazon.es/AZDelivery-Logic-Analyzer-compatible-versi%C3%B3n/dp/B01MUFRHQ2/ref=sr_1_1_sspa?keywords=analizador%2Blogico%2Busb&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1)
+- [Router con UART](https://www.amazon.es/dp/B001FWYGJS?psc=1&ref=ppx_yo2ov_dt_b_product_details) 
+- [Saleae Logic Pro](https://www.saleae.com/downloads/)
+- [Multimetro](https://www.amazon.es/Multimetro-AoKoZo-Autom%C3%A1tico-Polimetro-Tama%C3%B1o147/dp/B085PVTTST/ref=sxin_18_sbv_search_btf?__mk_es_ES=%C3%85M%C3%85%C5%BD%C3%95%C3%91&content-id=amzn1.sym.bd3d7401-e3ca-409d-87bd-d7a8fe595740%3Aamzn1.sym.bd3d7401-e3ca-409d-87bd-d7a8fe595740&cv_ct_cx=multimetro&keywords=multimetro&pd_rd_i=B085PVTTST&sbo=RZvfv%2F%2FHxDF%2BO5021pAnSA%3D%3D&sr=1-1-9131241a-a358-4619-a7b8-0f5a65d91d81) 
+
+## Paso 1: Encontrar el GND
+
+Si tenemos el UART a la vista puede que tenga escrito cerca **GND**. Otra opción es identificar la flash o otro componente y buscar que pata según el datasheet es el **GND**, después buscaremos continuidad en otros componentes de la placa donde poder engancharnos.
+
+Aqui se ve el modo continuidad del multimetro:
+
+![](assets/multimetro-continuidad.jpg)
+
+Mirando el [datasheet](https://html.alldatasheet.com/html-pdf/458184/EON/EN25Q32B-104HIP/130/2/EN25Q32B-104HIP.html) vemos cual es el GND.
+
+![](assets/photo_5773698350053441528_y%20-%20copia.jpg)
+
+Ahora que ya sabemos cual de los pines es el GND es momento de conectar el analizador lógico.
+
+--- 
+
+## Paso 2: Conectar Analizador
+
+Conectamos el GND del router al del analizador lógico y los pines que pueden ser el UART del router a 2 pines del analizador.
+
+Aquí vemos los diferentes canales, yo conectare el GND, 5 y el 7 que en el Logic Pro son el 4 y el 6.
+
+![](assets/photo_5828066412613189319_y.jpg)
+
+Aquí vemos como conecte el GND.
+
+![](assets/photo_5828066412613189318_y.jpg)
+
+----
+
+## Paso 3: Averiguar el Baud Rate 
+
+Abrimos el Saleae Logic  y le damos al boton de play, despues enchufamos el router y esperamos a recibir señales.
+
+Asi se vera la imagen del Logic tras darle al pause.
+
+![](assets/Pasted-image-20231004182639.png)
+
+Ahora tenemos que añadir la extension de Baud Rate estimate.
+
+Vamos a la pestaña de extensiones de la derecha, la buscamos  y  le damos click a install.
+
+![](assets/Pasted-image-20231004183105.png)
+
+Vamos a la pestaña de marcadores de tiempo medidas y notas.
+
+![](assets/Pasted-image-20231004183317.png)
+
+Mantenemos *shift* y selecionamos una parte grande del canal donde hayamos recibido datos.
+
+![](assets/Pasted-image-20231004183653.png)
+
+Tras esto nos saldrá un recuadro con un baud rate aproximado de la zona seleccionada.
+
+![](assets/baud-rate-saleae.jpg)
+
+Ahora creamos un analizador dentro de saleae logic tipo serial asíncrono con un baud rate de 115200 baudios que es lo más aproximado a la cifra que nos sale.
+
+
+![](assets/Pasted-image-20231004184259.png)
+
+
+Solo cambiamos los baudios y el canal que hayamos usado, el resto lo dejamos así.
+
+![](assets/Pasted-image-20231004184534.png)
+
+
+Tras esto seleccionamos la terminal y podremos ver todo el contenido de la señal en texto por pantalla.
+
+![](assets/Pasted-image-20231004184837.png)
+
+Ahora veremos lo que recibimos del puerto UART seleccionando el modo terminal en vez de tabla de datos.
+
+Aqui tenemos el arranque del u-boot:
+
+![](assets/Pasted-image-20231006183705.png)
+
+---
+
 # Pull-up y Pull-down para analfabetos.
 
 ## Introducción.
