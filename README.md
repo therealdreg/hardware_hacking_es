@@ -522,7 +522,7 @@ Ahora veremos lo que recibimos del puerto UART seleccionando el modo terminal en
 
 Aqui tenemos el arranque del u-boot:
 
-![](Pasted-image-20231006183705.png)
+![](assets/Pasted-image-20231006183705.png)
 
 ---
 
