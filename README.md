@@ -671,3 +671,384 @@ Cuando el pin se deja flotando, el Pull-Up nos permite proporcionar 2.8V al chip
 ## Por si se te antojan algunos detalles...
 
 Te dejo los [esquemáticos](https://www.multisim.com/content/YMY72mDiKxPaKZova2JLzm/pulluppulldown/open) con medidas del circuito.
+
+----
+
+# Hacking SD Transcend TS2GUSD
+
+En este taller se usará el Bus Pirate para leer una tarjeta SD en modo SPI.
+
+Materiales:
+- [BusPiratev3](https://www.adafruit.com/product/237)
+- [Transcend TS2GUSD](https://www.amazon.es/Transcend-TS2GUSD-Tarjeta-memoria-microSD/dp/B000MSLW6G/)
+- [Pinzas BusPirate](https://www.adafruit.com/product/238)
+- [Módulo lector de tarjetas SD](https://es.aliexpress.com/item/1865616455.html?spm=a2g0o.order_list.order_list_main.29.681e194dSI5RMR&gatewayAdapt=glo2esp)
+
+## Paso 1. Conectar pinzas a lector SD
+
+Usamos este esquema para conectarnos (concretament, habrá que mirar la fila SPI prestando atención a los colores de los cables, no de las pinzas):
+
+![](assets/Pasted-image-20230916163947.png)
+
+![](assets/imagenes_tutorial_sd_spi/buspirate-sd-spi.png)
+
+> Nota: Si teneis algún problema durante la lectura de la SD, tened en cuenta que las pinzas a veces funcionan un poco mal. Probad usando unos cables dupont hembra-hembra para descartar.
+
+## Paso 2. Conectarse al Bus Pirate
+
+Para interactuar con el Bus Pirate, el primer paso es conectarlo a alguno de los puertos USB de nuestro ordenador. Se aconseja lo siguiente:
+- No usar hub USB.
+- El puerto, cuanto más antiguo mejor (p.e. USB2.0 en lugar de 3.0)
+- Hacerlo todo en un sistema operativo nativo, ya sea Linux o Windows, pero nada de máquinas virtuales.
+
+No significa que si no cumples algo de lo de arriba no vaya a funcionar, pero son cosas que suelen dar problemas y así minimizamos el número de cosas que pueden salir mal...
+
+El siguiente paso es conectarse al Bus Pirate con un software como Tera Term o Putty. Como ya hay suficientes ejemplos más arriba usando Tera Term en Windows, esta vez lo haremos con tio (Linux).
+
+Una vez instalado el software (fuera del alcance de esta guía), ejecutar el siguiente comando:
+
+```bash
+sudo tio -b 115200 /dev/ttyUSBX 
+```
+![](assets/imagenes_tutorial_sd_spi/image.png)
+
+Si no sabes el ttyUSB del Bus Pirate, puedes comprobarlo rápidamente de la siguiente forma:
+
+1. Desconecta el USB del Bus Pirate.
+2. Ejecuta el siguiente comando: `sudo dmesg -w`
+3. Vuelve a conectar el Bus Pirate.
+4. Comprueba el dispositivo nuevo que se ha conectado: 
+
+![](assets/imagenes_tutorial_sd_spi/image-1.png)
+
+Tras ejecutar `tio`, envía una `i` (+ ENTER) para obtener la versión de Bus Pirate.
+
+![](assets/imagenes_tutorial_sd_spi/image-2.png)
+
+Para esta guía estamos usando Bus Pirate v3.5, con el Bootloader v4.5 y el Community Firmware v7.1. Si no cuentas con la misma versión y algo no te funciona (o no te salen igual los menús), puede que te convenga actualizar (o bajar) a esta versión.
+
+Lo primero que haremos será indicarle a Bus Pirate que queremos que hable con la tarjeta SD a través del protocolo SPI. Para ello, tenemos que cambiar el modo con el comando `m`:
+
+![](assets/imagenes_tutorial_sd_spi/image-3.png)
+
+En cuanto a la velocidad, estableceremos la más pequeña para estar seguros (30kHz, despacito y con buena letra):
+
+![](assets/imagenes_tutorial_sd_spi/image-4.png)
+
+El resto de opciones hasta llegar al CS lo dejaremos por defecto:
+
+![](assets/imagenes_tutorial_sd_spi/image-5.png)
+
+Para la última opción, cómo alimentar al chip, usaremos el normal, ya que con 3v3 deberíamos de tener de sobra para alimentar la SD.
+
+![](assets/imagenes_tutorial_sd_spi/image-6.png)
+
+Llegados a este punto, la configuración del Bus Pirate estaría lista, solo faltaría enviar `W` para darle corriente a la SD:
+
+![](assets/imagenes_tutorial_sd_spi/image-7.png)
+
+Podemos comprobar además que estamos dando voltajes correctos haciendo uso de `v`:
+
+![](assets/imagenes_tutorial_sd_spi/image-8.png)
+
+Para la prueba que estamos haciendo, el voltaje que nos interesa es el marcado en rojo. Cuanto más cerca estemos de 3.3V mejor. En mi caso el USB llega a darme 3.26V y me funciona todo, así que entiendo que podeis usarlo como referencia de "voltaje normal".
+
+## Paso 2. Inicializar la tarjeta SD en modo SPI.
+
+Para inicializar la tarjeta SD en modo SPI, debemos enviarle una serie de comandos. Lo primero que haremos será ver el formato de los comandos:
+
+| CMD | ARGUMENT | CRC |
+|:---------:|:--------:|:---:|
+| 1 byte    | 4 bytes   | 1 byte| 
+
+Un comando podemos dividirlo en 3 partes:
+- CMD: Indica el comando que tiene que ejecutar la tarjeta SD. Hay que tener cuidado cuando queremos indicar el comando que queremos ejecutar ya que si por ejemplo queremos ejecutar CMD0 (GO_IDLE_STATE), no mandamos un 0 (0x00) y ya está. En realidad, de los 8 bits que se mandan para indicar a la tarjeta SD el comando (1 byte), solo los 6 últimos bits indican el comando, los 2 primeros bits están fijados a 01. Por tanto, el primer byte, el comando que se ejecuta, siempre se verá así:
+
+| Bit 1 | Bit 2 | Bit 3 | Bit 4 | Bit 5 | Bit 6 | Bit 7 | Bit 8 |
+|---|---|---|---|---|---|---|---|
+| 0 | 1 | X | X | X | X | X | X |
+
+> Truco: Como siempre tiene que empezar por 01, podemos entender que para CMDX, CMD = 01000000 + X. O si queremos verlo en hexadecimal: CMDX = 0x40 + X. Por ejemplo: Para CMD0, CMD = 0x40 + 0 = 0x40; Para CMD17, CMD = 0x40 + 17 = 0x40 + 0x11 = 0x51.
+
+- ARGUEMENT: Este es más sencillo de entender. Hay ciertos comandos que necesitan más información detrás. Por ejemplo, hay un comando que te permite leer un bloque, pero... ¿qué bloque? Pues en estos 4 bytes lo indicaríamos.
+
+- CRC: La tarjeta SD no comprueba el CRC cuando la ponemos en modo SPI, así que solo tendremos que preocuparnos de mandarlo en el primer comando de la inicialización, cuando le decimos que queremos hablar con ella en modo SPI. Con que sepais que para ese primer comando el CRC tiene que ser 0x95, teneis suficiente por lo pronto. Para el resto, con enviar un 0xFF nos vale.
+
+Entendido un poco cómo hablamos con la tarjeta SD, tenemos inicializarla de la siguiente forma para indicarle que queremos hablar usando SPI:
+1. La reseteamos en modo SPI con el comando CMD0 (GO_IDLE_STATE)
+2. Activamos el proceso de inicialización con el comando CMD1 (SEND_OP_COND)
+3. Comprobamos el estado de la tarjeta con el comando CMD1 (SEND_OP_COND)
+4. Establecemos el tamaño de bloque a 512 bytes con el comando CMD16 (SET_BLOCKLEN)
+
+Hecho esto, ya tendríamos la SD lista para leerla haciendo uso del protocolo SPI. Ya solo faltaría ir pidíendole bloques con el comando CMD17 (READ_SINGLE_BLOCK).
+
+> Nota: Seguro que te has dado cuenta que en el paso 2 y 3, aunque se hacen cosas diferentes, el comando que se usa es el mismo. Esto es porque el comando CMD1 (SEND_OP_COND) hace 2 cosas: 1) Le dice a la tarjeta que nos diga su estado; 2) Activa el proceso de inicialización. En ese orden.
+
+### Resetear SD en modo SPI
+
+- Comando (byte 1): Como queremos ejecutar CMD0 (GO_IDLE_STATE), tenemos que enviar 0x40 (0x40 + 0).
+- Argumentos (bytes 2 a 5): Este comando no tiene ningún argumento, por lo que enviamos 4 0x00 y ya está.
+- CRC (byte 6): Como adelantábamos más arriba, este es el único comando para el que tenemos que enviar un CRC bueno. No vamos a meternos en cómo se calcula, simplemente que para este comando en concreto será 0x95.
+
+`]r:10[0x40 0x00 0x00 0x00 0x00 0x95 r:8]`
+
+![](assets/imagenes_tutorial_sd_spi/image-9.png)
+
+Como respuesta, deberemos obtener lo siguiente:
+
+`0xFF 0x01 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF`
+
+El segundo byte indica el estado en el que se encuentra la tarjeta. 0x01 indica que la tarjeta se encuentra en estado IDLE, por lo que el siguiente paso será inicializarla.
+
+### Activar el proceso de inicialización
+
+- Comando (byte 1): Como queremos ejecutar CMD1 (SEND_OP_COND), tenemos que enviar 0x41 (0x40 + 1).
+- Argumentos (bytes 2 a 5): Este comando no tiene ningún argumento, por lo que enviamos 4 0x00 y ya está.
+- CRC (byte 6): A partir de este punto, la tarjeta SD deja de comprobar el CRC de los comandos que le mandamos, por lo que mandando simplemente 0xFF vamos bien.
+
+
+`[0x41 0x00 0x00 0x00 0x00 0xFF r:8]`
+
+![](assets/imagenes_tutorial_sd_spi/image-10.png)
+
+Como respuesta, deberemos obtener lo siguiente:
+
+`0xFF 0x01 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF`
+
+Podemos ver que la tarjeta sigue en modo IDLE. Es normal, ya que la tarjeta lo primero que hace es devolvernos el estado en el que se encuentra, y luego activa el proceso de inicialización. Vamos a volver a enviar el comando para obtener el estado en el que se encuentra ahora.
+
+### Comprobar el estado de la tarjeta
+
+- Comando (byte 1): Como queremos ejecutar CMD1 (SEND_OP_COND), tenemos que enviar 0x41 (0x40 + 1).
+- Argumentos (bytes 2 a 5): Este comando no tiene ningún argumento, por lo que enviamos 4 0x00 y ya está.
+- CRC (byte 6): La tarjeta no comprueba el CRC, por lo que enviamos 0xFF.
+
+`[0x41 0x00 0x00 0x00 0x00 0xFF r:8]`
+
+![](assets/imagenes_tutorial_sd_spi/image-11.png)
+
+Como respuesta, deberemos obtener lo siguiente:
+
+`0xFF 0x00 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF`
+
+Perfecto! Ahora sí, la tarjeta está lista para trabajar con ella, ya no está en modo IDLE! Pero un momento, porque antes de leer, tenemos que decirle con qué tamaño de bloque queremos trabajar.
+
+### Establecer tamaño de bloque
+
+- Comando (byte 1): Como queremos ejecutar CMD16 (SET_BLOCKLEN), tenemos que enviar 0x50 (0x40 + 16 = 0x40 + 0x10).
+- Argumentos (bytes 2 a 5): Este comando sí que tiene un argumento. Queremos establecer el tamaño de bloque, pero ¿a qué? Pues el estándar suele ser 512 bytes, así que no vamos a reinventar la rueda para evitarnos problemas... Indicar esto es muy sencillo, lo único que tenemos que hacer es convertir 512 bytes de decimal a hexadecimal, es decir 0x200. ¿Problema? Hay que enviar 4 bytes. ¿Solución? Rellenamos con 0's a la izquierda: 0x00000200. Si lo separamos: 0x00 0x00 0x02 0x00.
+- CRC (byte 6): La tarjeta no comprueba el CRC, por lo que enviamos 0xFF.
+
+`[0x50 0x00 0x00 0x02 0x00 0xFF r:8]`
+
+![](assets/imagenes_tutorial_sd_spi/image-12.png)
+
+Como respuesta, deberemos obtener lo siguiente:
+
+`0xFF 0x00 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF`
+
+No hemos obtenido ningún error, así que todo bien.
+
+### Paso 3: Lectura de bloques
+
+Ahora que ya hemos terminado de hacer el paso 2 por completo, ya tenemos la tarjeta SD lista para empezar a pedirle bloques. Para esto hay que tener una cosa en cuenta:
+
+A la tarjeta SD no le vamos pidiendo los bloques por un identificador. Es decir, no le decimos: dame el bloque 1, dame el bloque 2, dame el bloque 3...
+
+La forma en la que funciona la lectura de la tarjeta SD es que va a devolvernos un bloque desde la dirección que le indicamos como argumento. Es decir, cuando le digamos que queremos leer la dirección 0x00 0x00 0x00 0x00, va a devolvernos los primeros 512 bytes (recordad que es a lo que hemos establecido el tamaño de bloque durante la inicialización!). Por tanto, cuando queramos leer el segundo bloque, es decir, los siguientes 512 bytes, tenemos que leer la dirección 0x00 0x00 0x02 0x00 (512 en decimal). Para el siguiente bloque, sería 0x00 0x00 0x04 0x00 (1024 en decimal)...
+
+#### Lectura del primer bloque
+
+- Comando (byte 1): Como queremos ejecutar CMD17 (READ_SINGLE_BLOCK), tenemos que enviar 0x51 (0x40 + 17 = 0x40 + 0x11).
+- Argumentos (bytes 2 a 5): Como hemos explicado antes, este comando recibe como argumento la dirección de memoria desde la que queremos obtener el bloque. Como queremos leer el primer bloque, sería 0x00 0x00 0x00 0x00.
+- CRC (byte 6): La tarjeta no comprueba el CRC, por lo que enviamos 0xFF.
+
+`[0x51 0x00 0x00 0x00 0x00 0xFF r:520]`
+
+![](assets/imagenes_tutorial_sd_spi/image-15.png)
+
+Como veis, ya empezamos a ver la información que hay en los bloques! Para parsear esto, teneis que tener en cuenta que la respuesta tiene un formato:
+- Los primeros 4 bytes es una cabecera.
+- Los últimos 2 bytes es el CRC. Podríamos comprobarlo, pero asumiremos que está bien.
+- Si restamos esos bytes, nos quedan los 512 bytes del bloque que estamos leyendo.
+
+De hecho, si los copiamos y los pasamos por una herramiento tipo [CyberChef](https://gchq.github.io/CyberChef/#recipe=From_Hex('Auto')&input=MHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3IDB4NDQgMHg3MiAweDY1IDB4NjcgMHg0NCAweDcyIDB4NjUgMHg2NyAweDQ0IDB4NzIgMHg2NSAweDY3), obtenemos lo siguiente:
+![](assets/imagenes_tutorial_sd_spi/image-16.png)
+
+#### Lectura del segundo bloque
+
+- Comando (byte 1): Como queremos ejecutar CMD17 (READ_SINGLE_BLOCK), tenemos que enviar 0x51 (0x40 + 17 = 0x40 + 0x11).
+- Argumentos (bytes 2 a 5): Como hemos explicado antes, este comando recibe como argumento la dirección de memoria desde la que queremos obtener el bloque. Como queremos leer el segundo bloque, sería 0x00 0x00 0x02 0x00, ya que queremos leer a partir de la dirección 512 (los bytes anteriores ya los hemos leido).
+- CRC (byte 6): La tarjeta no comprueba el CRC, por lo que enviamos 0xFF.
+
+`[0x51 0x00 0x00 0x02 0x00 0xFF r:520]`
+
+![](assets/imagenes_tutorial_sd_spi/image-14.png)
+
+Aquí puede comprobarse a simple vista que no hay caracteres ASCII como en el bloque anterior, pero la estructura sigue siendo la misma: los primeros 4 bytes es una cabecera, y los 2 últimos el CRC.
+
+### Reto: Obtener sistema de ficheros oculto
+
+La tarjeta SD tiene flasheada un sistema de ficheros oculto. Lo único que sabemos es que se encuentra en los bloques pares o impares. Es decir, no podemos simplemente leer los bloques de manera secuencial y volcarlos en un fichero, sino que hay que separar los bloques pares por un lado, y los impares por otro. Cuando el proceso haya terminado, uno de los ficheros contendrá un sistema de ficheros donde estará la flag :D
+
+Para hacer todo esto, podemos automatizar todo el proceso de los pasos 2 y 3 con el siguiente script:
+```python
+#!/usr/bin/env python3
+
+import serial
+import time
+
+# Aquí es importante establecer un timeout, ya que las lecturas del puerto serie las haremos con la función
+# read_until. La gracia de usar este comando es que si le decimos read_until("AAA"), bloquerá la ejecución
+# hasta que en el buffer aparezca "AAA". Como esto es peligroso (por magia divina, puede que nunca aparezca AAA),
+# tenemos que establecer aquí un timeout para que, si no recibimos nada en 5 segundos, nos devuelva el control a
+# nosotros y podamos tratarlo.
+s = serial.Serial(port="/dev/ttyUSB0", baudrate=115200, timeout=5)
+
+# Cambiar modo
+s.write(b"m\n") 
+time.sleep(0.1)
+
+# SPI
+s.write(b"5\n")
+time.sleep(0.1)
+
+# 125kHz
+s.write(b"2\n")
+time.sleep(0.1)
+
+# Clock: Idle low
+s.write(b"1\n")
+time.sleep(0.1)
+
+# Clock: Active to idle
+s.write(b"2\n")
+time.sleep(0.1)
+
+# Input sample phase: Middle
+s.write(b"1\n")
+time.sleep(0.1)
+
+# CS: /CS
+s.write(b"2\n")
+time.sleep(0.1)
+
+# Select output type: Normal
+s.write(b"1\n")
+time.sleep(0.1)
+
+# Power supplies on
+s.write(b"W\n")
+time.sleep(0.1)
+
+# Inicialización del modo SPI
+s.write(b"]r:10[0x40 0x00 0x00 0x00 0x00 0x95 r:8]\n")
+time.sleep(0.1)
+s.write(b"[0x41 0x00 0x00 0x00 0x00 0xFF r:8]\n")
+time.sleep(0.1)
+s.write(b"[0x41 0x00 0x00 0x00 0x00 0xFF r:8]\n")
+time.sleep(0.1)
+s.write(b"[0x50 0x00 0x00 0x02 0x00 0xFF r:8]\n")
+time.sleep(0.1)
+s.reset_input_buffer()
+s.reset_output_buffer()
+# Archivo para volcar los bloques pares
+f1 = open("even.bin", "wb")
+# Archivo para volcar los bloques impares
+f2 = open("odd.bin", "wb")
+# Variable para ir controlando si es un bloque par o impar de manera intuitiva. Podríamos hacerlo dividiendo directamente
+# i / 512, pero creo que así es más fácil de entender.
+n = 0
+# Aquí recorreríamos todas las direcciones de memoria del 0 a los 2GB.
+# No obstante, sabemos (os lo digo yo) que la información se encuentra en los primeros 16MB, por lo que para que no sea infinito,
+# no vamos a seguir leyendo.
+# Como ya hemos visto, hemos establecido el tamaño de bloque en 512 bytes, por lo que las direcciones de memoria también las vamos
+# recorriendo de 512 en 512.
+for i in range(0, 16 * 1024 * 1024, 512):
+    # Como los comandos reciben la direccion como argumento en 4 bytes diferentes, tenemos que trocear la dirección en 4. Es decir, para la dirección 0x01020304
+    # Aqui obtenemos 0x01
+    a4 = i >> 24 & 0xff
+    # Aqui obtenemos 0x02
+    a3 = i >> 16 & 0xff
+    # Aqui obtenemos 0x03
+    a2 = i >> 8 & 0xff
+    # Y aqui obtenemos 0x04
+    a1 = i & 0xff
+    print(f"Reading {hex(a4)} {hex(a3)} {hex(a2)} {hex(a1)}...")
+    # El bus pirate nos abstrae del formato en el que les pasamos los bytes. Es decir, le da igual que le pasemos 0x0F o 15, así que nos ahorramos usar la función hex()
+    s.write(f"[0x51 {a4} {a3} {a2} {a1} 0xFF r:520]\n".encode())
+    # Esperamos hasta que en el buffer aparezca SPI>, o lo que es lo mismo, que la tarjeta SD nos haya respondido y el bus pirate esté esperando a que le enviemos otro comando.
+    response = s.read_until(b"SPI>")
+    # Nos quedamos unicamente con la linea donde aparece los bytes que están escritos en el bloque, quitándole el READ: del principio.
+    sector_bytes_str = response.decode().split("\n")[8].lstrip("READ: ").split()
+    # Primero obtenemos la cabecera, desde el principio hasta que leemos 0xFE (los primeros 4 bytes siempre acaban en 0xFE)
+    header_bytes = bytes([ int(x, 16) for x in sector_bytes_str[:sector_bytes_str.index("0xFE")+1] ])
+    # Luego obtenemos la información del bloque, desde ese primer 0xFE que mencionamos antes, hasta los siguientes 512 bytes (recordemos que es el tamaño de bloque establecido).
+    sector_bytes = bytes([ int(x, 16) for x in sector_bytes_str[sector_bytes_str.index("0xFE")+1:sector_bytes_str.index("0xFE")+512+1] ])
+    # Si n es par, escribimos el bloque en el archivo even.bin
+    if n % 2 == 0:
+        f1.write(sector_bytes)
+    # Si n es impar, escribimos el bloque en el archivo odd.bin
+    else:
+        f2.write(sector_bytes)
+    # Por último, incrementamos n antes de vovler a iniciar el bucle.
+    n += 1
+
+```
+
+Podeis descargarlo directamente de [aquí](assets/solucion_sd_spi/read_sd_spi.py).
+
+Una vez lo tenéis, ejecutadlo de la siguiente forma:
+
+```bash
+chmod +x read_sd_spy.py && sudo ./read_sd_spi.py
+```
+
+> Nota: Acordaros de desconectar el Bus pirate del USB y volverlo a conectar, además de cerrar tio antes de ejecutar el script. Para ello, cerrad directamente la terminal o ejecutad la siguiente combinación: Ctrl+t q.
+
+![](assets/imagenes_tutorial_sd_spi/image-17.png)
+
+El script tarda un buen rato en terminar (en mi caso, unas 2 horas). Mientras tanto, podemos ir monitorizando el resultado con el siguiente comando:
+
+```bash
+watch "binwalk even.bin; binwalk odd.bin"
+```
+
+![](assets/imagenes_tutorial_sd_spi/image-18.png)
+
+De primeras no saldrá nada, pero poco a poco iremos viendo cómo, en uno de los archivos, binwalk va detectando los _magic numbers_:
+
+![](assets/imagenes_tutorial_sd_spi/image-20.png)
+
+Hasta que al final, podemos ver un sistema de ficheros completo:
+
+![](assets/imagenes_tutorial_sd_spi/image-21.png)
+
+Una vez tenemos esto, sacamos los ficheros con binwalk:
+
+```bash
+binwalk -e odd.bin
+tree
+```
+
+![](assets/imagenes_tutorial_sd_spi/image-22.png)
+
+Entramos a la carpeta que ha generado binwalk y vemos los tipos de ficheros:
+```bash
+cd _odd.bin.extracted
+file *
+```
+![](assets/imagenes_tutorial_sd_spi/image-23.png)
+
+Podemos ver que binwalk ha conseguido extraer todos los archivos. De hecho, el archivo 600000.xz incluso lo ha extraido, dejándonos 600000.xz en el directorio. Solo nos faltaría extraer este último. Como sabemos que es un archivo tar, lo podemos extraer con el comando del mismo nombre:
+```bash
+tar xaf 600000
+file *
+```
+![](assets/imagenes_tutorial_sd_spi/image-27.png)
+
+Una vez ejecutado el comando, podemos ver que aparece un nuevo achivo dreg_flag.txt. Leemos el contenido y ya tenemos la flag!
+```bash
+cat dreg_flag.txt
+```
+![](assets/imagenes_tutorial_sd_spi/image-25.png)
