@@ -147,6 +147,208 @@ Usamos un conversor de [hexadecimal](https://gchq.github.io/CyberChef/) y obtene
 ![](assets/Pasted-image-20230921193712.png)
 
 ---
+## Paso 5:  Dumpeo o backup
+
+Tras comprender como se lee la memoria EEPROM, se puede automatizar todo el proceso montando un script que permita disponer de una copia coa través de una imagen o backup con los datos que contiene la misma.
+
+Lo primero que se debe tener en cuenta a la hora de leer la información es la capacidad total que tiene, en este caso:
+![](assets/eeprom_capacidad.png)-
+Un kilobyte son 1024 bytes, por lo que al ser 32 kilobytes se tendrán que extraer 32768 bytes totales.
+
+Una forma sencilla es guardar todo el output y luego "parsear" lo que nos interesa en bruto a un fichero de tipo imagen.
+Abriendo dicha imagen con un editor hexadecimal se puede ver el contenido en bruto:
+![](assets/eeprom_mensajito.png)
+
+A continuación, adjunto el script que use:
+```python
+import time
+import serial
+import os
+
+# Configura el puerto COM y la velocidad de comunicación según tu configuración
+COM_PORT = 'COM3'
+BAUD_RATE = 115200  # Esta velocidad puede variar según tu configuración
+
+# Dirección del dispositivo AT24C256 para lectura
+EEPROM_READ_ADDRESS = 0xA1
+
+# Número total de bloques a leer
+NUM_BLOCKS = 32  # 32 bytes x 1024 = 32768
+
+# Nombre del archivo para guardar el dump con todo el output
+DUMP_FILE = 'eeprom_dump.log'
+
+def configure_bus_pirate(ser):
+    # Configura el Bus Pirate para el modo I2C y la velocidad deseada (~100kHz)
+    ser.write(b'm\n')  # Selecciona el modo I2C
+    time.sleep(0.1)
+    ser.write(b'4\n')  # Modo I2C
+    time.sleep(0.1)
+    ser.write(b'1\n')  # Selección de modo software
+    time.sleep(0.1)
+    ser.write(b'2\n')  # Establecer velocidad ~50kHz
+    time.sleep(0.1)
+    ser.write(b'W\n')  # Encender las fuentes de alimentación
+    time.sleep(0.1)
+    ser.write(b'[0xA0 0x00 0x00]\n')  # Direccion de inicio para leer
+
+
+def read_eeprom_dump():
+    try:
+        # Abre la conexión con el puerto COM
+        ser = serial.Serial(port=COM_PORT, baudrate=BAUD_RATE, timeout=1)
+
+        # Espera a que se inicialice la comunicación
+        time.sleep(2)
+
+        # Configura el Bus Pirate para I2C
+        configure_bus_pirate(ser)
+
+        # Realiza la lectura de la EEPROM y guarda los datos en el archivo
+        with open(DUMP_FILE, 'wb') as dump_file:
+            # Realiza la lectura de los datos en bloques de 64 bytes
+
+            data = ser.read(1200)
+            dump_file.write(data)
+            for _ in range(NUM_BLOCKS):
+                ser.write(b'[0xA1 r:1024]\n')  # Envía el comando para leer 64 bytes
+                time.sleep(0.1)
+                data = ser.read(12800)
+                dump_file.write(data)
+                
+
+        print('Dump guardado en:', DUMP_FILE)
+    except Exception as e:
+        print('Error:', str(e))
+    finally:
+        # Cierra la conexión
+        ser.close()
+
+
+def parse_log_and_extract_ascii(filename, output_filename):
+    ascii_values = []
+    with open(filename, 'r') as file:
+        lines = file.readlines()
+        read_block = False  # Flag para indicar que estamos dentro de un bloque de lectura
+        for line in lines:
+            if "READ:" in line:
+                # Si encontramos un bloque de lectura, marcamos el flag y lo procesamos
+                read_block = True
+                hex_values = line.split(" ")[1:]  # Extraer los valores hexadecimales
+
+                # Filtrar los valores hexadecimales válidos y convertir a ASCII
+                ascii_values.append(''.join([chr(int(value, 16)) for value in hex_values if is_hex(value)]))
+
+    # Filtramos las líneas no deseadas y escribimos los valores ASCII en el archivo de salida
+    formatted_values = ''.join(ascii_values)  # Unimos los valores sin saltos de línea
+    with open(output_filename, 'w') as output_file:
+        output_file.write(formatted_values)
+
+    print('Valores ASCII guardados en:', output_filename)
+
+# Función para verificar si una cadena es un valor hexadecimal
+def is_hex(value):
+    try:
+        int(value, 16)
+        return True
+    except ValueError:
+        return False
+
+
+if __name__ == "__main__":
+    read_eeprom_dump()
+    parse_log_and_extract_ascii(DUMP_FILE, 'ascii_values.img')
+
+```
+---
+## Paso 6:  Flasher AT24C256
+
+Una vez se tiene una imagen que cuadra perfectamente con la capacidad de la memoria EEPROM (en este caso 32 KB), se puede automatizar el proceso de flasheo o escritura lo cual nos quitará dolores de cabeza si tenemos que flashear 500 :)
+
+Conociendo el procedimiento de escritura, se pueden escribir todos los bytes iterándolos en bloques. En este caso seleccioné 21 bytes por bloque para no tener problemas con bloques mas grandes, y realicé 1560 iteraciones:
+
+
+A continuación, adjunto el script que use:
+```python
+import time
+import serial
+import os
+
+# Configura el puerto COM y la velocidad de comunicación según tu configuración
+COM_PORT = 'COM3'
+BAUD_RATE = 115200  # Esta velocidad puede variar según tu configuración
+
+# Dirección del dispositivo AT24C256 para escritura
+EEPROM_WRITE_ADDRESS = 0xA0
+
+# Número total de bloques a escribir (calculo realizado en base a bloques de 21 bytes)
+NUM_BLOCKS = 1560 # 32 bytes x 1024 = 32768
+
+# Nombre del archivo de imagen
+IMG_FILE = 'eeprom.img'
+
+def configure_bus_pirate(ser):
+    # Configura el Bus Pirate para el modo I2C y la velocidad deseada (~100kHz)
+    ser.write(b'm\n')  # Selecciona el modo I2C
+    time.sleep(0.1)
+    ser.write(b'4\n')  # Modo I2C
+    time.sleep(0.1)
+    ser.write(b'1\n')  # Selección de modo software
+    time.sleep(0.1)
+    ser.write(b'2\n')  # Establecer velocidad ~50kHz
+    time.sleep(0.1)
+    ser.write(b'W\n')  # Encender las fuentes de alimentación
+    time.sleep(0.1)
+
+def generate_write_commands(img_filename):
+    commands = []
+    with open(img_filename, 'rb') as img_file:
+        img_data = img_file.read()
+
+    # Divide los datos de la imagen en bloques de 21 bytes
+    blocks = [img_data[i:i + 21] for i in range(0, len(img_data), 21)]
+
+    # Genera los comandos de escritura para cada bloque
+    for i, block in enumerate(blocks, start=0):
+        # Dirección de memoria para escribir
+        address_high = (i * 21) >> 8  # Segundo byte de la dirección
+        address_low = (i * 21) & 0xFF  # Tercer byte de la dirección
+        command = f'[0xA0 0x{address_high:02X} 0x{address_low:02X} ' + ' '.join([f'0x{byte:02X}' for byte in block]) + ']\n'
+        commands.append(command)
+
+    return commands
+
+def send_commands(ser, commands):
+    for i, command in enumerate(commands, start=0):
+        print(f"Escribiendo bloque {i}: {command.strip()}")
+        ser.write(command.encode())
+        time.sleep(0.1)  # Espera para que el comando se ejecute correctamente
+
+if __name__ == "__main__":
+    try:
+        # Abre la conexión con el puerto COM
+        ser = serial.Serial(port=COM_PORT, baudrate=BAUD_RATE, timeout=1)
+
+        # Espera a que se inicialice la comunicación
+        time.sleep(2)
+
+        # Configura el Bus Pirate para I2C
+        configure_bus_pirate(ser)
+
+        # Genera los comandos de escritura
+        commands = generate_write_commands(IMG_FILE)
+
+        # Envía los comandos de escritura
+        send_commands(ser, commands)
+
+    except Exception as e:
+        print('Error:', str(e))
+    finally:
+        # Cierra la conexión
+        ser.close()
+
+```
+---
 
 # Hacking FLASH SPI Winbond 25Q64FVSIG
 
