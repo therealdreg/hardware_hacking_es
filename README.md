@@ -872,7 +872,7 @@ Ahora veamos como sería el circuito y sus conexiones con el Chip Target y el Ch
 
 <img src="assets\Archivos_PullUpPullDown\Dar0.png" alt="pullUpBusPirate" width="700"/>
 
-<span style="color:#efc72e">3. El cable amarillo representa a los canales de la PCB del BusPirate que conectan el Pull-Up con el pin de Clock Select (CS). En este caso, el Chip ha conectado el pin directamente a GND, lo que da un voltaje nulo (0V) en toda la linea.</span>
+<span style="color:#efc72e">3. El cable amarillo representa a los canales de la PCB del BusPirate que conectan el Pull-Up con el pin de Chip Select (CS). En este caso, el Chip ha conectado el pin directamente a GND, lo que da un voltaje nulo (0V) en toda la linea.</span>
 
 
 <span style="color:#6da707">4. El cable verde es la pinza que colocaremos en la pata CS del BusPirate hasta el pin CS del Chip Objetivo. En la imagen de arriba, el pin está conectado a la linea amarilla, por la que no pasa corriente. Como consecuencia, recibe un 0.</span>
