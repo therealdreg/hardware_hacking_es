@@ -859,16 +859,38 @@ Los Pull-up y Pull-down sirven para guardar estados por defecto, incluso cuando 
 
 Para ello, miramos el esquemático del fabricante, en mi caso, la [v3.6a](https://cdn.sparkfun.com/datasheets/Tools/BusPirate-v3.6a.pdf).
 
-Haremos un análisis de ejemplo con el pin de Chip Select (CS).
-Lo hacemos funcionar en [OPEN DRAIN](https://www.analog.com/en/design-center/glossary/open-drain-collector.html), donde el chip dejará el pin flotando o conectado a GND:
+Mirando el esquemático del BusPirate, vemos que en la parte dedicada a los Pull-Up hay un circuito adicional. Este nos permite habilitar o desabilitar el uso de los Pull-Up.
+Veamos como funciona cada una de las partes:
 
-| Pin | GND | Flotando |
-|------|-----|----------|
-| CS  | 0   | 1        |
+<img src="assets\Archivos_PullUpPullDown\ActivarPullUps.png" alt="pullUpBusPirate" width="700"/>
 
-<img src="assets\Archivos_PullUpPullDown\pullUpBusPirate.png" alt="pullUpBusPirate" width="700"/>
+<span style="color:#e55e22">1.  Esta parte del circuito representada con el cable naranja permite controlar a través de la linea de comandos, con el comando "P", activar los Pull-Up del circuito del color azul. En el caso de la imagen de arriba, el interruptor integrado dentro del chip del BusPirate, que usaremos de forma conceptual, está cerrado y conectado a GND, lo que garantiza un voltaje nulo y, por tanto, el interruptor entre los puntos A y B quedará abierto. Eso significa que no puede llegar de ningún modo voltaje desde VEXTERN. En caso de que el interruptor interno del BusPirate se dejase flotando, llegarían 5V al punto C, lo que cerraría el circuito azul, permitiendo el paso de la corriente que proviene de VEXTERN.</span>
 
-Cuando el pin se deja flotando, el Pull-Up nos permite proporcionar 2.8V al chip, es decir, un 1. Si dejamos el pin conectado a GND el chip interpretará un 0 en la entrada.
+<span style="color:#0068be">2. Conectada a una fuente externa, en este caso, de 5V, el circuito de color azul es el que nos permitirá dar una señal alta (dar un 1) o, conectando el extremo final a GND, una señal baja (dar un 0).</span>
+
+Ahora veamos como sería el circuito y sus conexiones con el Chip Target y el Chip del Bus Pirate cuando el interruptor de la linea naranja está abierto:
+
+<img src="assets\Archivos_PullUpPullDown\Dar0.png" alt="pullUpBusPirate" width="700"/>
+
+<span style="color:#efc72e">3. El cable amarillo representa a los canales de la PCB del BusPirate que conectan el Pull-Up con el pin de Clock Select (CS). En este caso, el Chip ha conectado el pin directamente a GND, lo que da un voltaje nulo (0V) en toda la linea.</span>
+
+
+<span style="color:#6da707">4. El cable verde es la pinza que colocaremos en la pata CS del BusPirate hasta el pin CS del Chip Objetivo. En la imagen de arriba, el pin está conectado a la linea amarilla, por la que no pasa corriente. Como consecuencia, recibe un 0.</span>
+
+<img src="assets\Archivos_PullUpPullDown\Dar1.png" alt="pullUpBusPirate" width="700"/>
+
+<span style="color:#efc72e">3. Ahora el BusPirate ha abierto el interruptor y la linea amarilla ya no está conectada a GND. De este modo los 5V de VEXTERN llegan desde el cable azul hasta el final.</span>
+
+<span style="color:#6da707">4. Como ahora el cable amarillo tiene 5V, y el verde sigue conectado al amarillo, los 5V llegan hasta el Chip Objetivo, lo que interpretará como un 1.</span>
+
+
+**Resumiendo**, si el interruptor del cable amarillo está **cerrado** (conectado a GND): Chip Target **recibe un 0**.
+
+Si el interruptor se queda **flotando** (no se conecta a GND ni a ningún otro Voltaje): Chip Target **recibe un 1**.
+
+A este modo de funcionamiento del PIN se le denomina [OPEN DRAIN](https://www.analog.com/en/design-center/glossary/open-drain-collector.html).
+
+`Dato: Los protocolos I2C necesitan siempre los Pull-Up para funcionar, ya que siempre reciben 0 de GND y el 1 con el PIN flotando.`
 
 ## Por si se te antojan algunos detalles...
 
