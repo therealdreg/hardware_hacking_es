@@ -661,7 +661,7 @@ flashrom.exe --progress -V -c "W25Q64JV-.Q" -p buspirate_spi:dev=COM6 -r flash_c
 Si no funciona reconecta el buspirate y ejecuta este comando:
 
 ```cmd
-flashrom.exe --progress -VV -c "W25Q64JV-.Q" -p buspirate_spi:dev=COM6,spispeed=1M -r flash_contenido.img
+flashrom.exe --progress -V -c "W25Q64BV/W25Q64CV/W25Q64FV" -p buspirate_spi:dev=COM6,spispeed=250k,serialspeed=115200 -r flash_content.img
 ```
 
 Obtendremos este archivo:
