@@ -76,6 +76,8 @@
 
     </details>
 
+6. [Webs, libros, recursos, a quien seguir...](#id6)
+
 
 # 1. Fundamentos Teóricos<a name="id1"></a>
 
@@ -1363,3 +1365,25 @@ Una vez ejecutado el comando, podemos ver que aparece un nuevo achivo dreg_flag.
 cat dreg_flag.txt
 ```
 ![](assets/imagenes_tutorial_sd_spi/image-25.png)
+
+
+# 1. Webs, libros, recursos, a quien seguir...<a name="id6"></a>
+
+- https://twitter.com/therealdreg
+- https://twitter.com/wrongbaud
+- https://twitter.com/dangerousproto
+- https://twitter.com/PaulStoffregen
+- https://twitter.com/gsglabs
+- https://twitter.com/joegrand
+- https://twitter.com/reversemode
+
+- https://www.youtube.com/@ElectronicaFP
+- https://www.youtube.com/@editronikx
+- https://www.youtube.com/@PetrolheadGarage
+- https://www.youtube.com/@MentalidadDeIngenieria
+- https://www.youtube.com/@ELECTRONOOBSenEspanol
+- https://www.youtube.com/@BitwiseAr
+
+- https://www.luisllamas.es
+
+- https://www.amazon.com/Getting-Started-Electronics-Forrest-Mims/dp/0945053282
