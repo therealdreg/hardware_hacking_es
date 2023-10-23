@@ -1376,6 +1376,8 @@ cat dreg_flag.txt
 - https://twitter.com/gsglabs
 - https://twitter.com/joegrand
 - https://twitter.com/reversemode
+- https://twitter.com/TaiksonTexas
+- https://twitter.com/BatchDrake
 
 - https://www.youtube.com/@ElectronicaFP
 - https://www.youtube.com/@editronikx
