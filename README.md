@@ -1378,6 +1378,7 @@ cat dreg_flag.txt
 - https://twitter.com/reversemode
 - https://twitter.com/TaiksonTexas
 - https://twitter.com/BatchDrake
+- https://twitter.com/ernesto_xload
 
 - https://www.youtube.com/@ElectronicaFP
 - https://www.youtube.com/@editronikx
