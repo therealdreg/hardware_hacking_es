@@ -400,6 +400,21 @@ Obtendremos este archivo:
 
 ![](assets/Pasted-image-20230927205528.png)
 
+--- 
+
+### Comandos a distintos niveles.
+
+Configuramos el buspirate para comunicarse con la spi flash de esta manera:
+
+![](assets/Pasted%20image%2020231024195803.png)
+
+![](Pasted%20image%2020231024195856.png)
+
+![](assets/Pasted%20image%2020231024200237.png)
+
+
+
+
 ---
 ## Paso 4: Extracción de la imagen
 
