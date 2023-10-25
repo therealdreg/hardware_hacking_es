@@ -674,29 +674,53 @@ Obtendremos este archivo:
 
 ![](assets/Pasted-image-20230927205528.png)
 
-<<<<<<< HEAD
 
 ---
-### Comandos a distintos niveles.
+### Análisis flashrom a nivel lógico.
 
-Configuramos el buspirate para comunicarse con la spi flash de esta manera:
+Ejecutamos el flashrom con el analizador logico conectado.
 
-![](assets/Pasted%20image%2020231024195803.png)
+![](assets/Pasted%20image%2020231025070034.png)
 
-![](Pasted%20image%2020231024195856.png)
+##### Comprobación modelo memoria.
 
-![](assets/Pasted%20image%2020231024200237.png)
+Lo primero que manda es el bit 0x9F que identifica el modelo de memoria, también llamado JEDEC ID.
 
+![](assets/Pasted%20image%2020231025071000.png)
 
+##### Comprobación flash esta disponible.
 
+Lo primero que recibimos son muchas ordenes seguidas de Read Status Register 1 y 2 seguidos. Esto lo hace con las instrucciones 0x05(Read Status Register 1) y 0x35(Read Status Register 2)
+
+![](assets/Pasted%20image%2020231025071550.png)
+
+![](assets/Pasted%20image%2020231025070217.png)
+
+Esto lo hace comprobar el bit de estado BUSY para comprobar cuando el ciclo esta completo y el dispositivo puede aceptar otra instrucción. La instrucción se termina cuando el CS este levantado.
+
+##### Leer datos
+
+Tras la comprobación comienza a leer toda la flash usando la instrucción 0x03.
+
+![](assets/Pasted%20image%2020231025072450.png)
+
+Tras mandar la instrucción comienza a leer la dirección indicada tras el byte 0x03 en este caso 0x000000
+
+![](assets/Pasted%20image%2020231025071735.png)
+
+Se puede ver como obtenemos datos por el canal MISO de la flash SPI. Y seguiria leyendo para las distintas secciones de memoria.
+
+![](assets/Pasted%20image%2020231025073031.png)
+
+Tras terminar de leer todas las direcciones de la memoria repite la orden de leer registros como al principio para comprobar que ha finalizado el ciclo.
+
+![](assets/Pasted%20image%2020231025073419.png)
 
 --- 
 
 
-## Paso 4: Extracción de la imagen
-=======
 ## 3.4. Extracción de la imagen<a name="id3_4"></a>
->>>>>>> 4c3d4ba67fa94816a3574f626e1084f279f08b29
+
 
 La abrimos con binwalk y la descomprimimos con este comando.
 
@@ -710,6 +734,7 @@ binwalk -eM flash_contenido.img
 
 Ahora revisamos lo extraído y buscamos la flag. 
 
+---
 # 4. Hacking Router TP-Link TL-WR841N<a name="id4"></a>
 
 **Material Requerido**
