@@ -118,9 +118,11 @@ Nos centramos en el BusPirate v3 en concreto, a pesar de que hay actualizaciones
 
 Para saber exactamente qué tenemos entre manos, puedes acceder a su documentación [aquí](http://dangerousprototypes.com/docs/Bus_Pirate/es), o puedes seguir leyendo. Haremos un resumen de sus funcionalidades centrado en los casos de uso que vamos a ver.
 
-**ADVERTENCIA**: Las máquinas virtuales (VM) y/o USB HUBs pueden causar problemas. Es recomendable utilizar SIEMPRE un sistema operativo nativo y conectar el Bus Pirate directamente a un puerto USB.
+**ADVERTENCIA**: Las máquinas virtuales (VM) y/o USB HUBs pueden causar problemas. Es recomendable utilizar SIEMPRE un sistema operativo nativo y conectar el Bus Pirate directamente a un puerto USB. Si la consola con Bus Pirate / flashrom / asprogrammer dregmod... se congela (~2 minutos sin salida)/bloquea: cierra este programa, vuelve a conectar el puerto USB y vuelve a intentarlo.
 
 **ADVERTENCIA**: Recomiendo utilizar como máximo una velocidad de 100kHz aproximadamente para cada protocolo, ya que la calidad de los cables es importante y no me fío de que la longitud del tuyo sea corta, sobre todo si hay un adaptador a clips, etc. Cuanto más largo sea el cable y más adaptadores haya, junto con un voltaje más bajo, necesitarás usar una velocidad más baja. Así que configura el flashrom o cualquier otro software que utilices para usar la velocidad que sea más conveniente.
+
+**ADVERTENCIA**: Se recomienda usar este firmware: https://github.com/therealdreg/autobuspirateupgrade/blob/main/BPv3-bootloaderv4xtov45-update_fw-TEST%20Gabriel%20Smith%20JTAG%20Fix_ENG-v0.zip
 
 Recuerda que como lector puedes contribuir a seguir mejorando esta documentación haciendo un Pull Request a la documentación añadiendo todo lo que te gustaría leer.
 
