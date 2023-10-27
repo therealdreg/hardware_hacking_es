@@ -1,9 +1,9 @@
 # Hardware Hacking ES Comunidad
 
+<img src="assets\logoficial.png" alt="logoficial" width="300"/>
+
 - Discord: https://discord.gg/wkWr6Dj46D 
 - Telegram: https://t.me/hardwarehackinges
-
-<img src="assets\logoficial.png" alt="logoficial" width="300"/>
 
 # Índice   
 1. [Fundamentos Teóricos](#id1)
