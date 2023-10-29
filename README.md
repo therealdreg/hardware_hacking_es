@@ -723,6 +723,10 @@ Ejecutamos \[0x06] para habilitar la escritura y le ponemos los corchetes entrem
 
 Aquí vemos como cada ciclo de reloj (CLK) nos marca cada final y comienzo de bit y el programa identifica cada bit del MOSI usando los ciclos del canal de CLK, asi vemos que si en el ciclo el mosi esta bajado se identifica como un 0 y si esta levantado lo identifica como un 1. 
 
+Si mandamos un 0xAA se mandara 10101010:
+
+![](assets/0xAA.png)
+
 Si mandamos un byte 11111111 el MOSI estara a 3,3V todos los ciclos de reloj:
 
 ![](assets/Pasted%20image%2020231029160711.png)
@@ -734,10 +738,6 @@ Si mandamos un 0xF0 pondra los primeros 4 pulsos de reloj a 1 y los otros 4 a 0:
 Si mandamos un 0x00 en los 8 pulsos de reloj el bit de MOSI estara puesto en 0:
 
 ![](assets/Pasted%20image%2020231029163541.png)
-
-Si mandamos un 0xAA se mandara 10101010:
-
-![](assets/0xAA.png)
 
 Estos serian los bits del Registro de Estado 1, hay que comprobar si el S1 esta activo.
 
