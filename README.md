@@ -676,9 +676,7 @@ Obtendremos este archivo:
 
 
 ---
-### Análisis flashrom a nivel lógico.
-
-##### Analizando comandos individualmente.
+### Comandos buspirate y analizador lógico.
 
 Primero configuramos el buspirate.
 
@@ -688,9 +686,13 @@ Primero configuramos el buspirate.
 
 ![](assets/Pasted%20image%2020231029094448.png)
 
-Ahora ya estamos listos, momentos de activar la captura del analizador lógico.
+Ahora ya estamos listos, momento de activar la captura del analizador lógico.
 
-Los comandos en cuadrado serán los que usaremos:
+Pero primero hay que entender como leer las capturas
+
+
+
+Los comandos del [datasheet](https://www.winbond.com/resource-files/w25q64fv%20revq%2006142016.pdf) resaltados serán los que usaremos:
 
 ![](assets/Pasted%20image%2020231029095344.png)
 
@@ -711,17 +713,37 @@ Esto sera el orden de introducción.
 [0x03 0x00 0x00 0x00 r:256]
 ```
 
-Primero ejectuamos \[0x06] que según el datasheet lo que hace es habilitar la escritura y le ponemos los corchetes entremedias para que con el que abre ponga el CS en activo es decir en estado bajo y que cuando introduzca el 0x06 lo vuelva a poner en alto para deshabilitarlo.
+Ejecutamos \[0x06] para habilitar la escritura y le ponemos los corchetes entremedias para que con el que abre ponga el CS en activo es decir en estado bajo y que cuando introduzca el 0x06 lo vuelva a poner en alto para deshabilitarlo.
 
 ![](assets/Pasted%20image%2020231029100148.png)
 
 ![](assets/Pasted%20image%2020231029100208.png)
 
-Ahora leemos el registro para comprobar que la escritura esta habilitada y todo ha ido correctamente:
+![](assets/write-enable.png)
+
+Aquí vemos como cada ciclo de reloj (CLK) nos marca cada final y comienzo de bit y el programa identifica cada bit del MOSI usando los ciclos del canal de CLK, asi vemos que si en el ciclo el mosi esta bajado se identifica como un 0 y si esta levantado lo identifica como un 1. 
+
+Si mandamos un byte 11111111 el MOSI estara a 3,3V todos los ciclos de reloj:
+
+![](assets/Pasted%20image%2020231029160711.png)
+
+Si mandamos un 0xF0 pondra los primeros 4 pulsos de reloj a 1 y los otros 4 a 0:
+
+![](assets/Pasted%20image%2020231029163226.png)
+
+Si mandamos un 0x00 en los 8 pulsos de reloj el bit de MOSI estara puesto en 0:
+
+![](assets/Pasted%20image%2020231029163541.png)
+
+Si mandamos un 0xAA se mandara 10101010:
+
+![](assets/0xAA.png)
+
+Estos serian los bits del Registro de Estado 1, hay que comprobar si el S1 esta activo.
 
 ![](assets/Pasted%20image%2020231029103240.png)
 
-Ahora ejecutamos **\[0x05 r:1]** para leer el registro de estado 1 y comprobar que la escritura esta habilitada.
+Para comprobar que la escritura esta habilitada y todo ha ido correctamente ejecutamos **\[0x05 r:1]** para leerlo.
 
 Esta seria la instrucción a nivel lógico:
 
@@ -731,7 +753,7 @@ Y nos devuelve un 2 que quiere decir que esta habilitada:
 
 ![](assets/Pasted%20image%2020231029103636.png)
 
-Ahora procedemos a borrar  con el comando **\[0x20 0x00 0x00 0x00]** 
+Ahora procedemos a borrar la pagina 0x000000 con el comando **\[0x20 0x00 0x00 0x00]** 
 
 ![](assets/Pasted%20image%2020231029105222.png)
 
@@ -743,11 +765,11 @@ El primer byte es la instruccion y los otros 3 la dirección.
 ![](assets/Pasted%20image%2020231029105904.png)
 ![](assets/Pasted%20image%2020231029105946.png)
 
-Como podemos ver con el comando primero el corchete abierto indica para bajar el cs y seleccionarlo, despues se manda por el MOSI el comando y la dirección , después se manda el corchete cerrado para levantar el CS y desactivarlo.
+Primero el corchete abierto indica bajar el cs y seleccionarlo, después se manda por el MOSI el comando y la dirección , después se manda el corchete cerrado para levantar el CS y desactivarlo.
 
-Ahora procedemos a leer la dirección 0x000000 con el comando **\[0x03 0x00 0x00 0x00 r:256]** 
+Ahora leemos la dirección 0x000000 con el comando **\[0x03 0x00 0x00 0x00 r:256]** 
 
-El uso de los corchetes es igual siempre, el 0x03 marca la instruccion y los tres bytes de 00 la dirección, después el r:256 es para repetir la acción de manera masiva y leer los 256 bytes seguidos.
+El uso de los corchetes es igual siempre, el 0x03 marca la instruccion y los tres bytes de 00 la dirección, después el r:256 es para repetir la acción de lectura 256 veces.
 
 Asi se vería el comando y la respuesta:
 
@@ -755,7 +777,7 @@ Asi se vería el comando y la respuesta:
 
 ![](assets/Pasted%20image%2020231029110649.png)
 
-Al haber borrado previamente todo este sector hemos puesto todos los bytes en FF que para la memoria representa un estado como "borrado" o "borrable" que simplemente es la manera que la memoria identifica que no contiene información valida.
+Al haber borrado previamente todo este sector hemos puesto todos los bytes en FF.
 
 Ahora volvemos a hablitar la escritura con la orden \[0x06] 
 
@@ -772,23 +794,25 @@ Y releemos el registro de estado para comprobar que esta hablitada la escritura,
 
 Y efectivamente la escritura esta habilitada.
 
-Ahora usaremos la instrucción Page Program (0x02) para escribir en la pagina 0x000000 y escribiremos los 3 primeros bytes con la siguiente cadena en ASCII "ABC", el comando sería **\[0x02 0x00 0x00 0x00 0x41 0x42 0x43]** , el primer byte es la instrucción los 3 siguientes la direccion y el resto el texto a escribir, hay que tener en cuenta que solo podemos escribir desde 1 byte hasta 256 que es el tamaño de la pagina de esta flash. Si escribimos mas , sobrescribirá el principio de la pagina.
+Ahora usaremos la instrucción Page Program (0x02) para escribir en la pagina 0x000000 y escribiremos los 3 primeros bytes con la cadena en ASCII "ABC", el comando es **\[0x02 0x00 0x00 0x00 0x41 0x42 0x43]**. 
+
+El primer byte es la instrucción, los 3 siguientes la dirección y el resto los bytes a escribir. 
+
+Solo podemos escribir desde 1 byte hasta 256 que es el tamaño de la pagina de esta flash. Si escribimos mas, sobrescribirá el principio de la pagina.
 
 ![](assets/escribir-spi.png)
 
-Ahora leeremos la pagina 0x000000 con el comando \[0x03 0x00 0x00 0x00 r:256]
+Ahora leemos la pagina 0x000000 con el comando \[0x03 0x00 0x00 0x00 r:256]
 
 ![](assets/leer-spibulk.png)
 
-Tras leer podemos ver como los 3 primeros bytes de la pagina 0x000000 estan escritos con 0x41 0x42 0x43
+Tras leer podemos ver como los 3 primeros bytes de la pagina 0x000000 estan escritos con 0x41 0x42 0x43 y el resto de bytes están a 0xFF es decir vacíos.
 
 ![](assets/bien-escrito.png)
 
-El resto de los bytes están en 0xFF es decir vacios.
+Ahora llenaremos toda la pagina con 0x41(A).
 
-Ahora escribiremos toda la pagina con 0x41(A).
-
-Se repite el proceso, primero habilitamos la escritura, después leemos el Registro de estado para comprobar que la escritura esta bien, después  escribimos las As con la instruccion de Page Program y luego leemos la pagina.
+Se repite el proceso, primero habilitamos la escritura, después leemos el Registro de estado para comprobar que la escritura esta bien, después  escribimos las As con la instrucción de Page Program y luego leemos la pagina.
 
 Estos serian los comandos:
 
@@ -803,10 +827,11 @@ Asi se vería la instrucción de escribir en el analizador lógico:
 
 ![](assets/Pasted%20image%2020231029123449.png)
 
-Y aqui vemos como la instruccion de lectura nos devuelve por el MISO todas las A:
+Y aquí vemos como la instrucción de lectura nos devuelve por el MISO todas las A:
 
 ![](assets/Pasted%20image%2020231029123654.png)
 
+Podéis ver detalladamente la captura con el programa [Logic 2](https://www.saleae.com/downloads/) y la [captura](assets/Archivos_Taller_2/Captura_Manual_SPI.sal) de la carpeta assets.
 
 --- 
 
