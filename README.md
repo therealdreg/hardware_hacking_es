@@ -678,43 +678,135 @@ Obtendremos este archivo:
 ---
 ### Análisis flashrom a nivel lógico.
 
-Ejecutamos el flashrom con el analizador logico conectado.
+##### Analizando comandos individualmente.
 
-![](assets/Pasted%20image%2020231025070034.png)
+Primero configuramos el buspirate.
 
-##### Comprobación modelo memoria.
+![](assets/Pasted%20image%2020231029094332.png)
 
-Lo primero que manda es el bit 0x9F que identifica el modelo de memoria, también llamado JEDEC ID.
+![](assets/Pasted%20image%2020231029094414.png)
 
-![](assets/Pasted%20image%2020231025071000.png)
+![](assets/Pasted%20image%2020231029094448.png)
 
-##### Comprobación flash esta disponible.
+Ahora ya estamos listos, momentos de activar la captura del analizador lógico.
 
-Lo primero que recibimos son muchas ordenes seguidas de Read Status Register 1 y 2 seguidos. Esto lo hace con las instrucciones 0x05(Read Status Register 1) y 0x35(Read Status Register 2)
+Los comandos en cuadrado serán los que usaremos:
 
-![](assets/Pasted%20image%2020231025071550.png)
+![](assets/Pasted%20image%2020231029095344.png)
 
-![](assets/Pasted%20image%2020231025070217.png)
+Esto sera el orden de introducción.
 
-Esto lo hace comprobar el bit de estado BUSY para comprobar cuando el ciclo esta completo y el dispositivo puede aceptar otra instrucción. La instrucción se termina cuando el CS este levantado.
+```bash
+[0x06]
+[0x05 r:1]
+[0x20 0x00 0x00 0x00]
+[0x03 0x00 0x00 0x00 r:256]
+[0x06]
+[0x05 r:1]
+[0x02 0x00 0x00 0x00 0x41 0x42 0x43]
+[0x03 0x00 0x00 0x00 r:256]
+[0x06]
+[0x05 r:1]
+[0x02 0x00 0x00 0x00 0x41:255]
+[0x03 0x00 0x00 0x00 r:256]
+```
 
-##### Leer datos
+Primero ejectuamos \[0x06] que según el datasheet lo que hace es habilitar la escritura y le ponemos los corchetes entremedias para que con el que abre ponga el CS en activo es decir en estado bajo y que cuando introduzca el 0x06 lo vuelva a poner en alto para deshabilitarlo.
 
-Tras la comprobación comienza a leer toda la flash usando la instrucción 0x03.
+![](assets/Pasted%20image%2020231029100148.png)
 
-![](assets/Pasted%20image%2020231025072450.png)
+![](assets/Pasted%20image%2020231029100208.png)
 
-Tras mandar la instrucción comienza a leer la dirección indicada tras el byte 0x03 en este caso 0x000000
+Ahora leemos el registro para comprobar que la escritura esta habilitada y todo ha ido correctamente:
 
-![](assets/Pasted%20image%2020231025071735.png)
+![](assets/Pasted%20image%2020231029103240.png)
 
-Se puede ver como obtenemos datos por el canal MISO de la flash SPI. Y seguiria leyendo para las distintas secciones de memoria.
+Ahora ejecutamos **\[0x05 r:1]** para leer el registro de estado 1 y comprobar que la escritura esta habilitada.
 
-![](assets/Pasted%20image%2020231025073031.png)
+Esta seria la instrucción a nivel lógico:
 
-Tras terminar de leer todas las direcciones de la memoria repite la orden de leer registros como al principio para comprobar que ha finalizado el ciclo.
+![](assets/Pasted%20image%2020231029103435.png)
 
-![](assets/Pasted%20image%2020231025073419.png)
+Y nos devuelve un 2 que quiere decir que esta habilitada:
+
+![](assets/Pasted%20image%2020231029103636.png)
+
+Ahora procedemos a borrar  con el comando **\[0x20 0x00 0x00 0x00]** 
+
+![](assets/Pasted%20image%2020231029105222.png)
+
+El primer byte es la instruccion y los otros 3 la dirección.
+
+![](assets/Pasted%20image%2020231029105648.png)
+
+![](assets/Pasted%20image%2020231029105853.png)
+![](assets/Pasted%20image%2020231029105904.png)
+![](assets/Pasted%20image%2020231029105946.png)
+
+Como podemos ver con el comando primero el corchete abierto indica para bajar el cs y seleccionarlo, despues se manda por el MOSI el comando y la dirección , después se manda el corchete cerrado para levantar el CS y desactivarlo.
+
+Ahora procedemos a leer la dirección 0x000000 con el comando **\[0x03 0x00 0x00 0x00 r:256]** 
+
+El uso de los corchetes es igual siempre, el 0x03 marca la instruccion y los tres bytes de 00 la dirección, después el r:256 es para repetir la acción de manera masiva y leer los 256 bytes seguidos.
+
+Asi se vería el comando y la respuesta:
+
+![](assets/leer-spi.png)
+
+![](assets/Pasted%20image%2020231029110649.png)
+
+Al haber borrado previamente todo este sector hemos puesto todos los bytes en FF que para la memoria representa un estado como "borrado" o "borrable" que simplemente es la manera que la memoria identifica que no contiene información valida.
+
+Ahora volvemos a hablitar la escritura con la orden \[0x06] 
+
+![](assets/Pasted%20image%2020231029111930.png)
+
+![](assets/Pasted%20image%2020231029112002.png)
+
+Y releemos el registro de estado para comprobar que esta hablitada la escritura, recordad hacerlo siempre para evitar errores.
+
+![](assets/Pasted%20image%2020231029113151.png)
+
+![](assets/Pasted%20image%2020231029113212.png)
+
+
+Y efectivamente la escritura esta habilitada.
+
+Ahora usaremos la instrucción Page Program (0x02) para escribir en la pagina 0x000000 y escribiremos los 3 primeros bytes con la siguiente cadena en ASCII "ABC", el comando sería **\[0x02 0x00 0x00 0x00 0x41 0x42 0x43]** , el primer byte es la instrucción los 3 siguientes la direccion y el resto el texto a escribir, hay que tener en cuenta que solo podemos escribir desde 1 byte hasta 256 que es el tamaño de la pagina de esta flash. Si escribimos mas , sobrescribirá el principio de la pagina.
+
+![](assets/escribir-spi.png)
+
+Ahora leeremos la pagina 0x000000 con el comando \[0x03 0x00 0x00 0x00 r:256]
+
+![](assets/leer-spibulk.png)
+
+Tras leer podemos ver como los 3 primeros bytes de la pagina 0x000000 estan escritos con 0x41 0x42 0x43
+
+![](assets/bien-escrito.png)
+
+El resto de los bytes están en 0xFF es decir vacios.
+
+Ahora escribiremos toda la pagina con 0x41(A).
+
+Se repite el proceso, primero habilitamos la escritura, después leemos el Registro de estado para comprobar que la escritura esta bien, después  escribimos las As con la instruccion de Page Program y luego leemos la pagina.
+
+Estos serian los comandos:
+
+```bash
+[0x06] (Habilitar escritura)
+[0x05 r:1] (Leer Registro de Estado)
+[0x02 0x00 0x00 0x00 0x41:255] (LLenar la pagina de 0x41)
+[0x03 0x00 0x00 0x00 r:256] (Leer la pagina entera)
+```
+
+Asi se vería la instrucción de escribir en el analizador lógico:
+
+![](assets/Pasted%20image%2020231029123449.png)
+
+Y aqui vemos como la instruccion de lectura nos devuelve por el MISO todas las A:
+
+![](assets/Pasted%20image%2020231029123654.png)
+
 
 --- 
 
