@@ -689,6 +689,11 @@ Obtendremos este archivo:
 ---
 ### Comandos buspirate y analizador lógico.
 
+Así es como se conectaría el analizador lógico a la memoria flash y al bus pirate:
+
+![](assets/Pasted%20image%2020231031195408.png)
+schema by @dsanchezlavado
+
 Primero configuramos el buspirate.
 
 ![](assets/Pasted%20image%2020231029094332.png)
@@ -700,8 +705,6 @@ Primero configuramos el buspirate.
 Ahora ya estamos listos, momento de activar la captura del analizador lógico.
 
 Pero primero hay que entender como leer las capturas
-
-
 
 Los comandos del [datasheet](https://www.winbond.com/resource-files/w25q64fv%20revq%2006142016.pdf) resaltados serán los que usaremos:
 
@@ -732,7 +735,7 @@ Ejecutamos \[0x06] para habilitar la escritura y le ponemos los corchetes entrem
 
 ![](assets/write-enable.png)
 
-Aquí vemos como cada ciclo de reloj (CLK) nos marca cada final y comienzo de bit y el programa identifica cada bit del MOSI usando los ciclos del canal de CLK, asi vemos que si en el ciclo el mosi esta bajado se identifica como un 0 y si esta levantado lo identifica como un 1. 
+En la imagen se puede ver la correspondecia de los pulsos de reloj(CLK) con el de los bits.
 
 Si mandamos un 0xAA se mandara 10101010:
 
