@@ -4,26 +4,27 @@
 - Telegram: https://t.me/hardwarehackinges
 
 
+
 # Índice   
 1. [Fundamentos Teóricos](#id1)
     <details><summary>+ info</summary>
 
     1.1. [¿Qué es esto del Hardware Hacking?](#id1_1)
     1.2. [¿Qué necesito para empezar en esto?](#id1_2)
-    1.3. [Tengo un BusPirate v3 pero... ¿Qué es esto?](#id1_3)
-    1.4. [Pull-up y Pull-down para analfabetos](#id1_4)
-        <details><summary>+ info</summary>
-        1.4.1. [Introducción](#id1_4_1)
-        1.4.2. [¡Terror a las antenas!](#id1_4_2)
-        1.4.3. [Conceptos previos: ¿Qué es lo que veo?](#id1_4_3)
-        1.4.4. [Pull-up: ¡Manos a la obra!](#id1_4_4)
-        1.4.5. [¡Resistencias, al rescate!](#id1_4_5)
-        1.4.6. [Pulldown: vamos a ser breves](#id1_4_6)
-        1.4.7. [Resumen: ¡no des más la chapa!](#id1_4_7)
-        1.4.8. [¿Dónde encuentro los Pull-Up en el BusPirate?](#id1_4_8)
-        1.4.9. [Por si se te antojan algunos detalles...](#id1_4_9)
-        </details>
-    1.5. [Encontrar puerto COM para el Bus Pirate](#id1_5)
+    1.3. [Protocolos de Datos](#id1_3)
+    1.3. [¿Qué es el Analizador Lógico?](#id1_3)
+    1.4. [Tengo un BusPirate v3 pero... ¿Qué es esto?](#id1_4)
+    1.5. [Pull-up y Pull-down para analfabetos](#id1_5)
+        <details><summary>+ info</summary>1.5.1. [Introducción](#id1_5_1)
+        1.5.2. [¡Terror a las antenas!](#id1_5_2)
+        1.5.3. [Conceptos previos: ¿Qué es lo que veo?](#id1_5_3)
+        1.5.4. [Pull-up: ¡Manos a la obra!](#id1_5_4)
+        1.5.5. [¡Resistencias, al rescate!](#id1_5_5)
+        1.5.6. [Pulldown: vamos a ser breves](#id1_5_6)
+        1.5.7. [Resumen: ¡no des más la chapa!](#id1_5_7)
+        1.5.8. [¿Dónde encuentro los Pull-Up en el BusPirate?](#id1_5_8)
+        1.5.9. [Por si se te antojan algunos detalles...](#id1_5_9)
+        </details>1.6. [Encontrar puerto COM para el Bus Pirate](#id1_6)
     
     </details>
 
@@ -76,6 +77,10 @@
 
     </details>
 
+6. [Glosario de Términos](#id6)
+
+7. [Cómo aportar](#id7)
+
 
 # 1. Fundamentos Teóricos<a name="id1"></a>
 
@@ -89,25 +94,76 @@ La modificación que quiera hacer puede ser tan sencilla como cambiar algo de su
 
 En este repositorio vamos a intentar cubrir algunos casos prácticos para irnos introduciendo en esto del hardware hacking y sus técnicas, más como ejemplos sencillitos para ir aprendiendo las técnicas que con ningún otro objetivo.
 
-Un disclaimer importante es que no se van a realizar técnicas ilegales o vinculadas con el imaginario popular de lo que se cree que es el hacking: no vamos a hackear el whatsapp de tu novia ni vamos a atacar a ninguna entidad gubernamental. Ésto va más en la línea de entender cacharros para poderles sacar capacidades.
+Un disclaimer importante es que **no se van a realizar técnicas ilegales** o vinculadas con el imaginario popular de lo que se cree que es el hacking: no vamos a hackear el whatsapp de tu novia ni vamos a atacar a ninguna entidad gubernamental. Ésto va más en la línea de entender cacharros para poderles sacar capacidades.
 ## 1.2. ¿Qué necesito para empezar en esto?<a name="id1_2"></a>
 
-1. **Ganas de estudiar y aprender**: No hay una forma directa y sencilla de adquirir conocimiento sobre esto, normalmente necesitarás estudiar esquemáticos, leer documentación técnica y pasar muchas horas intentando entender qué carajos estás haciendo. Esto es parte de la diversión.
+1. **Ganas de estudiar y aprender**: No hay una forma directa y sencilla de adquirir conocimiento sobre esto, normalmente necesitarás estudiar esquemáticos, leer documentación técnica y pasar muchas horas intentando entender qué carajos estás haciendo. Esto es parte de la diversión. Aún así, partiremos de que tienes un nivel básico de conocimientos teóricos de electricidad y electrónica. Más o menos lo que te enseñan en el bachillerato tecnológico bastaría (sistema educativo español).
 
 2. **Material de soldadura**: No te tienes que gastar una millonada, pero sí hay una serie de cosas que son básicas y que vas a necesitar. Hay miles de guías y listas de materiales que podrías seguir, pero todo se resume en:
-    * Soldador y desoldador
-    * Estaño
-    * Flux
+    * Soldador de estaño y desoldador. Con el desoldador en un principio te basta con una pipeta desoldadora, en un futuro ya podrás pensar si invertir en un desoldador de verdad
+    * Estaño (que sea de buena calidad)
+    * Flux (lo mismo que el estaño, gástate algo más en algo de buena calidad)
     * Pines macho y hembra
     * Cables de electrónica (los reconocerás porque son muy finitos y de colorines)
-    
-    A partir de aquí, todo son extras para hacerte la vida más fácil.
 
+    Un añadido opcional pero interesantísimo es un microscopio para electrónica. En AliExpress se pueden encontrar algunos bastante decentes por un presupuesto bastante ajustado. No te precipites y compres algo de menos de 50€, es mejor esperar, ahorrar ese poquito y gastarte entre 50 y 70€ en un microscopio que te va a servir durante muchísimo tiempo.
+    
 3. **Cacharrada**: Llamaremos cacharrada a todo aquello que nos ayudará a extraer el firmware y a manipularlo. Para conseguir el objetivo de llegar hasta el firmware de casi cualquier cosa nos bastará con:
     * [Analizador Lógico](https://www.amazon.es/AZDelivery-Logic-Analyzer-compatible-versi%C3%B3n/dp/B01MUFRHQ2/ref=sr_1_1_sspa?keywords=analizador%2Blogico%2Busb&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1)
     * [BusPiratev3](https://www.adafruit.com/product/237)
     * [Pinzas BusPirate](https://www.adafruit.com/product/238)
-## 1.3. Tengo un BusPirate v3 pero... ¿Qué es esto?<a name="id1_3"></a>
+
+## 1.3. Protocolos de Datos<a name="id1_3"></a>
+Cuando empecemos a trabajar con cacharretes a los que les queramos sacar los firmwares, tenemos que entender cuál es su forma de comunicación.
+
+Un genérico en la comprensión de cómo funcionan los protocolos de datos es que siempre tendremos un orquestrador (_Master_) y un esclavo (_Slave_). Ambos pueden estar emitiendo y recibiendo datos, pero habrá una relación de control del _Master_ sobre el _Slave_.
+
+A medida que vayamos trabajando con más y más cacharros en las demostraciones prácticas iremos añadiendo las especificaciones de cada uno de los protocolos.
+
+#### Procotolos a documentar:
+- [ ] SPI
+- [ ] JTAG
+- [ ] 1-wire
+- [X] I2C
+- [ ] KB
+- [ ] UART
+
+### Protocolo I2C (Inter-Integrated Circuit)
+En I2C tenemos, como particularidad, que podemos conectar múltiples Esclavos a múltiples Masters y viceversa. Esto nos da la flexibilidad de poder tener múltiples microcontroladores escribiendo en una misma SD o mostrando los datos a una misma salida.
+
+I2C solamente usa dos cables para los datos:
+* SDA (Serial Data): línea para el intercambio bidireccional de datos entre Esclavo y Master
+* SCL (Serial Clock): línea para la señal del reloj
+
+I2C forma parte de la familia de los protocolos seriales, con lo que la información se transmite a través de un cable bit a bit.
+
+En la siguiente imagen podemos ver las especificaciones técnicas del protocolo I2C:
+
+<img src="assets\fundamentoTeorico\Basics-of-the-I2C-Communication-Protocol-Specifications-Table-768x409.png" alt="Imagen extraída de circuitbasics.com" width=400 style="display: block; margin: 0 auto">
+
+### ¿Cómo funciona el protocolo?
+
+<img src="assets\fundamentoTeorico\Introduction-to-I2C-Message-Frame-and-Bit-2-1024x258.png" alt="Imagen extraída de circuitbasics.com" width=600 style="display: block; margin: 0 auto">
+
+* Start Condition: La línea SDA pasa de un alto voltaje a un bajo voltaje, y a continuación la línea SCL hace lo mismo
+* Address Frame: Una secuencia de 7 o 10 bits única para cada esclavo que le identifica al máster 
+* Read/Write bit: Un único bit que indica si el máster envía o pide datos al esclavo
+* ACK/NACK: Cada mensaje está finalizado con una señal de _acknowledge/no-acknowledge_, que confirma que se ha recibido o no correctamente la información. El ACK se devuelve de vuelta hacia el emisor para confirmar que el receptor ha recibido el mensaje
+* Stop Condition: La línea SDA pasa de un bajo voltaje a un alto voltaje, y a continuación la línea SCL hace lo mismo
+
+
+## 1.4. ¿Qué es un Analizador Lógico?<a name="id1_4"></a>
+Un Analizador Lógico nos permite extraer las señales digitales que emita el sistema que estamos analizando a través de un osciloscopio. El análisis que haremos con un analizador lógico lo podríamos hacer a través de un osciloscopio clásico, pero hoy existen cacharritos como este que nos permiten analizarlo con nuestro ordenador a través de su interfaz. La información que extraigamos de este análisis nos permitirá posteriormente volcarnos el firmware del sistema analizado.
+
+La documentación oficial del producto que recomendamos está [aquí](https://www.az-delivery.de/es/products/logic-analyzer-kostenfreies-e-book?variant=8700826550368), pero vamos a intentar hacer un resumen de lo más importante.
+
+El Analizador que usamos, proporcionado por AZ-Delivery, está basado en Arduino, lo que hace que ya partamos de un sistema con muchísima comunidad, que como iréis viendo, es algo que nos agrada especialmente.
+
+Para iniciar con el cacharrito, accedemos a la página de [descargas del producto](https://www.saleae.com/downloads/) y nos descargamos su software. Este paso no tiene demasiado interés, _download & install as usual_. El software no tiene más configuraciones que hacer.
+
+Los protocolos más habituales para Arduino son conexión serial, SPI e I2C; pero el analizador que tenemos entre manos admite todos estos protocolos: SPI, IIC, UART, SMBus, I2S, CAN, Parallel, Custom, Search, Async, 1-Wite, PS/2. Para nuestro nivel, básicamente lo admite todo.
+
+## 1.5. Tengo un BusPirate v3 pero... ¿Qué es esto?<a name="id1_5"></a>
 
 Nos centramos en el BusPirate v3 en concreto, a pesar de que hay actualizaciones posteriores, por varios motivos:
     1. Es económico. Hoy en día (finales del 2023) no cuesta más allá de 40€ el propio cacharro y sus pinzas.
@@ -119,7 +175,7 @@ Para saber exactamente qué tenemos entre manos, puedes acceder a su documentaci
 Recuerda que como lector puedes contribuir a seguir mejorando esta documentación haciendo un Pull Request a la documentación añadiendo todo lo que te gustaría leer.
 
 El esquema genérico de colores para los cables es el siguiente:
-<img src="assets\Esquema colores buspirate.jpg" alt="Esquema Colores BusPirate" width="400"/>
+<img src="assets\fundamentoTeorico\Esquema colores buspirate.jpg" alt="Esquema Colores BusPirate" width="400" style="display: block; margin: 0 auto"/>
 
 La explicación de cada uno de los pines (y cables, con sus respectivos colores es):
 | **Nombre del pin** | **Color del cable** | **Descripción genérica**                                         | **SPI**            | **JTAG**           | **1-Wire**     | **I2C**        | **KB**         | **UART** |
@@ -134,41 +190,53 @@ La explicación de cada uno de los pines (y cables, con sus respectivos colores 
 | +3.3v              | Rojo                | Fuente de 3.3V                                                   |                    |                    |                |                |                |          |
 | +5.0v              | Naranja             | Fuente de 5V                                                     |                    |                    |                |                |                |          |
 | GND                | Marrón              | Tierra, conectar a la tierra del circuito test                   |                    |                    |                |                |                |          |
-## 1.4. Pull-up y Pull-down para analfabetos<a name="id1_4"></a>
-### 1.4.1. Introducción<a name="id1_4_1"></a>
 
+#### Modelos 3D para BusPirate v3
+
+Hemos creado una serie de Modelos 3D.
+
+Por un lado tenemos un modelo del propio BusPirate simplificado, que nos puede ser útil en el futuro para diseñar cosas:
+<img src="assets\modelos3D\busPirateV3.PNG" alt="Modelo simplificado 3D BusPirate" width="400" style="display: block; margin: 0 auto"/>
+
+Y por otro lado hemos diseñado una caja para el BusPirate:
+<img src="assets\modelos3D\cajaBusPirateV3.PNG" alt="Modelo simplificado 3D BusPirate" width="400" style="display: block; margin: 0 auto"/>
+
+También hemos dejado el fichero stl de ambos modelos para que te los puedas imprimir en el directorio [modelos3D](assets/modelos3D/) de este repositorio.
+
+## 1.6. Pull-up y Pull-down para dummies<a name="id1_6"></a>
+### 1.6.1. Introducción<a name="id1_6_1"></a>
 Aquí encontrarás explicada, de manera sencilla, la justificación, finalidad, funcionamiento y detalles de las resistencias Pull-up y Pull-down.
-### 1.4.2. ¡Terror a las antenas!<a name="id1_4_2"></a>
+### 1.6.2. ¡Terror a las antenas!<a name="id1_6_2"></a>
 
 Te han puesto una tarea. Debes apuntar la posición de una ficha blanca, esta ficha solo puede acabar en dos casillas, en la Posición 1, y en la Posición 0.
 
-<img src="assets\Archivos_PullUpPullDown\pos1.png" alt="pos1" width="200"/>
+<img src="assets\fundamentoTeorico\pos1.png" alt="pos1" width="200"/>
 
 Es evidente que la posición de la ficha es 1. Vamos a ver el siguiente caso:
 
-<img src="assets\Archivos_PullUpPullDown\pos0.png" alt="pos0" width="200"/>
+<img src="assets\fundamentoTeorico\pos0.png" alt="pos0" width="200"/>
 
 Ahora se encuentra en el 0, pero, ¿cómo ha llegado hasta ahí? La ficha ha tenido que desplazarse, eso seguro. La pregunta es, ¿qué posición le asignamos hasta que llegue a una de las casillas?
 
-<img src="assets\Archivos_PullUpPullDown\posUndet.png" alt="posUndet" width="200"/>
+<img src="assets\fundamentoTeorico\posUndet.png" alt="posUndet" width="200"/>
 
 
 Este es uno de los problemas que se encuentras a la hora de transmitir información en la electrónica. Como solo podemos interpretar 2 estados, ¡lo que pase en la transición no lo entenderemos!
 
-<img src="assets\Archivos_PullUpPullDown\punkyState1.png" alt="punkyState1" width="500"/>
+<img src="assets\fundamentoTeorico\punkyState1.png" alt="punkyState1" width="500"/>
 
-<img src="assets\Archivos_PullUpPullDown\punkyStateUndet.png" alt="punkyStateUndet" width="500"/>
+<img src="assets\fundamentoTeorico\punkyStateUndet.png" alt="punkyStateUndet" width="500"/>
 
 En los estados intermedios entre el 1 y el 0 de esta viñeta, la pata que se conecta a uno de los estados está en el aire, actuando como **antena** y captando interferencias indeseadas. A esto se le llama dejar una pata "flotando", algo que debemos evitar en las entradas de información.
 
 Para evitar este problema, y mantener una comunicación estable, se usan las Resistencias Pull-up y Pull-down.
-### 1.4.3. Conceptos previos: ¿Qué es lo que veo?<a name="id1_4_3"></a>
+### 1.6.3. Conceptos previos: ¿Qué es lo que veo?<a name="id1_6_3"></a>
 
-<img src="assets\Archivos_PullUpPullDown\pullupSchematic.png" alt="pullupSchematic" width="500"/>
+<img src="assets\fundamentoTeorico\pullupSchematic.png" alt="pullupSchematic" width="500"/>
 
 Bueno... Espero que no te asustes. Lo que ves ahora es el esquema de una **resistencia Pull-up**. Tranquilo, porque vas a entenderlo después de algunos conceptos. Primero vamos a etiquetar cada elemento:
 
-<img src="assets\Archivos_PullUpPullDown\pullupSchematicNames.png" alt="pullupSchematicNames" width="500"/>
+<img src="assets\fundamentoTeorico\pullupSchematicNames.png" alt="pullupSchematicNames" width="500"/>
 
 #### Elementos del circuito.
 
@@ -192,17 +260,17 @@ En la primera, nos permite calcular cuánto voltaje es capaz de retener una resi
 Si conociésemos el voltaje que una resistencia va a restar al circuito podríamos calcular, entonces, la intensidad de corriente que pasa por esta.
 
 La segunda expresión nos permitirá estimar el consumo del circuito, usando el voltaje proporcionado por la fuente y la corriente requerida por los elementos que conectemos.
-### 1.4.4. Pull-up: ¡Manos a la obra!<a name="id1_4_4"></a>
+### 1.6.4. Pull-up: ¡Manos a la obra!<a name="id1_6_4"></a>
 
 No olvidemos que el objetivo de todo esto es enviar información, evitando las confusiones. La información viajará de un origen, que llamamos **Maestro**, a un destinatario, un **Esclavo**.
 
 Por suerte solo tenemos que diferenciar, como hemos dicho, dos mensajes: el **0** y el **1**.
 
 Digamos que nosotros somos el maestro y queremos enviar un 1 al esclavo. Esto podría funcionar:
-<img src="assets\Archivos_PullUpPullDown\pullUpApproach.png" alt="pullUpApproach" width="500"/>
+<img src="assets\fundamentoTeorico\pullUpApproach.png" alt="pullUpApproach" width="500"/>
 
 Si dejamos el interruptor abierto, el 1 solo tiene un camino. Ahora vamos a intentar cerrar el interruptor.
-<img src="assets\Archivos_PullUpPullDown\pullUpCrash.png" alt="pullUpCrash" width="500"/>
+<img src="assets\fundamentoTeorico\pullUpCrash.png" alt="pullUpCrash" width="500"/>
 
 Si no te has saltado los conceptos previos verás que aquí algo ha ido bastante mal. Como el voltaje no ha bajado antes de llegar a GND el cable empieza a actuar como resistencia para disipar la energía en forma de calor. El cable no está preparado para eso y puede alcanzar altas temperaturas. Por si te has perdido, **la velocidad del 1 era muy alta antes de llegar al aparcamiento y se ha estampado contra GND**. Ahora nuestro esclavo podría irse a jugar al parchís, si no se ha roto nada en el proceso.
 
@@ -211,8 +279,8 @@ Quizá te preguntes porqué el 1 no se ha ido directamente hacia nuestro esclavo
 En el entorno real, las entradas de los dispositivos cuentan con una impedancia muy alta (que se opone al paso de la corriente), lo que representaremos en los esquemáticos como resistencias del valor que ronda los MΩ. El objetivo de esta impedancia es **afectar en la menor medida posible al circuito**.
 
 Aclarado todo esto, ahora necesitaremos algo para reducir la velocidad. ¡Seguro que lo estás pensando! Nuestras amigas las resistencias pueden hacernos el trabajo.
-### 1.4.5. ¡Resistencias, al rescate!<a name="id1_4_5"></a>
-<img src="assets\Archivos_PullUpPullDown\pullUpKingNotDefault.png" alt="pullUpKingNotDefault" width="500"/>
+### 1.6.5. ¡Resistencias, al rescate!<a name="id1_6_5"></a>
+<img src="assets\fundamentoTeorico\pullUpKingNotDefault.png" alt="pullUpKingNotDefault" width="500"/>
 
 Ahora, la resistencia ha conseguido frenar por completo el 1, así que como no llega nada, al esclavo se le carga un 0.
 
@@ -228,30 +296,31 @@ A consecuencia de esta baja corriente, la caída de voltaje o "velocidad", si as
 
 El esclavo recibiría un voltaje de 4.995V, lo que interpretaría como un 1.
 
-<img src="assets\Archivos_PullUpPullDown\pullUpKingDefault.png" alt="pullUpKingDefault" width="500"/>
+<img src="assets\fundamentoTeorico\pullUpKingDefault.png" alt="pullUpKingDefault" width="500"/>
 
 ¡Ya entiendes como funciona el Pull-up!, pero no cantes victoria, aun queda que te explique el Pull-down.
-### 1.4.6. Pulldown: vamos a ser breves<a name="id1_4_6"></a>
+### 1.6.6. Pulldown: vamos a ser breves<a name="id1_6_6"></a>
 Vamos a coger la misma estructura del Pull-up y intercambiamos las posiciones del interruptor y la resistencia de este modo:
 
-<img src="assets\Archivos_PullUpPullDown\pullDownKingDefault.png" alt="pullDownKingDefault" width="500"/>
+<img src="assets\fundamentoTeorico\pullDownKingDefault.png" alt="pullDownKingDefault" width="500"/>
 
 Como podemos ver, cuando el interruptor está abierto, el esclavo solo puede interpretar un 0, mientras que si cerramos el interruptor, conseguiremos pasarle al esclavo el 1.
-<img src="assets\Archivos_PullUpPullDown\pullDownKingNotDefault.png" alt="pullDownKingNotDefault" width="500"/>
-### 1.4.7. Resumen: ¡no des más la chapa!<a name="id1_4_7"></a>
+<img src="assets\fundamentoTeorico\pullDownKingNotDefault.png" alt="pullDownKingNotDefault" width="500"/>
+
+### 1.6.7. Resumen: ¡no des más la chapa!<a name="id1_6_7"></a>
 Los Pull-up y Pull-down sirven para guardar estados por defecto, incluso cuando no se recibe energía de ninguna fuente. Los estados por defecto son aquellos en los que se queda cuando no se recibe energía.
 | Tipo      | Estado por defecto | Estado Activo |
 |-----------|--------------------|---------------|
 | Pull-Up   | 1                  | 0             |
 | Pull-Down | 0                  | 1             |
-### 1.4.8. ¿Dónde encuentro los Pull-Up en el BusPirate?<a name="id1_4_8"></a>
+### 1.6.8. ¿Dónde encuentro los Pull-Up en el BusPirate?<a name="id1_6_8"></a>
 
 Para ello, miramos el esquemático del fabricante, en mi caso, la [v3.6a](https://cdn.sparkfun.com/datasheets/Tools/BusPirate-v3.6a.pdf).
 
 Mirando el esquemático del BusPirate, vemos que en la parte dedicada a los Pull-Up hay un circuito adicional. Este nos permite habilitar o desabilitar el uso de los Pull-Up.
 Veamos como funciona cada una de las partes:
 
-<img src="assets\Archivos_PullUpPullDown\ActivarPullUps.png" alt="pullUpBusPirate" width="700"/>
+<img src="assets\fundamentoTeorico\ActivarPullUps.png" alt="pullUpBusPirate" width="700"/>
 
 <span style="color:#e55e22">1.  Esta parte del circuito representada con el cable naranja permite controlar a través de la linea de comandos, con el comando "P", activar los Pull-Up del circuito del color azul. En el caso de la imagen de arriba, el interruptor integrado dentro del chip del BusPirate, que usaremos de forma conceptual, está cerrado y conectado a GND, lo que garantiza un voltaje nulo y, por tanto, el interruptor entre los puntos A y B quedará abierto. Eso significa que no puede llegar de ningún modo voltaje desde VEXTERN. En caso de que el interruptor interno del BusPirate se dejase flotando, llegarían 5V al punto C, lo que cerraría el circuito azul, permitiendo el paso de la corriente que proviene de VEXTERN.</span>
 
@@ -259,14 +328,14 @@ Veamos como funciona cada una de las partes:
 
 Ahora veamos como sería el circuito y sus conexiones con el Chip Target y el Chip del Bus Pirate cuando el interruptor de la linea naranja está abierto:
 
-<img src="assets\Archivos_PullUpPullDown\Dar0.png" alt="pullUpBusPirate" width="700"/>
+<img src="assets\fundamentoTeorico\Dar0.png" alt="pullUpBusPirate" width="700"/>
 
 <span style="color:#efc72e">3. El cable amarillo representa a los canales de la PCB del BusPirate que conectan el Pull-Up con el pin de Chip Select (CS). En este caso, el Chip ha conectado el pin directamente a GND, lo que da un voltaje nulo (0V) en toda la linea.</span>
 
 
 <span style="color:#6da707">4. El cable verde es la pinza que colocaremos en la pata CS del BusPirate hasta el pin CS del Chip Objetivo. En la imagen de arriba, el pin está conectado a la linea amarilla, por la que no pasa corriente. Como consecuencia, recibe un 0.</span>
 
-<img src="assets\Archivos_PullUpPullDown\Dar1.png" alt="pullUpBusPirate" width="700"/>
+<img src="assets\fundamentoTeorico\Dar1.png" alt="pullUpBusPirate" width="700"/>
 
 <span style="color:#efc72e">3. Ahora el BusPirate ha abierto el interruptor y la linea amarilla ya no está conectada a GND. De este modo los 5V de VEXTERN llegan desde el cable azul hasta el final.</span>
 
@@ -281,14 +350,14 @@ A este modo de funcionamiento del PIN se le denomina [OPEN DRAIN](https://www.an
 
 `Dato: Los protocolos I2C necesitan siempre los Pull-Up para funcionar, ya que siempre reciben 0 de GND y el 1 con el PIN flotando.`
 
-### 1.4.9. Por si se te antojan algunos detalles...<a name="id1_4_9"></a>
+### 1.6.9. Por si se te antojan algunos detalles...<a name="id1_6_9"></a>
 
 Te dejo los [esquemáticos](https://www.multisim.com/content/YMY72mDiKxPaKZova2JLzm/pulluppulldown/open) con medidas del circuito.
 
 
 
 
-## 1.5. Encontrar puerto COM para el Bus Pirate<a name="id1_5"></a>
+## 1.7. Encontrar puerto COM para el Bus Pirate<a name="id1_7"></a>
 
 **Importante hacer estos pasos antes de conectar el Bus Pirate**
 
@@ -1359,3 +1428,11 @@ Una vez ejecutado el comando, podemos ver que aparece un nuevo achivo dreg_flag.
 cat dreg_flag.txt
 ```
 ![](assets/imagenes_tutorial_sd_spi/image-25.png)
+
+## 6. Glosario de Términos<a name="id6"></a>
+
+## 7. Cómo aportar<a name="id7"></a>
+
+### ¿Quiénes mantenemos este Repositorio?
+**Contenido técnico**: @therealdreg
+**Edición y maquetado**: @CristinaCTGN (de tanto en cuando también hago alguna aportación técnica ;))
