@@ -1,9 +1,9 @@
 # Hardware Hacking ES Comunidad
 
+<img src="assets\logoficial.png" alt="logoficial" width="300"/>
+
 - Discord: https://discord.gg/wkWr6Dj46D 
 - Telegram: https://t.me/hardwarehackinges
-
-
 
 # Índice   
 1. [Fundamentos Teóricos](#id1)
@@ -11,20 +11,20 @@
 
     1.1. [¿Qué es esto del Hardware Hacking?](#id1_1)
     1.2. [¿Qué necesito para empezar en esto?](#id1_2)
-    1.3. [Protocolos de Datos](#id1_3)
-    1.3. [¿Qué es el Analizador Lógico?](#id1_3)
-    1.4. [Tengo un BusPirate v3 pero... ¿Qué es esto?](#id1_4)
-    1.5. [Pull-up y Pull-down para analfabetos](#id1_5)
-        <details><summary>+ info</summary>1.5.1. [Introducción](#id1_5_1)
-        1.5.2. [¡Terror a las antenas!](#id1_5_2)
-        1.5.3. [Conceptos previos: ¿Qué es lo que veo?](#id1_5_3)
-        1.5.4. [Pull-up: ¡Manos a la obra!](#id1_5_4)
-        1.5.5. [¡Resistencias, al rescate!](#id1_5_5)
-        1.5.6. [Pulldown: vamos a ser breves](#id1_5_6)
-        1.5.7. [Resumen: ¡no des más la chapa!](#id1_5_7)
-        1.5.8. [¿Dónde encuentro los Pull-Up en el BusPirate?](#id1_5_8)
-        1.5.9. [Por si se te antojan algunos detalles...](#id1_5_9)
-        </details>1.6. [Encontrar puerto COM para el Bus Pirate](#id1_6)
+    1.3. [Tengo un BusPirate v3 pero... ¿Qué es esto?](#id1_3)
+    1.4. [Pull-up y Pull-down para analfabetos](#id1_4)
+        <details><summary>+ info</summary>
+        1.4.1. [Introducción](#id1_4_1)
+        1.4.2. [¡Terror a las antenas!](#id1_4_2)
+        1.4.3. [Conceptos previos: ¿Qué es lo que veo?](#id1_4_3)
+        1.4.4. [Pull-up: ¡Manos a la obra!](#id1_4_4)
+        1.4.5. [¡Resistencias, al rescate!](#id1_4_5)
+        1.4.6. [Pulldown: vamos a ser breves](#id1_4_6)
+        1.4.7. [Resumen: ¡no des más la chapa!](#id1_4_7)
+        1.4.8. [¿Dónde encuentro los Pull-Up en el BusPirate?](#id1_4_8)
+        1.4.9. [Por si se te antojan algunos detalles...](#id1_4_9)
+        </details>
+    1.5. [Encontrar puerto COM para el Bus Pirate](#id1_5)
     
     </details>
 
@@ -77,10 +77,16 @@
 
     </details>
 
-6. [Glosario de Términos](#id6)
+6. [Emulación de una firmware con Emux](#id6)
+    <details><summary>+ info</summary>
+    
+    6.1. [Instalación de EMUX](#id6_1)
+    6.2. [Añadiendo una nueva firmware a EMUX](#id6_2)
+    6.3. [Arrancar la nueva firmware en EMUX](#id6_3)
 
-7. [Cómo aportar](#id7)
+    </details>
 
+7. [Webs, libros, recursos, a quien seguir...](#id7)
 
 # 1. Fundamentos Teóricos<a name="id1"></a>
 
@@ -172,10 +178,13 @@ Nos centramos en el BusPirate v3 en concreto, a pesar de que hay actualizaciones
 
 Para saber exactamente qué tenemos entre manos, puedes acceder a su documentación [aquí](http://dangerousprototypes.com/docs/Bus_Pirate/es), o puedes seguir leyendo. Haremos un resumen de sus funcionalidades centrado en los casos de uso que vamos a ver.
 
-Recuerda que como lector puedes contribuir a seguir mejorando esta documentación haciendo un Pull Request a la documentación añadiendo todo lo que te gustaría leer.
-
 El esquema genérico de colores para los cables es el siguiente:
 <img src="assets\fundamentoTeorico\Esquema colores buspirate.jpg" alt="Esquema Colores BusPirate" width="400" style="display: block; margin: 0 auto"/>
+**ADVERTENCIA**: Las máquinas virtuales (VM) y/o USB HUBs pueden causar problemas. Es recomendable utilizar SIEMPRE un sistema operativo nativo y conectar el Bus Pirate directamente a un puerto USB. Si la consola con Bus Pirate / flashrom / asprogrammer dregmod... se congela (~2 minutos sin salida)/bloquea: cierra este programa, vuelve a conectar el puerto USB y vuelve a intentarlo.
+
+**ADVERTENCIA**: Recomiendo utilizar como máximo una velocidad de 100kHz aproximadamente para cada protocolo, ya que la calidad de los cables es importante y no me fío de que la longitud del tuyo sea corta, sobre todo si hay un adaptador a clips, etc. Cuanto más largo sea el cable y más adaptadores haya, junto con un voltaje más bajo, necesitarás usar una velocidad más baja. Así que configura el flashrom o cualquier otro software que utilices para usar la velocidad que sea más conveniente.
+
+**ADVERTENCIA**: Se recomienda usar este firmware: https://github.com/therealdreg/autobuspirateupgrade/blob/main/BPv3-bootloaderv4xtov45-update_fw-TEST%20Gabriel%20Smith%20JTAG%20Fix_ENG-v0.zip
 
 La explicación de cada uno de los pines (y cables, con sus respectivos colores es):
 | **Nombre del pin** | **Color del cable** | **Descripción genérica**                                         | **SPI**            | **JTAG**           | **1-Wire**     | **I2C**        | **KB**         | **UART** |
@@ -724,20 +733,186 @@ Conectamos el bus pirate y revisamos el numero del puerto COM.
 Descomprimimos y abrimos una terminal en el mismo directorio y ejecutamos este comando escribiendo el puerto COM correspondiente.
 
 ```cmd
-flashrom.exe --progress -V -c "W25Q64JV-.Q" -p buspirate_spi:dev=COM6 -r flash_content.img
+flashrom.exe --progress -V -c "W25Q64JV-.Q" -p buspirate_spi:dev=COM6 -r flash_contenido.img
 ```
 
 Si no funciona reconecta el buspirate y ejecuta este comando:
 
 ```cmd
-flashrom.exe --progress -VV -c "W25Q64JV-.Q" -p buspirate_spi:dev=COM6,spispeed=1M -r flash_contenido.img
+flashrom.exe --progress -V -c "W25Q64BV/W25Q64CV/W25Q64FV" -p buspirate_spi:dev=COM6,spispeed=250k,serialspeed=115200 -r flash_contenido.img
 ```
 
 Obtendremos este archivo:
 
 ![](assets/Pasted-image-20230927205528.png)
 
+
+---
+### Comandos buspirate y analizador lógico.
+
+Así es como se conectaría el analizador lógico a la memoria flash y al bus pirate:
+
+![](assets/Pasted%20image%2020231031195408.png)
+schema by @dsanchezlavado
+
+Primero configuramos el buspirate.
+
+![](assets/Pasted%20image%2020231029094332.png)
+
+![](assets/Pasted%20image%2020231029094414.png)
+
+![](assets/Pasted%20image%2020231029094448.png)
+
+Ahora ya estamos listos, momento de activar la captura del analizador lógico.
+
+Pero primero hay que entender como leer las capturas
+
+Los comandos del [datasheet](https://www.winbond.com/resource-files/w25q64fv%20revq%2006142016.pdf) resaltados serán los que usaremos:
+
+![](assets/Pasted%20image%2020231029095344.png)
+
+Esto sera el orden de introducción.
+
+```bash
+[0x06]
+[0x05 r:1]
+[0x20 0x00 0x00 0x00]
+[0x03 0x00 0x00 0x00 r:256]
+[0x06]
+[0x05 r:1]
+[0x02 0x00 0x00 0x00 0x41 0x42 0x43]
+[0x03 0x00 0x00 0x00 r:256]
+[0x06]
+[0x05 r:1]
+[0x02 0x00 0x00 0x00 0x41:255]
+[0x03 0x00 0x00 0x00 r:256]
+```
+
+Ejecutamos \[0x06] para habilitar la escritura y le ponemos los corchetes entremedias para que con el que abre ponga el CS en activo es decir en estado bajo y que cuando introduzca el 0x06 lo vuelva a poner en alto para deshabilitarlo.
+
+![](assets/Pasted%20image%2020231029100148.png)
+
+![](assets/Pasted%20image%2020231029100208.png)
+
+![](assets/write-enable.png)
+
+En la imagen se puede ver la correspondecia de los pulsos de reloj(CLK) con el de los bits.
+
+Si mandamos un 0xAA se mandara 10101010:
+
+![](assets/0xAA.png)
+
+Si mandamos un byte 11111111 el MOSI estara a 3,3V todos los ciclos de reloj:
+
+![](assets/Pasted%20image%2020231029160711.png)
+
+Si mandamos un 0xF0 pondra los primeros 4 pulsos de reloj a 1 y los otros 4 a 0:
+
+![](assets/Pasted%20image%2020231029163226.png)
+
+Si mandamos un 0x00 en los 8 pulsos de reloj el bit de MOSI estara puesto en 0:
+
+![](assets/Pasted%20image%2020231029163541.png)
+
+Estos serian los bits del Registro de Estado 1, hay que comprobar si el S1 esta activo.
+
+![](assets/Pasted%20image%2020231029103240.png)
+
+Para comprobar que la escritura esta habilitada y todo ha ido correctamente ejecutamos **\[0x05 r:1]** para leerlo.
+
+Esta seria la instrucción a nivel lógico:
+
+![](assets/Pasted%20image%2020231029103435.png)
+
+Y nos devuelve un 2 que quiere decir que esta habilitada:
+
+![](assets/Pasted%20image%2020231029103636.png)
+
+Ahora procedemos a borrar la pagina 0x000000 con el comando **\[0x20 0x00 0x00 0x00]** 
+
+![](assets/Pasted%20image%2020231029105222.png)
+
+El primer byte es la instruccion y los otros 3 la dirección.
+
+![](assets/Pasted%20image%2020231029105648.png)
+
+![](assets/Pasted%20image%2020231029105853.png)
+![](assets/Pasted%20image%2020231029105904.png)
+![](assets/Pasted%20image%2020231029105946.png)
+
+Primero el corchete abierto indica bajar el cs y seleccionarlo, después se manda por el MOSI el comando y la dirección , después se manda el corchete cerrado para levantar el CS y desactivarlo.
+
+Ahora leemos la dirección 0x000000 con el comando **\[0x03 0x00 0x00 0x00 r:256]** 
+
+El uso de los corchetes es igual siempre, el 0x03 marca la instruccion y los tres bytes de 00 la dirección, después el r:256 es para repetir la acción de lectura 256 veces.
+
+Asi se vería el comando y la respuesta:
+
+![](assets/leer-spi.png)
+
+![](assets/Pasted%20image%2020231029110649.png)
+
+Al haber borrado previamente todo este sector hemos puesto todos los bytes en FF.
+
+Ahora volvemos a hablitar la escritura con la orden \[0x06] 
+
+![](assets/Pasted%20image%2020231029111930.png)
+
+![](assets/Pasted%20image%2020231029112002.png)
+
+Y releemos el registro de estado para comprobar que esta hablitada la escritura, recordad hacerlo siempre para evitar errores.
+
+![](assets/Pasted%20image%2020231029113151.png)
+
+![](assets/Pasted%20image%2020231029113212.png)
+
+
+Y efectivamente la escritura esta habilitada.
+
+Ahora usaremos la instrucción Page Program (0x02) para escribir en la pagina 0x000000 y escribiremos los 3 primeros bytes con la cadena en ASCII "ABC", el comando es **\[0x02 0x00 0x00 0x00 0x41 0x42 0x43]**. 
+
+El primer byte es la instrucción, los 3 siguientes la dirección y el resto los bytes a escribir. 
+
+Solo podemos escribir desde 1 byte hasta 256 que es el tamaño de la pagina de esta flash. Si escribimos mas, sobrescribirá el principio de la pagina.
+
+![](assets/escribir-spi.png)
+
+Ahora leemos la pagina 0x000000 con el comando \[0x03 0x00 0x00 0x00 r:256]
+
+![](assets/leer-spibulk.png)
+
+Tras leer podemos ver como los 3 primeros bytes de la pagina 0x000000 estan escritos con 0x41 0x42 0x43 y el resto de bytes están a 0xFF es decir vacíos.
+
+![](assets/bien-escrito.png)
+
+Ahora llenaremos toda la pagina con 0x41(A).
+
+Se repite el proceso, primero habilitamos la escritura, después leemos el Registro de estado para comprobar que la escritura esta bien, después  escribimos las As con la instrucción de Page Program y luego leemos la pagina.
+
+Estos serian los comandos:
+
+```bash
+[0x06] (Habilitar escritura)
+[0x05 r:1] (Leer Registro de Estado)
+[0x02 0x00 0x00 0x00 0x41:255] (LLenar la pagina de 0x41)
+[0x03 0x00 0x00 0x00 r:256] (Leer la pagina entera)
+```
+
+Asi se vería la instrucción de escribir en el analizador lógico:
+
+![](assets/Pasted%20image%2020231029123449.png)
+
+Y aquí vemos como la instrucción de lectura nos devuelve por el MISO todas las A:
+
+![](assets/Pasted%20image%2020231029123654.png)
+
+Podéis ver detalladamente la captura con el programa [Logic 2](https://www.saleae.com/downloads/) y la [captura](assets/Archivos_Taller_2/Captura_Manual_SPI.sal) de la carpeta assets.
+
+--- 
+
+
 ## 3.4. Extracción de la imagen<a name="id3_4"></a>
+
 
 La abrimos con binwalk y la descomprimimos con este comando.
 
@@ -751,6 +926,7 @@ binwalk -eM flash_contenido.img
 
 Ahora revisamos lo extraído y buscamos la flag. 
 
+---
 # 4. Hacking Router TP-Link TL-WR841N<a name="id4"></a>
 
 **Material Requerido**
@@ -1429,10 +1605,298 @@ cat dreg_flag.txt
 ```
 ![](assets/imagenes_tutorial_sd_spi/image-25.png)
 
-## 6. Glosario de Términos<a name="id6"></a>
+# 6. Emulación de una firmware con Emux<a name="id6"></a>
 
-## 7. Cómo aportar<a name="id7"></a>
+A través de la herramienta [**QEMU**](https://www.qemu.org/) podemos emular una firmware, pero su configuración en algunos casos puede ser compleja. Por eso, existen varias herramientas que nos van a ayudar simplicar el proceso de emulación de una firmware. Las herramietas que yo he usado son [**Firmadyne**](https://github.com/firmadyne/firmadyne), [**FirmAE**](https://github.com/pr0v3rbs/FirmAE) y [**Emux**](https://emux.exploitlab.net/). 
 
-### ¿Quiénes mantenemos este Repositorio?
-**Contenido técnico**: @therealdreg
-**Edición y maquetado**: @CristinaCTGN (de tanto en cuando también hago alguna aportación técnica ;))
+Después de realizar varias pruebas, la herramienta que más me gusta por mucho es **Emux**. Ha sido creada por el researcher [Saumil Shah](https://twitter.com/therealsaumil). Al principio esta herramienta sólo era compatible con ARM y se llamaba ARM-X, pero como la mayoría de los dispositivos IoT son MIPS en Octubre del 2021 se añadió el soporte para MIPS, por este motivo se cambio su nombre a **Emux**. Es un entorno [dockerizado](https://es.wikipedia.org/wiki/Docker_(software)) lo que evita bastantes problemas típicos en la configuración de la red y otras incompatibilidades. Aunque es verdad que con algunas firmwares habrá que dedicarle cierto tiempo para "configurarla" correctamente por ejemplo, evitando la carga de algunos módulos y/o servicios para poder emularlas correctamente en **Emux**. 
+
+>**Emux** es más sólido y en su página web hay bastante documentación detallada de su arquitectura y varios ejemplos que merece mucho la pena mirarlos para entender como podemos configurar nuestra firmware si tenemos ciertos problemas.
+
+**Proceso de arranque de un sistema IoT (Básico)**
+
+En general y resumiendo bastante el proceso del arranque de un dispositivo IoT empieza cuando el [SoC](https://es.wikipedia.org/wiki/Sistema_en_un_chip) pasa el control al bootloader de la memoria ROM, luego puede pasar por una varias fases internas hasta que la última fase copia el sistema de arranque de linux en la memoria RAM, el más usado es U-BOOT, este último finalmente arranca el kernel de linux, y se monta el sistema raiz de ficheros, se inicia el proceso init y se da paso a los servicios y se muestra la ansiada shell. Pues más o menos, esto es lo que vamos hacer de una forma sencilla con **Emux**.
+
+## 6.1 Instalación de EMUX <a name="id6_1"></a>
+
+Yo voy a instalar **Emux** en [**ArchLinux**](https://archlinux.org/) pero en otra distribución o en [Windows](https://docs.docker.com/desktop/install/windows-install/) el proceso de instalación es similar. 
+
+Para poder usar **Emux** hay que instalar **Docker** y algunos paquetes e iniciar este servicio en el sistema. En **Arch** se hace de la siguiente forma:
+
+Instalación de paquetes necesarios:
+```bash
+sudo pacman -S docker docker-compose docker-buildx
+```
+Iniciar Docker:
+```bash
+sudo systemctl start docker.service
+```
+Hay que crear el grupo de usuarios **docker** y añadirle nuestro usuario.
+
+```bash
+sudo groupadd docker
+sudo usermod -aG docker dsanchez
+```
+
+Y finalmente descargar de git el proyecto **Emux**:
+
+```bash
+git clone --depth 1 --single-branch  https://github.com/therealsaumil/emux.git
+```
+
+Una vez descargado todo, entramos en la **emux** para inicializar **Emux** por primera vez, este es un proceso que puede tardar un rato pero sólo es necesario ejecutarlo una vez. Este paso es importante porque va a crear el volumen de trabajo de **Emux** en Docker y van a descargar todos los ficheros que vamos a necesitar.
+
+```bash
+./build-emux-volumen
+./build-emux-docker
+```
+Si todo se ha instalado correctamente deberíamos ver el nuevo volumen **harambe** en Docker.
+
+```bash
+$ docker volume ls
+DRIVER VOLUME NAME
+local  harambe
+```
+
+Y también la imagen **therealsaumil/emux** de **Emux** en Docker.
+
+```bash
+$ docker image ls
+REPOSITORY          TAG      IMAGE ID       CREATED        SIZE
+therealsaumil/emux  03-2023  299cd17d716a   18 hours ago   1.33GB
+```
+
+El siguiente paso es inicializar el container de **Docker** de **Emux** al que me voy a referirme siempre como **EMUX-DOCKER** en MAYUSCULAS y para referirme al cliente de **Emux** le voy a llamar siempre **emux-docker** en minúsculas porque es el formato de nombre que usan en la terminal de Linux. (Ahora lo vais a ver)
+
+Ejecutamos el servidor **Emux**
+
+```bash
+./run-emux-docker
+```
+
+![](assets/emux/emux_docker.jpeg)
+
+
+Ya dentro de la shell **EMUX-DOCKER** si escribimos y ejecutamos el comando **launcher** aparecerá un menú gráfico donde podemos elegir que firmware queremos emular, las que están listadas en la siguiente imagen ya vienen configuradas por el creador la herramienta y las podemos emular.
+
+![](assets/emux/emux_launcher.jpeg)
+
+De momento, pulsaremos el botón **Quit** del menú y volveremos a la shell de **EMUX-DOCKER**. La idea de este tutorial es añadir a este listado de firmwares nuestra propia firmware para poder emularla. Para este ejemplo usaremos la firmware del router **TPLINK WR841ND** que yo la descarge de este post en nuestro canal de **Discord** (training router).
+
+![](assets/emux/emux_firmware_v11.jpeg)
+
+## 6.2 **Añadiendo una nueva firmware a Emux** <a name="id6_2"></a>
+
+Lo primero que tenemos que hacer es copiar la firmware en la carpeta que está compartida entre el contenedor de **Emux** y nuestro sistema operativo, en mi caso **ArchLinux**. Desde nuestro sistema está hubicada en **"\<carpeta instalación emux\>/workspace/"** y desde dentro del contenedor de **Docker** (desde la shell EMUX-DOCKER o emux-docker) está hubicada en **"/emux/workspace/"**. Esto es similar a cuando se comparte una carpeta entre VMWare/VirtualBox con nuestro Sistema Operativo.
+
+**Binwalk al rescate**
+
+Desde una nueva terminal de linux vamos a descomprimir la firmware usando la herrameinta **binwalk** como usuario root. **NOTA:** Es importante tener instaladas todas las herramientas que va a necesitar binwalk como **casptone, sleuthkit, squashfs, etc** para ello recomiendo mirar la documentacion de [**binwalk**](https://github.com/ReFirmLabs/binwalk). La idea es descomprimir la firmware dentro de la carpeta compartida **"\<carpeta instalación emux\>/workspace/"**
+
+```bash
+sudo binwalk --run-as=root -1 -e <fichero firmware>
+```
+
+![](assets/emux/emux-binkwalk.jpeg)
+
+Si todo ha ido bien, veremos la carpeta **_TPLINK_WR841ND_v11.bin.extracted**. Dentro de este carpeta nos interesa principalemente la carpeta **squashfs-root** que contiene el sistema de ficheros de la firmware y un fichero que contiene el kernel, que aunque este último no los podemos usar directamente en **QEMU**, si los vamos a utilizar para identificar que versión del kernel utiliza nuestra firmware.
+
+**Crear una nueva carpeta en Emux para nuestra nueva firmware**
+
+Desde la terminal de **EMUX-DOCKER** vamos a empezar a configurar nuestro entorno. Este paso siempre lo vamos a tener que hacer cada vez que queramos añadir una nueva firmware a **Emux**. La idea simplemente es duplicar la carpeta **/emux/template/** en una nueva carpeta con un nombre que identifique a nuestra nueva firmware. (y diferente a los que ya existen)
+
+>La carpeta **template** contiene diferentes versiones del kernel y ficheros de configuración necesarios y por eso se usa como punto de partida.
+
+El nuevo nombre de esta carpeta se va a usar como identificador interno de nuestra firmware en **Emux**. Por lo tanto, se recomienda un nombre alfa-numérico sin espacios y todo en mayúsculas. El motivo, así lo recomienda el autor de **Emux**. Por ejemplo, Le podemos poner el nombre **WR841NDV11**. Para identificar la versión de firmware del router y su versión, ya que es posible que queramos emular otras versiones del mismo dispositivo y es posible que no funcionen con la misma configuración y así las podremos diferenciar facilmente.
+
+>Por ejemplo, es posible que algunas versiones de firmware de un mismo dispositivo sean Little Endian pero otras Big Endian y además su versión del kernel de Linux sea diferente y por lo tanto los datos en los ficheros de configuración van a ser diferentes.
+
+Para duplicar la carpeta simplemente ejecutamos el siguiente comando en la shell **EMUX-DOCKER**
+
+```bash
+sudo cp -R /emux/template /emux/WR841NDV11
+```
+También copiaremos dentro de esta nueva carpeta la carpeta **squashfs-root** que hemos descomprimido antes con la herramienta **binwalk**.
+
+```bash
+$ cd /emux/WR841NDV11
+$ sudo cp -R /home/r0/workspace/_TPLINK_WR841ND_v11.bin.extracted/squashfs-root/ .
+```
+
+Finalmente cambiaremos el propietario de todo el contenido de la carpeta **WR841NDV11** al usuario **r0** de **Emux**. Este paso es importante para que funcione bien la emulación.
+
+```bash
+$ sudo chown -R r0:r0 /emux/WR841NDV11
+```
+
+**Buscar la versión del kernel y la arquitectura**
+
+Para que **Emux** puede emular nuestra firmware correctamente le tenemos que decir la **versión del kernel** y el tipo de **arquitectura** que vamos a emular. Esta información la podemos conseguir facilmente con la ayuda de las herramientas **binwalk**, **strings** y **readelf**.
+
+Primero, podemos ejecutar **binwalk** sin ningún parametro para no descomprimir los ficheros otra vez.
+
+```bash
+binwalk <fichero firmware>
+```
+
+![](assets/emux//emux-binwalk-info.jpeg)
+
+Vemos que el fichero **20200** debería contener el kernel así que vamos a buscar su versión utilizando la herramienta **strings**. 
+
+```bash
+strings <fichero kernel> | grep -i version
+```
+
+![](assets/emux/emux-find-kernel.jpeg)
+
+La versión del kernel utilizada por nuestra firmware es la **2.6.31** la podemos ver en la línea que dice **Linux version 2.6.31**
+
+Para buscar la arquitectura de la firmware también es muy sencillo, dentro del sistema de ficheros de un dispositivo IoT hay un binario que se llama [**Busybox**](https://es.wikipedia.org/wiki/Busybox) que contiene en su interior las utilidades básicas de un sistema linux como son *ls*, *cp*, *date*, *df*, *chmod*, etc... 
+
+![](assets/emux/emux-busybox.jpeg)
+
+Con la ayuda de la herramienta **readelf** y la opción **-e** podemos ver por ejemplo los datos de la cabecera de un binario [ELF](https://es.wikipedia.org/wiki/Executable_and_Linkable_Format) donde veremos en que tipo de máquinas se puede ejecutar ese binario.
+
+```bash
+readelf -e <fichero elf>
+```
+
+![](assets/emux/emux-elf.jpeg)
+
+La arquitectura detectada es **MIPS R3000** y el formato es **big endian**. Estos 2 datos junto con la versión del kernel es lo que necesitamos para terminar de configurar nuestro entorno. En esea información vemos que la pila (**GNU_STACK**) tiene permisos de ejecución **RWE** (Read/Write/Execution) así que si encontramos una vulnerabilidad de stack-overflow no tendríamos mucho problema en desarollar el exploit si ASLR también está desactivado.
+
+**En resumen:**
+
+- Kernel: 2.6.31
+- Arquitectura: MIPS Big Endian.
+
+**Configurar el entorno**
+
+Desde **EMUX-DOCKER** dentro de la carpeta **"/emux/WR841NDV11/kernel/"** hay que elegir que versión de kernel podría ser compatible con la versión **2.6.31** para una máquina **MIPS** en **big endian**. 
+
+Podemos preguntarle a **QEMU** las versiones de MIPS que soporta para big endian con el siguiente comando.
+
+```bash
+qemu-system-mips -machine help
+```
+> Para little endian usariamos la herramienta qemu-system-mipsel.
+
+Si estas ejecutando linux en una máquina Intel esta herramienta la puedes encontrar dentro de la carpeta **"/emux/run/qemu-bin-x86_64/"** en **Emux**, en mi caso tengo la version **7.2.0**.
+
+![](assets/emux/emux-qemu-malta.jpeg)
+
+El siguiente paso es ver que versiones del kernel de linux tenemos disponibles para nuestro entorno, así que podemos listar el contenido de la carpeta **"/emux/WR841NDV11/kernel/"** 
+
+![](assets/emux/emux-list-kernels.jpeg)
+
+Aunque en el listado no está la versión **2.6.31**, vemos una versión de kernel que podría funcionar. El kernel **vmlinux-2.6.30.9-malta-be** está sorportado por nuestra version de **QEMU** y ademas es big edian (be). 
+Otra opción, sería compilar la misma versión o descargarla de algun sitio confiable en Internet.  
+
+Una vez seleccionada la versión que vamos a usar podemos borrar los demás ficheros de kernel del directorio **"/emux/WR841NDV11/kernel/"** ya que no los vamos a usar y así podemos ahorrar algo de espacio en disco.
+
+También vamos a borrar de **"/emux/WR841NDV11/"** los ficheros **nvram.ini**, **mtdparts** y el directorio **preload** que no necesitamos para nuestra configuración. 
+
+> Hay más información sobre como usar estos ficheros y la carpeta **preload** en el caso de que sean necesarios en la página de [**EMUX**](https://emux.exploitlab.net/).
+
+El siguiente paso, es configurar el fichero **"/emux/WR841NDV11/config"** con **vim**, **nano** o con el editor que más nos guste pero lo tenemos que ejecutar como root.
+
+```bash
+sudo vim config
+```
+El contenido ya modificado tiene que ser este.
+
+![](assets/emux/emux-vim.jpeg)
+
+Significado:
+
+- **id=** debe tener el mismo valor que el nombre de la carpeta que hemos creado.
+- **rootfs=** es el directorio que contiene el sistema de archivos
+- **randomize_va_space=** 0 si no queremos ASLR, 1 si queremos activarlo
+- **initcommands=** comando que se va ejecutar después de arrancar el kernel.
+
+
+**Añadir la nueva firmware al launcher**
+
+Como último paso hay añadir la nueva firmware al fichero **/emux/devices** para que sea reconcido por el **lancher** desde la consola **EMUX-DOCKER** y así lo podamos ver en el menu donde se listan todas las firmwares configuradas. Simplemente, hay que añadir una nueva linea de configuración al final de ese fichero, también lo tenemos que abrir como root.
+
+```bash
+WR841NDV11,qemu-system-mips-7.2.0,malta,,,128MB,vmlinux-2.6.30.9-malta-be,MALTA2,TPLINK WR841ND v11
+```
+
+## 6.3 **Arrancar la nueva firmware** <a name="id6_3"></a>
+
+Desde la consola **EMUX-DOCKER** ejecutamos el comando **launcher** y seleccionamos la opcion **TPLINK WR841ND v11** que es nuestra nueva firmware.
+
+![](assets/emux/emux-launcher-tplink.jpeg)
+
+Si todo ha ido bien veremos la siguiente pantalla
+
+![](assets/emux/emux-device-console.jpeg)
+
+Ahora vamos abrir un cliente **Emux**, asi que abrimos otra terminal en linux y desde la carpeta de instalacion de **Emux** vamos a ejecutar el comando  **"./emux-docker-shell"**. Este es el cliente de **Emux** que se conecta automáticamente a **EMUX-DOCKER**, para nosotros este processo es transparente. 
+
+Ahora desde la consola **emux-docker** ejecutaremos el comando **userspace** y nos saldrá la siguiente venta donde vamos a elegir la opción **2 Start TPLINK WR841ND v11**.
+
+![](assets/emux/emux-start-TPLINK.jpeg)
+
+Durante el arranque vamos a ver bastante errores, pero es normal porque realmente no estamos emulado la firmware al 100% con todo el hardware que requiere, incluso es posible que algunas librerias y módulos no se cargen correctamente o falten algunos ficheros y la firmware entre en un bucle de mensajes de error constantes y es posible que no veamos la tan esperada **shell** de linux en esa ventana por los mensajes de errores. Veremos que si damos a la tecla **return** nos aparecerá la shell (#) pero veremos mas mensajes de error y asi no vamos a poder trabajar. Pero hay una solución muy sencilla.
+
+Pero antes, vamos hacer unas comprobaciones en la consola **EMUX-DOCKER**. Por ejemplo, si la interface de red **eth0** está funcionando. Lo podemos ver en la parte superior de la siguiente captura en la linea **eth0: link up**.
+
+![](assets/emux/emux-docker-eth0.jpeg)
+
+Como el dispositivo puede tardar unos minutos en arrancar completamente, un truco interesante es dar al botón **return** en la shell **EMUX-DOCKER** de vez en cuando para ver si el **prompt** de la consola cambia de algo similar a **MIPSX** a **TL-WR841N Login:**. Esto signficará que el dispositvo ya ha finalizado de arrancar y por lo tanto los servicios también deberían estar funcionando.
+
+Ahora abrimos una nueva terminal de linux y ejecutamos una nueva shell de **emux-docker** antes de ejecutar el comando **userspace** podemos ejecutar unas herramientas que tenemos con **Emux** que nos van a dar información de que servicios y procesos de nuestra firmware ya están funcionando. Por ejemplo podemos ejecutar el comando **emuxps** (ps de linux) para ver los procesos que se están ejecutando.
+
+![](assets/emux/emux-ps.jpeg)
+
+En la captura anterior vemos que el servicio ssh **dropbear** está abierto y también el servidor web **httpd** está funcionando. También podemos ver los puertos de red que están abiertos con la herramienta **emuxnetstat** (netstat de linux/windows)
+
+![](assets/emux/emux-red.jpeg)
+
+Con esta información también vemos que el servidor web está escuchando en **Docker** en el puerto 80. Este puerto realmente está redirigido desde el contendor **Docker** al puerto **20080** de nuestra máquina. Asi que deberáimos poder acceder al servidor web través de nuestro navegador web utiliando la url **http://127.0.0.1:20080**.
+
+![](assets/emux/emux-http-login.jpeg)
+
+Vamos a ver si funciona correctamente, usamos el usuario **admin** y la contraseña **admin** y si todo es correcto ya estariamos dentro del panel de administración web del router.
+
+![](assets/emux/emux-web.jpeg)
+
+Por ejemplo, ahora que el servicio web está funcionando podríamos usar un **fuzzer** para testear el aplicativo web. Además de las utilidades que hemos visto antes también tenemos **emuxgdb** para debugear un proceso utilizando **gdb** con [**gef**](https://hugsy.github.io/gef/), **emuxmaps** para mirar la memoria de un proceso y **emuxkill** para matar un proceso, y finalmente pero muy importante está la herramienta **emuxhalt** para cerrar **Emux** de una forma segura y así evitar que se queden ficheros temporales sin borrar que pueden dar algun problema en futuras sesiones de la misma firmware. 
+
+> Estas herramientas que tenemos en **Emux** son muy útiles ya que normalmente no vamos a disponer de ellas dentro de nuestra firmware.
+
+**Acceder mendiante consola a nuestro dispotivo emulado**
+
+Si queremos acceder a la shell de nuestro dispositivo emulado, simplemente podemos ejecutar el comando **userspace** en una nueva consola de **emux-docker** y en el menú debemos seleccionar en esta ocasión la opción **3 Enter TPLINK WR841ND v11 CONSOLE (exec /bin/sh)**
+
+![](assets/emux/emux-shell.jpeg)
+
+De esta forma tendremos acceso mediante una **shell** a nuestro dispositivo emulado como su hubiesemos accedido a través de una conexión **telnet**, **ssh** o **UART**. Epero que os haya gustado.
+
+Happy IoT hacking!!
+
+# 7. Webs, libros, recursos, a quien seguir...<a name="id7"></a>
+
+- https://twitter.com/therealdreg
+- https://twitter.com/wrongbaud
+- https://twitter.com/dangerousproto
+- https://twitter.com/PaulStoffregen
+- https://twitter.com/gsglabs
+- https://twitter.com/joegrand
+- https://twitter.com/reversemode
+- https://twitter.com/TaiksonTexas
+- https://twitter.com/BatchDrake
+- https://twitter.com/ernesto_xload
+
+- https://www.youtube.com/@ElectronicaFP
+- https://www.youtube.com/@editronikx
+- https://www.youtube.com/@PetrolheadGarage
+- https://www.youtube.com/@MentalidadDeIngenieria
+- https://www.youtube.com/@ELECTRONOOBSenEspanol
+- https://www.youtube.com/@BitwiseAr
+
+- https://www.luisllamas.es
+
+- https://www.amazon.com/Getting-Started-Electronics-Forrest-Mims/dp/0945053282
