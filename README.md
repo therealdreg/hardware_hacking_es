@@ -5,7 +5,7 @@
 - Telegram: https://t.me/hardwarehackinges
 
 # Índice   
-* 1. [Fundamentos Teóricos](#id1)
+- N1. [Fundamentos Teóricos](#id1)
 - 1.1. [¿Qué es esto del Hardware Hacking?](#id1_1)
 - 1.2. [¿Qué necesito para empezar en esto?](#id1_2)
 - 1.3. [Protocolos de Datos](#id1_3)
