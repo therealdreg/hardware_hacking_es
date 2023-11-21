@@ -6,84 +6,60 @@
 
 # Índice   
 1. [Fundamentos Teóricos](#id1)
-    <details><summary>+ info</summary>
-
-    1.1. [¿Qué es esto del Hardware Hacking?](#id1_1)
-    1.2. [¿Qué necesito para empezar en esto?](#id1_2)
-    1.3. [Tengo un BusPirate v3 pero... ¿Qué es esto?](#id1_3)
-    1.4. [Pull-up y Pull-down para analfabetos](#id1_4)
-        <details><summary>+ info</summary>
-        1.4.1. [Introducción](#id1_4_1)
-        1.4.2. [¡Terror a las antenas!](#id1_4_2)
-        1.4.3. [Conceptos previos: ¿Qué es lo que veo?](#id1_4_3)
-        1.4.4. [Pull-up: ¡Manos a la obra!](#id1_4_4)
-        1.4.5. [¡Resistencias, al rescate!](#id1_4_5)
-        1.4.6. [Pulldown: vamos a ser breves](#id1_4_6)
-        1.4.7. [Resumen: ¡no des más la chapa!](#id1_4_7)
-        1.4.8. [¿Dónde encuentro los Pull-Up en el BusPirate?](#id1_4_8)
-        1.4.9. [Por si se te antojan algunos detalles...](#id1_4_9)
-        </details>
-    1.5. [Encontrar puerto COM para el Bus Pirate](#id1_5)
-    
-    </details>
+1.1. [¿Qué es esto del Hardware Hacking?](#id1_1)
+1.2. [¿Qué necesito para empezar en esto?](#id1_2)
+1.3. [Protocolos de Datos](#id1_3)
+1.4. [¿Qué es un Analizador Lógico?](#id1_4)
+1.5. [Tengo un BusPirate v3 pero... ¿Qué es esto?](#id1_5)
+1.6. [Pull-up y Pull-down para analfabetos](#id1_6)
+1.6.1. [Introducción](#id1_6_1)
+1.6.2. [¡Terror a las antenas!](#id1_6_2)
+1.6.3. [Conceptos previos: ¿Qué es lo que veo?](#id1_6_3)
+1.6.4. [Pull-up: ¡Manos a la obra!](#id1_6_4)
+1.6.5. [¡Resistencias, al rescate!](#id1_6_5)
+1.6.6. [Pulldown: vamos a ser breves](#id1_6_6)
+1.6.7. [Resumen: ¡no des más la chapa!](#id1_6_7)
+1.6.8. [¿Dónde encuentro los Pull-Up en el BusPirate?](#id1_6_8)
+1.6.9. [Por si se te antojan algunos detalles...](#id1_6_9)
+1.7. [Encontrar puerto COM para el Bus Pirate](#id1_7)
 
 2. [Hacking EEPROM AT24C256 I2C 5V](#id2)
-    <details><summary>+ info</summary>
-
-    2.1. [Conectar pinzas a EEPROM](#id2_1)
-    2.2. [Conectarse al I2C con BusPirate](#id2_2)
-    2.3. [Localizar direcciones I2C](#id2_3)
-    2.4. [Como leer y escribir con I2C](#id2_4)
-    2.5. [Dumpeo o backup](#id2_5)
-    2.6. [Flasher AT24C256](#id2_6)
-
-    </details>
+2.1. [Conectar pinzas a EEPROM](#id2_1)
+2.2. [Conectarse al I2C con BusPirate](#id2_2)
+2.3. [Localizar direcciones I2C](#id2_3)
+2.4. [Como leer y escribir con I2C](#id2_4)
+2.5. [Dumpeo o backup](#id2_5)
+2.6. [Flasher AT24C256](#id2_6)
 
 3. [Hacking FLASH SPI Winbond 25Q64FVSIG](#id3)
-    <details><summary>+ info</summary>
-
-    3.1. [Conectar pinzas a SPI FLASH](#id3_1)
-    3.2. [Identificar la SPI Flash](#id3_2)
-    3.3. [Extraer contenido SPI Flash](#id3_3)
-    3.4. [Extracción de la imagen](#id3_4)
-
-    </details>
+3.1. [Conectar pinzas a SPI FLASH](#id3_1)
+3.2. [Identificar la SPI Flash](#id3_2)
+3.3. [Extraer contenido SPI Flash](#id3_3)
+3.4. [Extracción de la imagen](#id3_4)
 
 4. [Hacking Router TP-Link TL-WR841N](#id4)
-    <details><summary>+ info</summary>
-
-    4.1. [Comprar el router](#id4_1)
-    4.2. [Abriendo el router](#id4_2)
-    4.3. [Identificar componentes y UART](#id4_3)
-    4.4. [Soldar pines a UART y ELIMINAR R18](#id4_4)
-    4.5. [Buscando UART con Analizador Lógico](#id4_5)
-    4.6. [Encontrar el GND](#id4_6)
-    4.7. [Conectar Analizador](#id4_7)
-    4.8. [Averiguar el Baud Rate](#id4_8)
-    4.9. [Conectarse al UART](#id4_9)
-    4.10. [Extraer Sistema de archivos y Firmware](#id4_10)
-    4.11. [Extraccion del Firmware](#id4_11)
-
-    </details>
+4.1. [Comprar el router](#id4_1)
+4.2. [Abriendo el router](#id4_2)
+4.3. [Identificar componentes y UART](#id4_3)
+4.4. [Soldar pines a UART y ELIMINAR R18](#id4_4)
+4.5. [Buscando UART con Analizador Lógico](#id4_5)
+4.6. [Encontrar el GND](#id4_6)
+4.7. [Conectar Analizador](#id4_7)
+4.8. [Averiguar el Baud Rate](#id4_8)
+4.9. [Conectarse al UART](#id4_9)
+4.10. [Extraer Sistema de archivos y Firmware](#id4_10)
+4.11. [Extraccion del Firmware](#id4_11)
 
 5. [Hacking SD Transcend TS2GUSD](#id5)
-    <details><summary>+ info</summary>
-    
-    5.1. [Conectar pinzas a lector SD](#id5_1)
-    5.2. [Conectarse al Bus Pirate](#id5_2)
-    5.3. [Inicializar la tarjeta SD en modo SPI](#id5_3)
-    5.4. [Lectura de bloques](#id5_4)
+5.1. [Conectar pinzas a lector SD](#id5_1)
+5.2. [Conectarse al Bus Pirate](#id5_2)
+5.3. [Inicializar la tarjeta SD en modo SPI](#id5_3)
+5.4. [Lectura de bloques](#id5_4)
 
-    </details>
-
-6. [Emulación de una firmware con Emux](#id6)
-    <details><summary>+ info</summary>
-    
-    6.1. [Instalación de EMUX](#id6_1)
-    6.2. [Añadiendo una nueva firmware a EMUX](#id6_2)
-    6.3. [Arrancar la nueva firmware en EMUX](#id6_3)
-
-    </details>
+6. [Emulación de una firmware con Emux](#id6)    
+6.1. [Instalación de EMUX](#id6_1)
+6.2. [Añadiendo una nueva firmware a EMUX](#id6_2)
+6.3. [Arrancar la nueva firmware en EMUX](#id6_3)
 
 7. [Webs, libros, recursos, a quien seguir...](#id7)
 
