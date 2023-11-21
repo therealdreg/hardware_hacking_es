@@ -184,6 +184,10 @@ Para saber exactamente qué tenemos entre manos, puedes acceder a su documentaci
 
 **ADVERTENCIA**: Se recomienda usar este [firmware](https://github.com/therealdreg/autobuspirateupgrade/blob/main/BPv3-bootloaderv4xtov45-update_fw-TEST%20Gabriel%20Smith%20JTAG%20Fix_ENG-v0.zip).
 
+**ADVERTENCIA**: USA UN CABLE USB CORTO Y DE ALTA CALIDAD.
+
+Recuerda que como lector puedes contribuir a seguir mejorando esta documentación haciendo un Pull Request a la documentación añadiendo todo lo que te gustaría leer.
+
 El esquema genérico de colores para los cables es el siguiente:
 !["Esquema Colores BusPirate"](assets\fundamentoTeorico\Esquema colores buspirate.jpg)
 
