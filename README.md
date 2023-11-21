@@ -1,6 +1,5 @@
 # Hardware Hacking ES Comunidad
-
-<img src="assets\logoficial.png" alt="logoficial" width="300"/>
+!["logo oficial"](assets\logoficial.png)
 
 - Discord: https://discord.gg/wkWr6Dj46D 
 - Telegram: https://t.me/hardwarehackinges
@@ -88,6 +87,8 @@
 
 7. [Webs, libros, recursos, a quien seguir...](#id7)
 
+----
+
 # 1. Fundamentos Teóricos<a name="id1"></a>
 
 ## 1.1. ¿Qué es esto del Hardware Hacking?<a name="id1_1"></a>
@@ -144,12 +145,11 @@ I2C solamente usa dos cables para los datos:
 I2C forma parte de la familia de los protocolos seriales, con lo que la información se transmite a través de un cable bit a bit.
 
 En la siguiente imagen podemos ver las especificaciones técnicas del protocolo I2C:
-
-<img src="assets\fundamentoTeorico\Basics-of-the-I2C-Communication-Protocol-Specifications-Table-768x409.png" alt="Imagen extraída de circuitbasics.com" width=400 style="display: block; margin: 0 auto">
+!["Imagen extraída de circuitbasics.com"](assets\fundamentoTeorico\Basics-of-the-I2C-Communication-Protocol-Specifications-Table-768x409.png)
 
 ### ¿Cómo funciona el protocolo?
 
-<img src="assets\fundamentoTeorico\Introduction-to-I2C-Message-Frame-and-Bit-2-1024x258.png" alt="Imagen extraída de circuitbasics.com" width=600 style="display: block; margin: 0 auto">
+!["Imagen extraída de circuitbasics.com"](assets\fundamentoTeorico\Introduction-to-I2C-Message-Frame-and-Bit-2-1024x258.png)
 
 * Start Condition: La línea SDA pasa de un alto voltaje a un bajo voltaje, y a continuación la línea SCL hace lo mismo
 * Address Frame: Una secuencia de 7 o 10 bits única para cada esclavo que le identifica al máster 
@@ -178,13 +178,15 @@ Nos centramos en el BusPirate v3 en concreto, a pesar de que hay actualizaciones
 
 Para saber exactamente qué tenemos entre manos, puedes acceder a su documentación [aquí](http://dangerousprototypes.com/docs/Bus_Pirate/es), o puedes seguir leyendo. Haremos un resumen de sus funcionalidades centrado en los casos de uso que vamos a ver.
 
-El esquema genérico de colores para los cables es el siguiente:
-<img src="assets\fundamentoTeorico\Esquema colores buspirate.jpg" alt="Esquema Colores BusPirate" width="400" style="display: block; margin: 0 auto"/>
 **ADVERTENCIA**: Las máquinas virtuales (VM) y/o USB HUBs pueden causar problemas. Es recomendable utilizar SIEMPRE un sistema operativo nativo y conectar el Bus Pirate directamente a un puerto USB. Si la consola con Bus Pirate / flashrom / asprogrammer dregmod... se congela (~2 minutos sin salida)/bloquea: cierra este programa, vuelve a conectar el puerto USB y vuelve a intentarlo.
 
 **ADVERTENCIA**: Recomiendo utilizar como máximo una velocidad de 100kHz aproximadamente para cada protocolo, ya que la calidad de los cables es importante y no me fío de que la longitud del tuyo sea corta, sobre todo si hay un adaptador a clips, etc. Cuanto más largo sea el cable y más adaptadores haya, junto con un voltaje más bajo, necesitarás usar una velocidad más baja. Así que configura el flashrom o cualquier otro software que utilices para usar la velocidad que sea más conveniente.
 
-**ADVERTENCIA**: Se recomienda usar este firmware: https://github.com/therealdreg/autobuspirateupgrade/blob/main/BPv3-bootloaderv4xtov45-update_fw-TEST%20Gabriel%20Smith%20JTAG%20Fix_ENG-v0.zip
+**ADVERTENCIA**: Se recomienda usar este [firmware](https://github.com/therealdreg/autobuspirateupgrade/blob/main/BPv3-bootloaderv4xtov45-update_fw-TEST%20Gabriel%20Smith%20JTAG%20Fix_ENG-v0.zip).
+
+El esquema genérico de colores para los cables es el siguiente:
+!["Esquema Colores BusPirate"](assets\fundamentoTeorico\Esquema colores buspirate.jpg)
+
 
 La explicación de cada uno de los pines (y cables, con sus respectivos colores es):
 | **Nombre del pin** | **Color del cable** | **Descripción genérica**                                         | **SPI**            | **JTAG**           | **1-Wire**     | **I2C**        | **KB**         | **UART** |
@@ -202,15 +204,9 @@ La explicación de cada uno de los pines (y cables, con sus respectivos colores 
 
 #### Modelos 3D para BusPirate v3
 
-Hemos creado una serie de Modelos 3D.
+Hemos creado una serie de Modelos 3D: el propio Bus Pirate v3 y una caja para protejerlo.
 
-Por un lado tenemos un modelo del propio BusPirate simplificado, que nos puede ser útil en el futuro para diseñar cosas:
-<img src="assets\modelos3D\busPirateV3.PNG" alt="Modelo simplificado 3D BusPirate" width="400" style="display: block; margin: 0 auto"/>
-
-Y por otro lado hemos diseñado una caja para el BusPirate:
-<img src="assets\modelos3D\cajaBusPirateV3.PNG" alt="Modelo simplificado 3D BusPirate" width="400" style="display: block; margin: 0 auto"/>
-
-También hemos dejado el fichero stl de ambos modelos para que te los puedas imprimir en el directorio [modelos3D](assets/modelos3D/) de este repositorio.
+También hemos dejado los ficheros stl de ambos modelos para que te los puedas imprimir en el directorio [modelos3D](assets/modelos3D/) de este repositorio (hay varias iteraciones de diseño de caja, la recomendada es la iteración 3).
 
 ## 1.6. Pull-up y Pull-down para dummies<a name="id1_6"></a>
 ### 1.6.1. Introducción<a name="id1_6_1"></a>
@@ -219,33 +215,33 @@ Aquí encontrarás explicada, de manera sencilla, la justificación, finalidad, 
 
 Te han puesto una tarea. Debes apuntar la posición de una ficha blanca, esta ficha solo puede acabar en dos casillas, en la Posición 1, y en la Posición 0.
 
-<img src="assets\fundamentoTeorico\pos1.png" alt="pos1" width="200"/>
+!["pos1"](assets\fundamentoTeorico\pos1.png)
 
 Es evidente que la posición de la ficha es 1. Vamos a ver el siguiente caso:
 
-<img src="assets\fundamentoTeorico\pos0.png" alt="pos0" width="200"/>
+!["pos0](assets\fundamentoTeorico\pos0.png)
 
 Ahora se encuentra en el 0, pero, ¿cómo ha llegado hasta ahí? La ficha ha tenido que desplazarse, eso seguro. La pregunta es, ¿qué posición le asignamos hasta que llegue a una de las casillas?
 
-<img src="assets\fundamentoTeorico\posUndet.png" alt="posUndet" width="200"/>
+!["posUndet"](assets\fundamentoTeorico\posUndet.png)
 
 
 Este es uno de los problemas que se encuentras a la hora de transmitir información en la electrónica. Como solo podemos interpretar 2 estados, ¡lo que pase en la transición no lo entenderemos!
 
-<img src="assets\fundamentoTeorico\punkyState1.png" alt="punkyState1" width="500"/>
+!["punkyState1"](assets\fundamentoTeorico\punkyState1.png)
 
-<img src="assets\fundamentoTeorico\punkyStateUndet.png" alt="punkyStateUndet" width="500"/>
+!["punkyStateUndet"](assets\fundamentoTeorico\punkyStateUndet.png)
 
 En los estados intermedios entre el 1 y el 0 de esta viñeta, la pata que se conecta a uno de los estados está en el aire, actuando como **antena** y captando interferencias indeseadas. A esto se le llama dejar una pata "flotando", algo que debemos evitar en las entradas de información.
 
 Para evitar este problema, y mantener una comunicación estable, se usan las Resistencias Pull-up y Pull-down.
 ### 1.6.3. Conceptos previos: ¿Qué es lo que veo?<a name="id1_6_3"></a>
 
-<img src="assets\fundamentoTeorico\pullupSchematic.png" alt="pullupSchematic" width="500"/>
+!["pullupSchematic"](assets\fundamentoTeorico\pullupSchematic.png)
 
 Bueno... Espero que no te asustes. Lo que ves ahora es el esquema de una **resistencia Pull-up**. Tranquilo, porque vas a entenderlo después de algunos conceptos. Primero vamos a etiquetar cada elemento:
 
-<img src="assets\fundamentoTeorico\pullupSchematicNames.png" alt="pullupSchematicNames" width="500"/>
+!["pullupSchematicNames"](assets\fundamentoTeorico\pullupSchematicNames.png)
 
 #### Elementos del circuito.
 
@@ -276,10 +272,10 @@ No olvidemos que el objetivo de todo esto es enviar información, evitando las c
 Por suerte solo tenemos que diferenciar, como hemos dicho, dos mensajes: el **0** y el **1**.
 
 Digamos que nosotros somos el maestro y queremos enviar un 1 al esclavo. Esto podría funcionar:
-<img src="assets\fundamentoTeorico\pullUpApproach.png" alt="pullUpApproach" width="500"/>
+!["pullUpApproach"](assets\fundamentoTeorico\pullUpApproach.png)
 
 Si dejamos el interruptor abierto, el 1 solo tiene un camino. Ahora vamos a intentar cerrar el interruptor.
-<img src="assets\fundamentoTeorico\pullUpCrash.png" alt="pullUpCrash" width="500"/>
+!["pullUpCrash"](assets\fundamentoTeorico\pullUpCrash.png)
 
 Si no te has saltado los conceptos previos verás que aquí algo ha ido bastante mal. Como el voltaje no ha bajado antes de llegar a GND el cable empieza a actuar como resistencia para disipar la energía en forma de calor. El cable no está preparado para eso y puede alcanzar altas temperaturas. Por si te has perdido, **la velocidad del 1 era muy alta antes de llegar al aparcamiento y se ha estampado contra GND**. Ahora nuestro esclavo podría irse a jugar al parchís, si no se ha roto nada en el proceso.
 
@@ -289,7 +285,7 @@ En el entorno real, las entradas de los dispositivos cuentan con una impedancia 
 
 Aclarado todo esto, ahora necesitaremos algo para reducir la velocidad. ¡Seguro que lo estás pensando! Nuestras amigas las resistencias pueden hacernos el trabajo.
 ### 1.6.5. ¡Resistencias, al rescate!<a name="id1_6_5"></a>
-<img src="assets\fundamentoTeorico\pullUpKingNotDefault.png" alt="pullUpKingNotDefault" width="500"/>
+!["pullUpKingNotDefault"](assets\fundamentoTeorico\pullUpKingNotDefault.png)
 
 Ahora, la resistencia ha conseguido frenar por completo el 1, así que como no llega nada, al esclavo se le carga un 0.
 
@@ -305,16 +301,16 @@ A consecuencia de esta baja corriente, la caída de voltaje o "velocidad", si as
 
 El esclavo recibiría un voltaje de 4.995V, lo que interpretaría como un 1.
 
-<img src="assets\fundamentoTeorico\pullUpKingDefault.png" alt="pullUpKingDefault" width="500"/>
+!["pullUpKingDefault"](assets\fundamentoTeorico\pullUpKingDefault.png)
 
 ¡Ya entiendes como funciona el Pull-up!, pero no cantes victoria, aun queda que te explique el Pull-down.
 ### 1.6.6. Pulldown: vamos a ser breves<a name="id1_6_6"></a>
 Vamos a coger la misma estructura del Pull-up y intercambiamos las posiciones del interruptor y la resistencia de este modo:
 
-<img src="assets\fundamentoTeorico\pullDownKingDefault.png" alt="pullDownKingDefault" width="500"/>
+!["pullDownKingDefault"](assets\fundamentoTeorico\pullDownKingDefault.png)
 
 Como podemos ver, cuando el interruptor está abierto, el esclavo solo puede interpretar un 0, mientras que si cerramos el interruptor, conseguiremos pasarle al esclavo el 1.
-<img src="assets\fundamentoTeorico\pullDownKingNotDefault.png" alt="pullDownKingNotDefault" width="500"/>
+!["pullDownKingNotDefault"](assets\fundamentoTeorico\pullDownKingNotDefault.png)
 
 ### 1.6.7. Resumen: ¡no des más la chapa!<a name="id1_6_7"></a>
 Los Pull-up y Pull-down sirven para guardar estados por defecto, incluso cuando no se recibe energía de ninguna fuente. Los estados por defecto son aquellos en los que se queda cuando no se recibe energía.
@@ -329,7 +325,7 @@ Para ello, miramos el esquemático del fabricante, en mi caso, la [v3.6a](https:
 Mirando el esquemático del BusPirate, vemos que en la parte dedicada a los Pull-Up hay un circuito adicional. Este nos permite habilitar o desabilitar el uso de los Pull-Up.
 Veamos como funciona cada una de las partes:
 
-<img src="assets\fundamentoTeorico\ActivarPullUps.png" alt="pullUpBusPirate" width="700"/>
+!["pullUpBusPirate"](assets\fundamentoTeorico\ActivarPullUps.png)
 
 <span style="color:#e55e22">1.  Esta parte del circuito representada con el cable naranja permite controlar a través de la linea de comandos, con el comando "P", activar los Pull-Up del circuito del color azul. En el caso de la imagen de arriba, el interruptor integrado dentro del chip del BusPirate, que usaremos de forma conceptual, está cerrado y conectado a GND, lo que garantiza un voltaje nulo y, por tanto, el interruptor entre los puntos A y B quedará abierto. Eso significa que no puede llegar de ningún modo voltaje desde VEXTERN. En caso de que el interruptor interno del BusPirate se dejase flotando, llegarían 5V al punto C, lo que cerraría el circuito azul, permitiendo el paso de la corriente que proviene de VEXTERN.</span>
 
@@ -337,14 +333,14 @@ Veamos como funciona cada una de las partes:
 
 Ahora veamos como sería el circuito y sus conexiones con el Chip Target y el Chip del Bus Pirate cuando el interruptor de la linea naranja está abierto:
 
-<img src="assets\fundamentoTeorico\Dar0.png" alt="pullUpBusPirate" width="700"/>
+!["pullUpBusPirate"](assets\fundamentoTeorico\Dar0.png)
 
 <span style="color:#efc72e">3. El cable amarillo representa a los canales de la PCB del BusPirate que conectan el Pull-Up con el pin de Chip Select (CS). En este caso, el Chip ha conectado el pin directamente a GND, lo que da un voltaje nulo (0V) en toda la linea.</span>
 
 
 <span style="color:#6da707">4. El cable verde es la pinza que colocaremos en la pata CS del BusPirate hasta el pin CS del Chip Objetivo. En la imagen de arriba, el pin está conectado a la linea amarilla, por la que no pasa corriente. Como consecuencia, recibe un 0.</span>
 
-<img src="assets\fundamentoTeorico\Dar1.png" alt="pullUpBusPirate" width="700"/>
+!["pullUpBusPirate"](assets\fundamentoTeorico\Dar1.png)
 
 <span style="color:#efc72e">3. Ahora el BusPirate ha abierto el interruptor y la linea amarilla ya no está conectada a GND. De este modo los 5V de VEXTERN llegan desde el cable azul hasta el final.</span>
 
