@@ -158,7 +158,7 @@ Para saber exactamente qué tenemos entre manos, puedes acceder a su documentaci
 
 **ADVERTENCIA**: Recomiendo utilizar como máximo una velocidad de 100kHz aproximadamente para cada protocolo, ya que la calidad de los cables es importante y no me fío de que la longitud del tuyo sea corta, sobre todo si hay un adaptador a clips, etc. Cuanto más largo sea el cable y más adaptadores haya, junto con un voltaje más bajo, necesitarás usar una velocidad más baja. Así que configura el flashrom o cualquier otro software que utilices para usar la velocidad que sea más conveniente.
 
-**ADVERTENCIA**: Se recomienda usar este [firmware](https://github.com/therealdreg/autobuspirateupgrade/blob/main/BPv3-bootloaderv4xtov45-update_fw-TEST%20Gabriel%20Smith%20JTAG%20Fix_ENG-v0.zip).
+**ADVERTENCIA**: Algunos firmwares tienen un error en el modo SPI binario (como el último firmware comunitario) y causan problemas con flashrom y otras herramientas. Recomiendo usar el último firmware de Buzzpirat para Bus Pirate v3: https://buzzpirat.com/docs/firmware-update/
 
 **ADVERTENCIA**: USA UN CABLE USB CORTO Y DE ALTA CALIDAD.
 
