@@ -1,73 +1,68 @@
 # Hardware Hacking ES Comunidad
 !["logo oficial"](assets/logoficial.png)
 
-- Discord: https://discord.gg/wkWr6Dj46D 
+- Discord: https://discord.gg/wkWr6Dj46D
 - Telegram: https://t.me/hardwarehackinges
 
-# Índice   
-- n1. [Fundamentos Teóricos](#id1)
-- n1.1. [¿Qué es esto del Hardware Hacking?](#id1_1)
-- n1.2. [¿Qué necesito para empezar en esto?](#id1_2)
-- n1.3. [Protocolos de Datos](#id1_3)
-- n1.4. [¿Qué es un Analizador Lógico?](#id1_4)
-- n1.5. [Tengo un BusPirate v3 pero... ¿Qué es esto?](#id1_5)
-- n1.6. [Pull-up y Pull-down para analfabetos](#id1_6)
-- n1.6.1. [Introducción](#id1_6_1)
-- n1.6.2. [¡Terror a las antenas!](#id1_6_2)
-- n1.6.3. [Conceptos previos: ¿Qué es lo que veo?](#id1_6_3)
-- n1.6.4. [Pull-up: ¡Manos a la obra!](#id1_6_4)
-- n1.6.5. [¡Resistencias, al rescate!](#id1_6_5)
-- n1.6.6. [Pulldown: vamos a ser breves](#id1_6_6)
-- n1.6.7. [Resumen: ¡no des más la chapa!](#id1_6_7)
-- n1.6.8. [¿Dónde encuentro los Pull-Up en el BusPirate?](#id1_6_8)
-- n1.6.9. [Por si se te antojan algunos detalles...](#id1_6_9)
-- n1.7. [Encontrar puerto COM para el Bus Pirate](#id1_7)
+# Índice
 
-- n2. [Hacking EEPROM AT24C256 I2C 5V](#id2)
-- n2.1. [Conectar pinzas a EEPROM](#id2_1)
-- n2.2. [Conectarse al I2C con BusPirate](#id2_2)
-- n2.3. [Localizar direcciones I2C](#id2_3)
-- n2.4. [Como leer y escribir con I2C](#id2_4)
-- n2.5. [Dumpeo o backup](#id2_5)
-- n2.6. [Flasher AT24C256](#id2_6)
-
-- n3. [Hacking FLASH SPI Winbond 25Q64FVSIG](#id3)
-- n3.1. [Conectar pinzas a SPI FLASH](#id3_1)
-- n3.2. [Identificar la SPI Flash](#id3_2)
-- n3.3. [Extraer contenido SPI Flash](#id3_3)
-- n3.4. [Extracción de la imagen](#id3_4)
-
-- n4. [Hacking Router TP-Link TL-WR841N](#id4)
-- n4.1. [Comprar el router](#id4_1)
-- n4.2. [Abriendo el router](#id4_2)
-- n4.3. [Identificar componentes y UART](#id4_3)
-- n4.4. [Soldar pines a UART y ELIMINAR R18](#id4_4)
-- n4.5. [Buscando UART con Analizador Lógico](#id4_5)
-- n4.6. [Encontrar el GND](#id4_6)
-- n4.7. [Conectar Analizador](#id4_7)
-- n4.8. [Averiguar el Baud Rate](#id4_8)
-- n4.9. [Conectarse al UART](#id4_9)
-- n4.10. [Extraer Sistema de archivos y Firmware](#id4_10)
-- n4.11. [Extraccion del Firmware](#id4_11)
-
-- n5. [Hacking SD Transcend TS2GUSD](#id5)
-- n5.1. [Conectar pinzas a lector SD](#id5_1)
-- n5.2. [Conectarse al Bus Pirate](#id5_2)
-- n5.3. [Inicializar la tarjeta SD en modo SPI](#id5_3)
-- n5.4. [Lectura de bloques](#id5_4)
-
-- n6. [Emulación de una firmware con Emux](#id6)    
-- n6.1. [Instalación de EMUX](#id6_1)
-- n6.2. [Añadiendo una nueva firmware a EMUX](#id6_2)
-- n6.3. [Arrancar la nueva firmware en EMUX](#id6_3)
-
-- n7. [Webs, libros, recursos, a quien seguir...](#id7)
+1. [Fundamentos Teóricos](#fundamentos-teóricos)
+    1. [¿Qué es esto del Hardware Hacking?](#qué-es-esto-del-hardware-hacking)
+    1. [¿Qué necesito para empezar en esto?](#qué-necesito-para-empezar-en-esto)
+    1. [Protocolos de Datos](#protocolos-de-datos)
+    1. [¿Qué es un Analizador Lógico?](#qué-es-un-analizador-lógico)
+    1. [Tengo un BusPirate v3 pero... ¿Qué es esto?](#tengo-un-buspirate-v3-pero-qué-es-esto)
+    1. [Pull-up y Pull-down para analfabetos](#pull-up-y-pull-down-para-dummies)
+        1. [Introducción](#introducción)
+        1. [¡Terror a las antenas!](#terror-a-las-antenas)
+        1. [Conceptos previos: ¿Qué es lo que veo?](#conceptos-previos-qué-es-lo-que-veo)
+        1. [Pull-up: ¡Manos a la obra!](#pull-up-manos-a-la-obra)
+        1. [¡Resistencias, al rescate!](#resistencias-al-rescate)
+        1. [Pulldown: vamos a ser breves](#pulldown-vamos-a-ser-breves)
+        1. [Resumen: ¡no des más la chapa!](#resumen-no-des-más-la-chapa)
+        1. [¿Dónde encuentro los Pull-Up en el BusPirate?](#dónde-encuentro-los-pull-up-en-el-buspirate)
+        1. [Por si se te antojan algunos detalles...](#por-si-se-te-antojan-algunos-detalles)
+    1. [Encontrar puerto COM para el Bus Pirate](#encontrar-puerto-com-para-el-bus-pirate)
+1. [Hacking EEPROM AT24C256 I2C 5V](#hacking-eeprom-at24c256-i2c-5v)
+    1. [Conectar pinzas a EEPROM](#conectar-pinzas-a-eeprom)
+    1. [Conectarse al I2C con BusPirate](#conectarse-al-i2c-con-buspirate)
+    1. [Localizar direcciones I2C](#localizar-direcciones-i2c)
+    1. [Como leer y escribir con I2C](#como-leer-y-escribir-con-i2c)
+    1. [Dumpeo o backup](#dumpeo-o-backup)
+    1. [Flasher AT24C256](#flasher-at24c256)
+1. [Hacking FLASH SPI Winbond 25Q64FVSIG](#hacking-flash-spi-winbond-25q64fvsig)
+    1. [Conectar pinzas a SPI FLASH](#conectar-pinzas-a-spi-flash)
+    1. [Identificar la SPI Flash](#identificar-la-spi-flash)
+    1. [Extraer contenido SPI Flash](#extraer-contenido-spi-flash)
+    1. [Extracción de la imagen](#extracción-de-la-imagen)
+1. [Hacking Router TP-Link TL-WR841N](#hacking-router-tp-link-tl-wr841n)
+    1. [Comprar el router](#comprar-el-router)
+    1. [Abriendo el router](#abriendo-el-router)
+    1. [Identificar componentes y UART](#identificar-componentes-y-uart)
+    1. [Soldar pines a UART y ELIMINAR R18](#soldar-pines-a-uart-y-eliminar-r18)
+    1. [Buscando UART con Analizador Lógico](#buscando-uart-con-analizador-lógico)
+    1. [Encontrar el GND](#encontrar-el-gnd)
+    1. [Conectar Analizador](#conectar-analizador)
+    1. [Averiguar el Baud Rate](#averiguar-el-baud-rate)
+    1. [Conectarse al UART](#conectarse-al-uart)
+    1. [Extraer Sistema de archivos y Firmware](#extraer-sistema-de-archivos-y-firmware)
+    1. [Extraccion del Firmware](#extraccion-del-firmware)
+1. [Hacking SD Transcend TS2GUSD](#hacking-sd-transcend-ts2gusd)
+    1. [Conectar pinzas a lector SD](#conectar-pinzas-a-lector-sd)
+    1. [Conectarse al Bus Pirate](#conectarse-al-bus-pirate)
+    1. [Inicializar la tarjeta SD en modo SPI](#inicializar-la-tarjeta-sd-en-modo-spi)
+    1. [Lectura de bloques](#lectura-de-bloques)
+1. [Emulación de una firmware con Emux](#emulación-de-una-firmware-con-emux)
+    1. [Instalación de EMUX](#instalación-de-emux)
+    1. [Añadiendo una nueva firmware a EMUX](#añadiendo-una-nueva-firmware-a-emux)
+    1. [Arrancar la nueva firmware en EMUX](#arrancar-la-nueva-firmware)
+1. [Webs, libros, recursos, a quien seguir...](#webs-libros-recursos-a-quien-seguir)
 
 ----
 
-# 1. Fundamentos Teóricos<a name="id1"></a>
+# Fundamentos Teóricos
 
-## 1.1. ¿Qué es esto del Hardware Hacking?<a name="id1_1"></a>
+## Qué es esto del Hardware Hacking?
 
 Básicamente, y en fácil, intentar modificar el comportamiento de un cacharro para que haga algo que yo quiera que haga, esté dentro de su diseño inicial o no.
 
@@ -78,11 +73,11 @@ La modificación que quiera hacer puede ser tan sencilla como cambiar algo de su
 En este repositorio vamos a intentar cubrir algunos casos prácticos para irnos introduciendo en esto del hardware hacking y sus técnicas, más como ejemplos sencillitos para ir aprendiendo las técnicas que con ningún otro objetivo.
 
 Un disclaimer importante es que **no se van a realizar técnicas ilegales** o vinculadas con el imaginario popular de lo que se cree que es el hacking: no vamos a hackear el whatsapp de tu novia ni vamos a atacar a ninguna entidad gubernamental. Ésto va más en la línea de entender cacharros para poderles sacar capacidades.
-## 1.2. ¿Qué necesito para empezar en esto?<a name="id1_2"></a>
+
+## Qué necesito para empezar en esto?
 
 1. **Ganas de estudiar y aprender**: No hay una forma directa y sencilla de adquirir conocimiento sobre esto, normalmente necesitarás estudiar esquemáticos, leer documentación técnica y pasar muchas horas intentando entender qué carajos estás haciendo. Esto es parte de la diversión. Aún así, partiremos de que tienes un nivel básico de conocimientos teóricos de electricidad y electrónica. Más o menos lo que te enseñan en el bachillerato tecnológico bastaría (sistema educativo español).
-
-2. **Material de soldadura**: No te tienes que gastar una millonada, pero sí hay una serie de cosas que son básicas y que vas a necesitar. Hay miles de guías y listas de materiales que podrías seguir, pero todo se resume en:
+1. **Material de soldadura**: No te tienes que gastar una millonada, pero sí hay una serie de cosas que son básicas y que vas a necesitar. Hay miles de guías y listas de materiales que podrías seguir, pero todo se resume en:
     * Soldador de estaño y desoldador. Con el desoldador en un principio te basta con una pipeta desoldadora, en un futuro ya podrás pensar si invertir en un desoldador de verdad
     * Estaño (que sea de buena calidad)
     * Flux (lo mismo que el estaño, gástate algo más en algo de buena calidad)
@@ -90,13 +85,12 @@ Un disclaimer importante es que **no se van a realizar técnicas ilegales** o vi
     * Cables de electrónica (los reconocerás porque son muy finitos y de colorines)
 
     Un añadido opcional pero interesantísimo es un microscopio para electrónica. En AliExpress se pueden encontrar algunos bastante decentes por un presupuesto bastante ajustado. No te precipites y compres algo de menos de 50€, es mejor esperar, ahorrar ese poquito y gastarte entre 50 y 70€ en un microscopio que te va a servir durante muchísimo tiempo.
-    
-3. **Cacharrada**: Llamaremos cacharrada a todo aquello que nos ayudará a extraer el firmware y a manipularlo. Para conseguir el objetivo de llegar hasta el firmware de casi cualquier cosa nos bastará con:
+1. **Cacharrada**: Llamaremos cacharrada a todo aquello que nos ayudará a extraer el firmware y a manipularlo. Para conseguir el objetivo de llegar hasta el firmware de casi cualquier cosa nos bastará con:
     * [Analizador Lógico](https://www.amazon.es/AZDelivery-Logic-Analyzer-compatible-versi%C3%B3n/dp/B01MUFRHQ2/ref=sr_1_1_sspa?keywords=analizador%2Blogico%2Busb&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1)
     * [BusPiratev3](https://www.adafruit.com/product/237)
     * [Pinzas BusPirate](https://www.adafruit.com/product/238)
 
-## 1.3. Protocolos de Datos<a name="id1_3"></a>
+## Protocolos de Datos
 Cuando empecemos a trabajar con cacharretes a los que les queramos sacar los firmwares, tenemos que entender cuál es su forma de comunicación.
 
 Un genérico en la comprensión de cómo funcionan los protocolos de datos es que siempre tendremos un orquestrador (_Master_) y un esclavo (_Slave_). Ambos pueden estar emitiendo y recibiendo datos, pero habrá una relación de control del _Master_ sobre el _Slave_.
@@ -123,18 +117,18 @@ I2C forma parte de la familia de los protocolos seriales, con lo que la informac
 En la siguiente imagen podemos ver las especificaciones técnicas del protocolo I2C:
 !["Imagen extraída de circuitbasics.com"](assets/fundamentoTeorico/Basics-of-the-I2C-Communication-Protocol-Specifications-Table-768x409.png)
 
-### ¿Cómo funciona el protocolo?
+### Cómo funciona el protocolo?
 
 !["Imagen extraída de circuitbasics.com"](assets/fundamentoTeorico/Introduction-to-I2C-Message-Frame-and-Bit-2-1024x258.png)
 
 * Start Condition: La línea SDA pasa de un alto voltaje a un bajo voltaje, y a continuación la línea SCL hace lo mismo
-* Address Frame: Una secuencia de 7 o 10 bits única para cada esclavo que le identifica al máster 
+* Address Frame: Una secuencia de 7 o 10 bits única para cada esclavo que le identifica al máster
 * Read/Write bit: Un único bit que indica si el máster envía o pide datos al esclavo
 * ACK/NACK: Cada mensaje está finalizado con una señal de _acknowledge/no-acknowledge_, que confirma que se ha recibido o no correctamente la información. El ACK se devuelve de vuelta hacia el emisor para confirmar que el receptor ha recibido el mensaje
 * Stop Condition: La línea SDA pasa de un bajo voltaje a un alto voltaje, y a continuación la línea SCL hace lo mismo
 
 
-## 1.4. ¿Qué es un Analizador Lógico?<a name="id1_4"></a>
+## Qué es un Analizador Lógico?
 Un Analizador Lógico nos permite extraer las señales digitales que emita el sistema que estamos analizando a través de un osciloscopio. El análisis que haremos con un analizador lógico lo podríamos hacer a través de un osciloscopio clásico, pero hoy existen cacharritos como este que nos permiten analizarlo con nuestro ordenador a través de su interfaz. La información que extraigamos de este análisis nos permitirá posteriormente volcarnos el firmware del sistema analizado.
 
 La documentación oficial del producto que recomendamos está [aquí](https://www.az-delivery.de/es/products/logic-analyzer-kostenfreies-e-book?variant=8700826550368), pero vamos a intentar hacer un resumen de lo más importante.
@@ -145,12 +139,13 @@ Para iniciar con el cacharrito, accedemos a la página de [descargas del product
 
 Los protocolos más habituales para Arduino son conexión serial, SPI e I2C; pero el analizador que tenemos entre manos admite todos estos protocolos: SPI, IIC, UART, SMBus, I2S, CAN, Parallel, Custom, Search, Async, 1-Wite, PS/2. Para nuestro nivel, básicamente lo admite todo.
 
-## 1.5. Tengo un BusPirate v3 pero... ¿Qué es esto?<a name="id1_5"></a>
+## Tengo un BusPirate v3 pero... Qué es esto?
 
 Nos centramos en el BusPirate v3 en concreto, a pesar de que hay actualizaciones posteriores, por varios motivos:
-    1. Es económico. Hoy en día (finales del 2023) no cuesta más allá de 40€ el propio cacharro y sus pinzas.
-    2. Lleva mucho tiempo en el mercado, hay mucha gente usándolo, con lo que está mantenido y hay mucha documentación al respecto (incluída esta que estás leyendo). A más comunidad alrededor de un cacharrete, más mantenible será en el futuro, y más pequeña es su curva de entrada.
-    3. Tiene muchísimas funcionalidades. Esto es consecuencia directa del punto 2, porque se ha ido evolucionando a medida que más gente ha ido usándolo y ampliando su uso.
+
+1. Es económico. Hoy en día (finales del 2023) no cuesta más allá de 40€ el propio cacharro y sus pinzas.
+1. Lleva mucho tiempo en el mercado, hay mucha gente usándolo, con lo que está mantenido y hay mucha documentación al respecto (incluída esta que estás leyendo). A más comunidad alrededor de un cacharrete, más mantenible será en el futuro, y más pequeña es su curva de entrada.
+1. Tiene muchísimas funcionalidades. Esto es consecuencia directa del punto 2, porque se ha ido evolucionando a medida que más gente ha ido usándolo y ampliando su uso.
 
 Para saber exactamente qué tenemos entre manos, puedes acceder a su documentación [aquí](http://dangerousprototypes.com/docs/Bus_Pirate/es), o puedes seguir leyendo. Haremos un resumen de sus funcionalidades centrado en los casos de uso que vamos a ver.
 
@@ -189,10 +184,10 @@ Hemos creado una serie de Modelos 3D: el propio Bus Pirate v3 y una caja para pr
 
 También hemos dejado los ficheros stl de ambos modelos para que te los puedas imprimir en el directorio [modelos3D](assets/modelos3D/) de este repositorio (hay varias iteraciones de diseño de caja, la recomendada es la iteración 3).
 
-## 1.6. Pull-up y Pull-down para dummies<a name="id1_6"></a>
-### 1.6.1. Introducción<a name="id1_6_1"></a>
+## Pull-up y Pull-down para dummies
+### Introducción
 Aquí encontrarás explicada, de manera sencilla, la justificación, finalidad, funcionamiento y detalles de las resistencias Pull-up y Pull-down.
-### 1.6.2. ¡Terror a las antenas!<a name="id1_6_2"></a>
+### Terror a las antenas!
 
 Te han puesto una tarea. Debes apuntar la posición de una ficha blanca, esta ficha solo puede acabar en dos casillas, en la Posición 1, y en la Posición 0.
 
@@ -216,7 +211,7 @@ Este es uno de los problemas que se encuentras a la hora de transmitir informaci
 En los estados intermedios entre el 1 y el 0 de esta viñeta, la pata que se conecta a uno de los estados está en el aire, actuando como **antena** y captando interferencias indeseadas. A esto se le llama dejar una pata "flotando", algo que debemos evitar en las entradas de información.
 
 Para evitar este problema, y mantener una comunicación estable, se usan las Resistencias Pull-up y Pull-down.
-### 1.6.3. Conceptos previos: ¿Qué es lo que veo?<a name="id1_6_3"></a>
+### Conceptos previos: Qué es lo que veo?
 
 !["pullupSchematic"](assets/fundamentoTeorico/pullupSchematic.png)
 
@@ -229,24 +224,23 @@ Bueno... Espero que no te asustes. Lo que ves ahora es el esquema de una **resis
 Vamos a suponer que el [voltaje o tensión](https://cursos.mcielectronics.cl/2019/06/18/voltaje-corriente-resistencia-y-ley-de-ohm/###Voltaje) es la "velocidad" de la electricidad que recorre el circuito y el [amperaje o intensidad](https://cursos.mcielectronics.cl/2019/06/18/voltaje-corriente-resistencia-y-ley-de-ohm/) de la corriente es el caudal.
 
 1. GND: es una abreviación del término *ground*. Se denomina GND al punto de **referencia** que tomaremos como **"velocidad" 0**, es decir, el **aparcamiento**. Si te fijas, todos los extremos del circuito acaban en el GND, es decir, que antes de llegar a GND tendrán que frenar un poco...
-2. VCC (Voltage Common Colector): es la fuente de voltaje que genera la diferencia de tensión más alta respecto al GND. Conceptualmente, **se encarga de dar "velocidad"** a la electricidad.
-4. Resistencia: la resistencia **reduce la "velocidad"** de la electricidad. **Cuanta más corriente** pase por el circuito, la **caída de "velocidad" será mayor**. Si esta supuesta velocidad fuese muy alta y "chocase" con GND algo podría salir mal. Se produciría un cortocircuito.
-5. Interruptor: seguro que ya lo conoces, alguno debes apretar para poder leer esto... Pero si aún así no te suena lo que hace: **interrumpe o deja pasar** la electricidad.
-6. Cables: son las líneas rojas que unen cada elemento y **permite que pase por él el "caudal"** que requiera el circuito.
-7. [Sentido de la corriente](http://recursostic.educacion.es/secundaria/edad/3esofisicaquimica/3quincena11/3q11_contenidos_4c.htm): es importante conocer el sentido de la corriente. Usaremos el sentido convencional, que irá del punto negativo al positivo, como muestra la flecha naranja del esquema. 
+1. VCC (Voltage Common Colector): es la fuente de voltaje que genera la diferencia de tensión más alta respecto al GND. Conceptualmente, **se encarga de dar "velocidad"** a la electricidad.
+1. Resistencia: la resistencia **reduce la "velocidad"** de la electricidad. **Cuanta más corriente** pase por el circuito, la **caída de "velocidad" será mayor**. Si esta supuesta velocidad fuese muy alta y "chocase" con GND algo podría salir mal. Se produciría un cortocircuito.
+1. Interruptor: seguro que ya lo conoces, alguno debes apretar para poder leer esto... Pero si aún así no te suena lo que hace: **interrumpe o deja pasar** la electricidad.
+1. Cables: son las líneas rojas que unen cada elemento y **permite que pase por él el "caudal"** que requiera el circuito.
+1. [Sentido de la corriente](http://recursostic.educacion.es/secundaria/edad/3esofisicaquimica/3quincena11/3q11_contenidos_4c.htm): es importante conocer el sentido de la corriente. Usaremos el sentido convencional, que irá del punto negativo al positivo, como muestra la flecha naranja del esquema.
 
 Para entender los Pull-up/Pull-down no necesitarás realizar cálculos, pero es útil poder interpretar las siguientes expresiones:
 
-1. $Voltaje=Intensidad*Resistencia$ ;     $V= I * R$ 
-
-2. $Potencia=Voltaje*Intensidad$ ;     $P= V * I$
+1. $Voltaje=Intensidad*Resistencia$ ;     $V= I * R$
+1. $Potencia=Voltaje*Intensidad$ ;     $P= V * I$
 
 En la primera, nos permite calcular cuánto voltaje es capaz de retener una resistencia según la corriente que pasa por él. Es decir, **la "velocidad" que es capaz de robar al flujo**.
 
 Si conociésemos el voltaje que una resistencia va a restar al circuito podríamos calcular, entonces, la intensidad de corriente que pasa por esta.
 
 La segunda expresión nos permitirá estimar el consumo del circuito, usando el voltaje proporcionado por la fuente y la corriente requerida por los elementos que conectemos.
-### 1.6.4. Pull-up: ¡Manos a la obra!<a name="id1_6_4"></a>
+### Pull-up: Manos a la obra!
 
 No olvidemos que el objetivo de todo esto es enviar información, evitando las confusiones. La información viajará de un origen, que llamamos **Maestro**, a un destinatario, un **Esclavo**.
 
@@ -265,7 +259,7 @@ Quizá te preguntes porqué el 1 no se ha ido directamente hacia nuestro esclavo
 En el entorno real, las entradas de los dispositivos cuentan con una impedancia muy alta (que se opone al paso de la corriente), lo que representaremos en los esquemáticos como resistencias del valor que ronda los MΩ. El objetivo de esta impedancia es **afectar en la menor medida posible al circuito**.
 
 Aclarado todo esto, ahora necesitaremos algo para reducir la velocidad. ¡Seguro que lo estás pensando! Nuestras amigas las resistencias pueden hacernos el trabajo.
-### 1.6.5. ¡Resistencias, al rescate!<a name="id1_6_5"></a>
+### Resistencias, al rescate!
 !["pullUpKingNotDefault"](assets/fundamentoTeorico/pullUpKingNotDefault.png)
 
 Ahora, la resistencia ha conseguido frenar por completo el 1, así que como no llega nada, al esclavo se le carga un 0.
@@ -285,7 +279,7 @@ El esclavo recibiría un voltaje de 4.995V, lo que interpretaría como un 1.
 !["pullUpKingDefault"](assets/fundamentoTeorico/pullUpKingDefault.png)
 
 ¡Ya entiendes como funciona el Pull-up!, pero no cantes victoria, aun queda que te explique el Pull-down.
-### 1.6.6. Pulldown: vamos a ser breves<a name="id1_6_6"></a>
+### Pulldown: vamos a ser breves
 Vamos a coger la misma estructura del Pull-up y intercambiamos las posiciones del interruptor y la resistencia de este modo:
 
 !["pullDownKingDefault"](assets/fundamentoTeorico/pullDownKingDefault.png)
@@ -293,13 +287,14 @@ Vamos a coger la misma estructura del Pull-up y intercambiamos las posiciones de
 Como podemos ver, cuando el interruptor está abierto, el esclavo solo puede interpretar un 0, mientras que si cerramos el interruptor, conseguiremos pasarle al esclavo el 1.
 !["pullDownKingNotDefault"](assets/fundamentoTeorico/pullDownKingNotDefault.png)
 
-### 1.6.7. Resumen: ¡no des más la chapa!<a name="id1_6_7"></a>
+### Resumen: no des más la chapa!
 Los Pull-up y Pull-down sirven para guardar estados por defecto, incluso cuando no se recibe energía de ninguna fuente. Los estados por defecto son aquellos en los que se queda cuando no se recibe energía.
 | Tipo      | Estado por defecto | Estado Activo |
 |-----------|--------------------|---------------|
 | Pull-Up   | 1                  | 0             |
 | Pull-Down | 0                  | 1             |
-### 1.6.8. ¿Dónde encuentro los Pull-Up en el BusPirate?<a name="id1_6_8"></a>
+
+### Dónde encuentro los Pull-Up en el BusPirate?
 
 Para ello, miramos el esquemático del fabricante, en mi caso, la [v3.6a](https://cdn.sparkfun.com/datasheets/Tools/BusPirate-v3.6a.pdf).
 
@@ -336,26 +331,23 @@ A este modo de funcionamiento del PIN se le denomina [OPEN DRAIN](https://www.an
 
 `Dato: Los protocolos I2C necesitan siempre los Pull-Up para funcionar, ya que siempre reciben 0 de GND y el 1 con el PIN flotando.`
 
-### 1.6.9. Por si se te antojan algunos detalles...<a name="id1_6_9"></a>
+### Por si se te antojan algunos detalles...
 
 Te dejo los [esquemáticos](https://www.multisim.com/content/YMY72mDiKxPaKZova2JLzm/pulluppulldown/open) con medidas del circuito.
 
-
-
-
-## 1.7. Encontrar puerto COM para el Bus Pirate<a name="id1_7"></a>
+## Encontrar puerto COM para el Bus Pirate
 
 **Importante hacer estos pasos antes de conectar el Bus Pirate**
 
 La manera más rápida y eficaz es abrir el **Administrador de Dispositivos** (device manager) buscándolo en el sistema.
 
-También podemos usar la secuencia **win+r** escribiendo devmgmt.msc 
+También podemos usar la secuencia **win+r** escribiendo devmgmt.msc
 
 ![](assets/Abrir_Administrador_Dispositivos_1.png)
 
 ![](assets/Abrir_Administrador_Dispositivos_2.png)
 
-Una vez se nos abra el administrador de dispositivos nos interesa la parte **Puertos (COM y LPT)**. 
+Una vez se nos abra el administrador de dispositivos nos interesa la parte **Puertos (COM y LPT)**.
 
 Al desplegarlo obtendremos los puertos previos a conectar el Bus Pirate
 
@@ -366,7 +358,7 @@ En el caso de la imagen USB Serial Port (COM4).
 
 ![](assets/Encontrar-Puerto-COM-Bus_Pirate_2.png)
 
-# 2. Hacking EEPROM AT24C256 I2C 5V<a name="id2"></a>
+# Hacking EEPROM AT24C256 I2C 5V
 
 **Material Requerido**
 
@@ -374,53 +366,53 @@ En el caso de la imagen USB Serial Port (COM4).
 - [EEPROM AT24C256 I2C 5V](https://es.aliexpress.com/item/4000099529430.html?spm=a2g0o.productlist.main.1.2bd56c2cd7dFX0&algo_pvid=a2da1f90-95d1-4099-8463-9e25238687ec)
 - [Pinzas BusPirate](https://www.adafruit.com/product/238)
 
-## 2.1. Conectar pinzas a EEPROM<a name="id2_1"></a>
+## Conectar pinzas a EEPROM
 
 Usamos este esquema para conectarnos:
 
 ![](assets/Esquema-buspirate.png)
 
-schema by David Sánchez 
+schema by David Sánchez
 
 Tiene que quedar asi:
 
 ![](assets/pines-buspirate.jpg)
 
-## 2.2. Conectarse al I2C con BusPirate<a name="id2_2"></a>
+## Conectarse al I2C con BusPirate
 
 Ahora nos conectaremos usando algun software como TeraTerm o Putty, en mi caso usare TeraTerm.
 
 1. Lo abrimos y seleccionamos la interfaz COM correspondiente del BusPirate
 
-![](assets/Pasted-image-20230916160959.png)
+    ![](assets/Pasted-image-20230916160959.png)
 
-2. Ahora configuramos la interfaz serial dentro de Setup->Serial Port
+1. Ahora configuramos la interfaz serial dentro de Setup->Serial Port
 
-![](assets/Pasted-image-20230916161256.png)
+    ![](assets/Pasted-image-20230916161256.png)
 
-3. Y lo dejamos con esta configuracion de 115200 baudios de velocidad, 8 bits de datos, ninguno de paridad y uno de stop. 
+1. Y lo dejamos con esta configuracion de 115200 baudios de velocidad, 8 bits de datos, ninguno de paridad y uno de stop.
 
-![](assets/Pasted-image-20230916161412.png)
+    ![](assets/Pasted-image-20230916161412.png)
 
-4. Ahora para no quedarnos ciegos vamos a la configuración de fuente y aumentamos el tamaño y lo dejamos en 14.
+1. Ahora para no quedarnos ciegos vamos a la configuración de fuente y aumentamos el tamaño y lo dejamos en 14.
 
-![](assets/Pasted-image-20230916161528.png)
+    ![](assets/Pasted-image-20230916161528.png)
 
-![](assets/Pasted-image-20230916161613.png)
+    ![](assets/Pasted-image-20230916161613.png)
 
-5. Abrimos el menu del buspirate presionando m+enter
+1. Abrimos el menu del buspirate presionando m+enter
 
-![](assets/Pasted-image-20230921191417.png)
+    ![](assets/Pasted-image-20230921191417.png)
 
-6. Presionamos el 4 y damos enter, dos veces
+1. Presionamos el 4 y damos enter, dos veces
 
-![](assets/Pasted-image-20230921191520.png)
+    ![](assets/Pasted-image-20230921191520.png)
 
-Presionamos W mayúscula y P mayúscula y ya podriamos leer la memoria y escribir
+1. Presionamos W mayúscula y P mayúscula y ya podriamos leer la memoria y escribir
 
-![](assets/Pasted-image-20230921191747.png)
+    ![](assets/Pasted-image-20230921191747.png)
 
-## 2.3. Localizar direcciones I2C<a name="id2_3"></a>
+## Localizar direcciones I2C
 
 Usamos la macro de búsqueda de direcciones de 7bit para obtener la dirección de escritura y de lectura.
 
@@ -428,7 +420,7 @@ Escribimos (1) y damos a enter
 
 ![](assets/Pasted-image-20230923185623.png)
 
-## 2.4. Como leer y escribir con I2C<a name="id2_4"></a>
+## Como leer y escribir con I2C
 
 #### Como escribir I2C
 
@@ -438,7 +430,7 @@ Con los corchetes indicamos el principio y el final de cada comando I2C.
 
 El primer byte en hexadecimal es la dirección que indica si escribimos o leemos.
 
-Los dos siguientes bytes son la direccion donde se va a escribir. 
+Los dos siguientes bytes son la direccion donde se va a escribir.
 
 Los bytes 0x41 0x41 0x41 son el contenido que se escribira en la dirección selecionada de manera consecutiva.
 
@@ -476,7 +468,7 @@ Usamos un conversor de [hexadecimal](https://gchq.github.io/CyberChef/) y obtene
 
 ![](assets/Pasted-image-20230921193712.png)
 
-## 2.5. Dumpeo o backup<a name="id2_5"></a>
+## Dumpeo o backup
 
 Tras comprender como se lee la memoria EEPROM, se puede automatizar todo el proceso montando un script que permita disponer de una copia coa través de una imagen o backup con los datos que contiene la misma.
 
@@ -544,7 +536,7 @@ def read_eeprom_dump():
                 time.sleep(0.1)
                 data = ser.read(12800)
                 dump_file.write(data)
-                
+
 
         print('Dump guardado en:', DUMP_FILE)
     except Exception as e:
@@ -589,7 +581,7 @@ if __name__ == "__main__":
     parse_log_and_extract_ascii(DUMP_FILE, 'ascii_values.img')
 
 ```
-## 2.6. Flasher AT24C256<a name="id2_6"></a>
+## Flasher AT24C256
 
 Una vez se tiene una imagen que cuadra perfectamente con la capacidad de la memoria EEPROM (en este caso 32 KB), se puede automatizar el proceso de flasheo o escritura lo cual nos quitará dolores de cabeza si tenemos que flashear 500 :)
 
@@ -676,34 +668,34 @@ if __name__ == "__main__":
         ser.close()
 
 ```
-# 3. Hacking FLASH SPI Winbond 25Q64FVSIG<a name="id3"></a>
+# Hacking FLASH SPI Winbond 25Q64FVSIG
 
 **Material Requerido:**
 - [BusPiratev3](https://www.adafruit.com/product/237)
 - [SPI FLASH 25Q64FVSIG 3,3V](https://es.aliexpress.com/item/4000099529430.html?spm=a2g0o.productlist.main.1.2bd56c2cd7dFX0&algo_pvid=a2da1f90-95d1-4099-8463-9e25238687ec)
 - [Pinzas BusPirate](https://www.adafruit.com/product/238)
 
-## 3.1. Conectar pinzas a SPI FLASH<a name="id3_1"></a>
+## Conectar pinzas a SPI FLASH
 
 Usamos este esquema para conectarnos:
 
 ![](assets/Pasted-image-20230927175605.png)
 
-schema by David Sánchez 
+schema by David Sánchez
 
 Tiene que quedar asi:
 
 ![](assets/buspirate-spi-1.jpg)
 
-## 3.2. Identificar la SPI Flash<a name="id3_2"></a>
+## Identificar la SPI Flash
 
 ![](assets/buspirate-spi-3.jpg)
 
 El modelo es [W25Q64FVSIG](https://html.alldatasheet.com/html-pdf/511943/WINBOND/25Q64FVSIG/2115/7/25Q64FVSIG.html) aunque en la herramienta del flashrom indicaremos que es la **W25Q64JV-.Q** y funcionara correctamente.
 
-## 3.3. Extraer contenido SPI Flash<a name="id3_3"></a>
+## Extraer contenido SPI Flash
 
-Descargamos el ultimo release del flashrom desde este [repositorio.](https://github.com/therealdreg/flashrom_build_windows_x64) 
+Descargamos el ultimo release del flashrom desde este [repositorio.](https://github.com/therealdreg/flashrom_build_windows_x64)
 
 Conectamos el bus pirate y revisamos el numero del puerto COM.
 
@@ -805,7 +797,7 @@ Y nos devuelve un 2 que quiere decir que esta habilitada:
 
 ![](assets/Pasted%20image%2020231029103636.png)
 
-Ahora procedemos a borrar la pagina 0x000000 con el comando **\[0x20 0x00 0x00 0x00]** 
+Ahora procedemos a borrar la pagina 0x000000 con el comando **\[0x20 0x00 0x00 0x00]**
 
 ![](assets/Pasted%20image%2020231029105222.png)
 
@@ -819,7 +811,7 @@ El primer byte es la instruccion y los otros 3 la dirección.
 
 Primero el corchete abierto indica bajar el cs y seleccionarlo, después se manda por el MOSI el comando y la dirección , después se manda el corchete cerrado para levantar el CS y desactivarlo.
 
-Ahora leemos la dirección 0x000000 con el comando **\[0x03 0x00 0x00 0x00 r:256]** 
+Ahora leemos la dirección 0x000000 con el comando **\[0x03 0x00 0x00 0x00 r:256]**
 
 El uso de los corchetes es igual siempre, el 0x03 marca la instruccion y los tres bytes de 00 la dirección, después el r:256 es para repetir la acción de lectura 256 veces.
 
@@ -831,7 +823,7 @@ Asi se vería el comando y la respuesta:
 
 Al haber borrado previamente todo este sector hemos puesto todos los bytes en FF.
 
-Ahora volvemos a hablitar la escritura con la orden \[0x06] 
+Ahora volvemos a hablitar la escritura con la orden \[0x06]
 
 ![](assets/Pasted%20image%2020231029111930.png)
 
@@ -846,9 +838,9 @@ Y releemos el registro de estado para comprobar que esta hablitada la escritura,
 
 Y efectivamente la escritura esta habilitada.
 
-Ahora usaremos la instrucción Page Program (0x02) para escribir en la pagina 0x000000 y escribiremos los 3 primeros bytes con la cadena en ASCII "ABC", el comando es **\[0x02 0x00 0x00 0x00 0x41 0x42 0x43]**. 
+Ahora usaremos la instrucción Page Program (0x02) para escribir en la pagina 0x000000 y escribiremos los 3 primeros bytes con la cadena en ASCII "ABC", el comando es **\[0x02 0x00 0x00 0x00 0x41 0x42 0x43]**.
 
-El primer byte es la instrucción, los 3 siguientes la dirección y el resto los bytes a escribir. 
+El primer byte es la instrucción, los 3 siguientes la dirección y el resto los bytes a escribir.
 
 Solo podemos escribir desde 1 byte hasta 256 que es el tamaño de la pagina de esta flash. Si escribimos mas, sobrescribirá el principio de la pagina.
 
@@ -885,10 +877,10 @@ Y aquí vemos como la instrucción de lectura nos devuelve por el MISO todas las
 
 Podéis ver detalladamente la captura con el programa [Logic 2](https://www.saleae.com/downloads/) y la [captura](assets/Archivos_Taller_2/Captura_Manual_SPI.sal) de la carpeta assets.
 
---- 
+---
 
 
-## 3.4. Extracción de la imagen<a name="id3_4"></a>
+## Extracción de la imagen
 
 
 La abrimos con binwalk y la descomprimimos con este comando.
@@ -901,28 +893,29 @@ binwalk -eM flash_contenido.img
 
 ![](assets/Pasted-image-20230927210920.png)
 
-Ahora revisamos lo extraído y buscamos la flag. 
+Ahora revisamos lo extraído y buscamos la flag.
 
 ---
-# 4. Hacking Router TP-Link TL-WR841N<a name="id4"></a>
+
+# Hacking Router TP-Link TL-WR841N
 
 **Material Requerido**
 
-* TP-Link TL-WR841N 
+* TP-Link TL-WR841N
 * Soldador Estaño
-* FLux 
+* FLux
 * USB a TTL o Buspirate
 * Multimetro
 * Cable Ethernet o Wifi
 * Pines para UART
 * Ordenador
 
-## 4.1. Comprar el router<a name="id4_1"></a>
+## Comprar el router
 
 El modelo que vamos a analizar es el [TP-Link TL-WR841N V14](https://www.amazon.es/dp/B001FWYGJS?ref=ppx_yo2ov_dt_b_product_details&th=1)
 
 
-## 4.2. Abriendo el router<a name="id4_2"></a>
+## Abriendo el router
 
 Lo primero que debemos hacer es quitar los dos tornillos que hay en la parte inferior y después haremos palanca con algún trozo de plástico, yo he usado una púa de guitarra.
 
@@ -936,14 +929,14 @@ Lo primero que debemos hacer es quitar los dos tornillos que hay en la parte inf
 Y ya tendríamos acceso directo a la PCB del router.
 
 
-## 4.3. Identificar componentes y UART<a name="id4_3"></a>
+## Identificar componentes y UART
 Una vez abierto el router hay que identificar todos los componentes posibles.
 
 ![](assets/photo_5773698350053441531_y_1.jpg)
 
 **Cada circulo es una parte interesante de la pcb para nosotros:**
 
-- Circulo Rojo: Es la memoria RAM. Mirando la [ficha técnica](https://openwrt.org/toh/tp-link/tl-wr841nd) de la Versión 14 en OpenWRT podemos ver que tiene 32 MiB.   
+- Circulo Rojo: Es la memoria RAM. Mirando la [ficha técnica](https://openwrt.org/toh/tp-link/tl-wr841nd) de la Versión 14 en OpenWRT podemos ver que tiene 32 MiB.
 
 ![](assets/photo_5773698350053441532_y.jpg)
 
@@ -955,11 +948,11 @@ Una vez abierto el router hay que identificar todos los componentes posibles.
 
 ![](assets/photo_5773698350053441528_y.jpg)
 
-- Circulo Rosa: Es la Interfaz UART que usaremos para obtener terminal de root y obtener el sistema de archivos. La resistencia **R18** bloquea la escritura UART, luego habrá que quitarla. 
- 
+- Circulo Rosa: Es la Interfaz UART que usaremos para obtener terminal de root y obtener el sistema de archivos. La resistencia **R18** bloquea la escritura UART, luego habrá que quitarla.
+
 ![](assets/photo_5773698350053441535_y.jpg)
 
-## 4.4. Soldar pines a UART y ELIMINAR R18<a name="id4_4"></a>
+## Soldar pines a UART y ELIMINAR R18
 
 Soldar pines a UART no es complicado simplemente necesitaremos:
 
@@ -969,7 +962,7 @@ Soldar pines a UART no es complicado simplemente necesitaremos:
 
 ![](assets/photo_5775957412656824287_y.jpg)
 
-Aqui vemos como se ha eliminado la **R18** que impide la escritura a través de UART y los pines listos para conectarnos. 
+Aqui vemos como se ha eliminado la **R18** que impide la escritura a través de UART y los pines listos para conectarnos.
 
 Para eliminar la R18 vas a necesitar desoldarlo, **no lo hagas arrancándolo porque te puedes cargar la placa**. En la siguiente imagen puedes ver como una contribuidora (CristinaCTGN) eliminó a las bravas la resistencia creando un surco en la PCB que en este caso no provocó daños mayores, pero pudo haberse cargado alguna pista (ignora la mala calidad de la foto y si puedes ver la mala calidad de la soldadura, también):
 
@@ -980,16 +973,16 @@ En este caso hemos conectado el RX, el TX y el GND. El VCC no es necesario porqu
 ![](assets/Pasted-image-20230916142036.png)
 
 
-## 4.5. Buscando UART con Analizador Lógico<a name="id4_5"></a>
+## Buscando UART con Analizador Lógico
 
 ### Material Requerido:
 
 - [Analizador Lógico](https://www.amazon.es/AZDelivery-Logic-Analyzer-compatible-versi%C3%B3n/dp/B01MUFRHQ2/ref=sr_1_1_sspa?keywords=analizador%2Blogico%2Busb&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1)
-- [Router con UART](https://www.amazon.es/dp/B001FWYGJS?psc=1&ref=ppx_yo2ov_dt_b_product_details) 
+- [Router con UART](https://www.amazon.es/dp/B001FWYGJS?psc=1&ref=ppx_yo2ov_dt_b_product_details)
 - [Saleae Logic Pro](https://www.saleae.com/downloads/)
-- [Multimetro](https://www.amazon.es/Multimetro-AoKoZo-Autom%C3%A1tico-Polimetro-Tama%C3%B1o147/dp/B085PVTTST/ref=sxin_18_sbv_search_btf?__mk_es_ES=%C3%85M%C3%85%C5%BD%C3%95%C3%91&content-id=amzn1.sym.bd3d7401-e3ca-409d-87bd-d7a8fe595740%3Aamzn1.sym.bd3d7401-e3ca-409d-87bd-d7a8fe595740&cv_ct_cx=multimetro&keywords=multimetro&pd_rd_i=B085PVTTST&sbo=RZvfv%2F%2FHxDF%2BO5021pAnSA%3D%3D&sr=1-1-9131241a-a358-4619-a7b8-0f5a65d91d81) 
+- [Multimetro](https://www.amazon.es/Multimetro-AoKoZo-Autom%C3%A1tico-Polimetro-Tama%C3%B1o147/dp/B085PVTTST/ref=sxin_18_sbv_search_btf?__mk_es_ES=%C3%85M%C3%85%C5%BD%C3%95%C3%91&content-id=amzn1.sym.bd3d7401-e3ca-409d-87bd-d7a8fe595740%3Aamzn1.sym.bd3d7401-e3ca-409d-87bd-d7a8fe595740&cv_ct_cx=multimetro&keywords=multimetro&pd_rd_i=B085PVTTST&sbo=RZvfv%2F%2FHxDF%2BO5021pAnSA%3D%3D&sr=1-1-9131241a-a358-4619-a7b8-0f5a65d91d81)
 
-## 4.6. Encontrar el GND<a name="id4_6"></a>
+## Encontrar el GND
 
 Si tenemos el UART a la vista puede que tenga escrito cerca **GND**. Otra opción es identificar la flash o otro componente y buscar que pata según el datasheet es el **GND**, después buscaremos continuidad en otros componentes de la placa donde poder engancharnos.
 
@@ -1003,7 +996,7 @@ Mirando el [datasheet](https://html.alldatasheet.com/html-pdf/458184/EON/EN25Q32
 
 Ahora que ya sabemos cual de los pines es el GND es momento de conectar el analizador lógico.
 
-## 4.7. Conectar Analizador<a name="id4_7"></a>
+## Conectar Analizador
 
 Conectamos el GND del router al del analizador lógico y los pines que pueden ser el UART del router a 2 pines del analizador.
 
@@ -1015,7 +1008,7 @@ Aquí vemos como conecte el GND.
 
 ![](assets/photo_5828066412613189318_y.jpg)
 
-## 4.8. Averiguar el Baud Rate<a name="id4_8"></a>
+## Averiguar el Baud Rate
 
 Abrimos el Saleae Logic  y le damos al boton de play, despues enchufamos el router y esperamos a recibir señales.
 
@@ -1062,7 +1055,7 @@ Aqui tenemos el arranque del u-boot:
 
 ![](assets/Pasted-image-20231006183705.png)
 
-## 4.9. Conectarse al UART<a name="id4_9"></a>
+## Conectarse al UART
 
 ### Usando USB-to-TTL
 
@@ -1070,7 +1063,7 @@ Aqui tenemos el arranque del u-boot:
 
 Aqui podemos ver como he conectado todos los pines desde el USB_UART-to-TTL, una cosa IMPORTANTE es que para que funcione la escritura necesitamos que el cable de datos TX vaya a 5V, porque si lo ponemos a 3,3V no funcionara correctamente.
 
-Ahora para conectarnos correctamente lo primero es entender el protocolo [SERIAL](https://learn.sparkfun.com/tutorials/serial-communication) ,lo mas importante es que el pin RX del adaptador TTL-USB tiene que ir al TX del router y el TX del adaptador TTL-USB al RX del router además de conectar los dos GNDs. 
+Ahora para conectarnos correctamente lo primero es entender el protocolo [SERIAL](https://learn.sparkfun.com/tutorials/serial-communication) ,lo mas importante es que el pin RX del adaptador TTL-USB tiene que ir al TX del router y el TX del adaptador TTL-USB al RX del router además de conectar los dos GNDs.
 
 ![](UART.png)
 
@@ -1080,27 +1073,27 @@ Ahora nos conectaremos usando algun software como TeraTerm o Putty, en mi caso u
 
 1. Lo abrimos y seleccionamos la interfaz COM correspondiente del TTL-USB
 
-![](assets/Pasted-image-20230916160959.png)
+    ![](assets/Pasted-image-20230916160959.png)
 
-2. Ahora configuramos la interfaz serial dentro de Setup->Serial Port
+1. Ahora configuramos la interfaz serial dentro de Setup->Serial Port
 
-![](assets/Pasted-image-20230916161256.png)
+    ![](assets/Pasted-image-20230916161256.png)
 
-3. Y lo dejamos con esta configuracion de 115200 baudios de velocidad, 8 bits de datos, ninguno de paridad y uno de stop. 
+1. Y lo dejamos con esta configuracion de 115200 baudios de velocidad, 8 bits de datos, ninguno de paridad y uno de stop.
 
-![](assets/Pasted-image-20230916161412.png)
+    ![](assets/Pasted-image-20230916161412.png)
 
-4. Ahora para no quedarnos ciegos vamos a la configuración de fuente y aumentamos el tamaño y lo dejamos en 14.
+1. Ahora para no quedarnos ciegos vamos a la configuración de fuente y aumentamos el tamaño y lo dejamos en 14.
 
-![](assets/Pasted-image-20230916161528.png)
+    ![](assets/Pasted-image-20230916161528.png)
 
-![](assets/Pasted-image-20230916161613.png)
+    ![](assets/Pasted-image-20230916161613.png)
 
-5. Tras esto enchufamos el router a la corriente y veremos el bootloader cargando.
+1. Tras esto enchufamos el router a la corriente y veremos el bootloader cargando.
 
-![](assets/Pasted-image-20230916162016.png)
+    ![](assets/Pasted-image-20230916162016.png)
 
-![](assets/Pasted-image-20230916162303.png)
+    ![](assets/Pasted-image-20230916162303.png)
 
 Tras esto ya podemos escribir comandos pero antes vamos a ver como se haría con el bus pirate.
 
@@ -1114,11 +1107,11 @@ La configuración del emulador de terminal es la misma que en el USB-to-TTL ahor
 
 ![](assets/Pasted-image-20230916163947.png)
 
-1.  Ahora debemos conectar el MOSI(GRIS) al RX y el MISO(NEGRO) al TX, el GND(MARRON) al GND del router además de conectar el VPU(VERDE) al 5V(NARANJA) del propio bus pirate
+1. Ahora debemos conectar el MOSI(GRIS) al RX y el MISO(NEGRO) al TX, el GND(MARRON) al GND del router además de conectar el VPU(VERDE) al 5V(NARANJA) del propio bus pirate
 
-![](assets/photo_5778209212470510399_y.jpg)
-   
-2. Lo siguiente es conectarse usando TeraTerm y con la misma configuración de antes e interactuar con el menu del bus pirate.
+    ![](assets/photo_5778209212470510399_y.jpg)
+
+1. Lo siguiente es conectarse usando TeraTerm y con la misma configuración de antes e interactuar con el menu del bus pirate.
 
 
 Escribimos 'm' y pulsamos intro
@@ -1133,7 +1126,7 @@ Pulsamos enter 4 veces para elegir todo por defecto es decir: Sin bit de paridad
 
 ![](assets/Pasted-image-20230916172153.png)
 
-Pulsamos 'W' mayúscula para dar corriente, pulsamos 'P' mayúscula para activar las resistencias pull-up y solo nos falta activar el live monitor para recibir la shell de UART. 
+Pulsamos 'W' mayúscula para dar corriente, pulsamos 'P' mayúscula para activar las resistencias pull-up y solo nos falta activar el live monitor para recibir la shell de UART.
 
 ![](assets/Pasted-image-20230916172445.png)
 
@@ -1145,7 +1138,7 @@ Ahora conectamos el router a la corriente y obtendremos shell.
 
 ![](assets/Pasted-image-20230916172742.png)
 
-## 4.10. Extraer Sistema de archivos y Firmware<a name="id4_10"></a>
+## Extraer Sistema de archivos y Firmware
 
 Lo primero que haremos para extraer el sistema de archivos es instalar un servidor [TFTP](https://bitbucket.org/phjounin/tftpd64/downloads/) (Trivial FIle Transfer Protocol), en mi caso instale la version [Tftpd64-4.62-setup.exe](https://bitbucket.org/phjounin/tftpd64/downloads/Tftpd64-4.62-setup.exe) una vez instalada hay que abrirlo y dejar la configuración de esta manera:
 
@@ -1159,7 +1152,7 @@ Tras configurarlo nos conectamos al router por wifi o por cable y revisamos que 
 
 ![](assets/Pasted-image-20230916174805.png)
 
-Con esto ya sabemos que desde el terminal del router tenemos transferir por TFTP a 192.168.0.100 
+Con esto ya sabemos que desde el terminal del router tenemos transferir por TFTP a 192.168.0.100
 
 Para comprobar que estamos conectados al router por red introducimos la puerta de enlace en el navegador:
 
@@ -1170,7 +1163,7 @@ Una vez conectados es el momento de extraer el sistema de archivos y el firmware
 Tenemos una terminal muy limitada, para tener mas herramientas  hay que subir una copia de [busybox-mipsel.](https://busybox.net/downloads/binaries/1.21.1/busybox-mipsel)
 ### Obtención de la flash via MTD
 
-Este router utiliza el subsistema MTD, que se divide en bloques. Concatenamos todos los bloques en orden para obtener el contenido de la flash, para más información de [MTD.](http://linux-mtd.infradead.org/doc/general.html) 
+Este router utiliza el subsistema MTD, que se divide en bloques. Concatenamos todos los bloques en orden para obtener el contenido de la flash, para más información de [MTD.](http://linux-mtd.infradead.org/doc/general.html)
 
 Los bloques se encuentran en el directorio /dev y empiezan por la palabra mtd:
 
@@ -1179,7 +1172,7 @@ Los bloques se encuentran en el directorio /dev y empiezan por la palabra mtd:
 Copiamos todos los archivos de mtd con el script [transfer.sh](assets/transfer.sh).
 
 
-## 4.11. Extraccion del Firmware<a name="id4_11"></a>
+## Extraccion del Firmware
 
 Metemos los archivos en kali y los concatenamos siguiendo estos comandos:
 
@@ -1205,7 +1198,7 @@ binwalk -eM firmware
 ![](assets/Pasted-image-20230919180039.png)
 
 
-# 5. Hacking SD Transcend TS2GUSD<a name="id5"></a>
+# Hacking SD Transcend TS2GUSD
 
 En este taller se usará el Bus Pirate para leer una tarjeta SD en modo SPI.
 
@@ -1215,7 +1208,7 @@ Materiales:
 - [Pinzas BusPirate](https://www.adafruit.com/product/238)
 - [Módulo lector de tarjetas SD](https://es.aliexpress.com/item/1865616455.html?spm=a2g0o.order_list.order_list_main.29.681e194dSI5RMR&gatewayAdapt=glo2esp)
 
-## 5.1. Conectar pinzas a lector SD<a name="id5_1"></a>
+## Conectar pinzas a lector SD
 
 Usamos este esquema para conectarnos (concretament, habrá que mirar la fila SPI prestando atención a los colores de los cables, no de las pinzas):
 
@@ -1224,7 +1217,8 @@ Usamos este esquema para conectarnos (concretament, habrá que mirar la fila SPI
 ![](assets/imagenes_tutorial_sd_spi/buspirate-sd-spi.png)
 
 > Nota: Si teneis algún problema durante la lectura de la SD, tened en cuenta que las pinzas a veces funcionan un poco mal. Probad usando unos cables dupont hembra-hembra para descartar.
-## 5.2. Conectarse al Bus Pirate<a name="id5_2"></a>
+
+## Conectarse al Bus Pirate
 
 Para interactuar con el Bus Pirate, el primer paso es conectarlo a alguno de los puertos USB de nuestro ordenador. Se aconseja lo siguiente:
 - No usar hub USB.
@@ -1238,16 +1232,16 @@ El siguiente paso es conectarse al Bus Pirate con un software como Tera Term o P
 Una vez instalado el software (fuera del alcance de esta guía), ejecutar el siguiente comando:
 
 ```bash
-sudo tio -b 115200 /dev/ttyUSBX 
+sudo tio -b 115200 /dev/ttyUSBX
 ```
 ![](assets/imagenes_tutorial_sd_spi/image.png)
 
 Si no sabes el ttyUSB del Bus Pirate, puedes comprobarlo rápidamente de la siguiente forma:
 
 1. Desconecta el USB del Bus Pirate.
-2. Ejecuta el siguiente comando: `sudo dmesg -w`
-3. Vuelve a conectar el Bus Pirate.
-4. Comprueba el dispositivo nuevo que se ha conectado: 
+1. Ejecuta el siguiente comando: `sudo dmesg -w`
+1. Vuelve a conectar el Bus Pirate.
+1. Comprueba el dispositivo nuevo que se ha conectado:
 
 ![](assets/imagenes_tutorial_sd_spi/image-1.png)
 
@@ -1282,13 +1276,14 @@ Podemos comprobar además que estamos dando voltajes correctos haciendo uso de `
 ![](assets/imagenes_tutorial_sd_spi/image-8.png)
 
 Para la prueba que estamos haciendo, el voltaje que nos interesa es el marcado en rojo. Cuanto más cerca estemos de 3.3V mejor. En mi caso el USB llega a darme 3.26V y me funciona todo, así que entiendo que podeis usarlo como referencia de "voltaje normal".
-## 5.3. Inicializar la tarjeta SD en modo SPI<a name="id5_3"></a>
+
+## Inicializar la tarjeta SD en modo SPI
 
 Para inicializar la tarjeta SD en modo SPI, debemos enviarle una serie de comandos. Lo primero que haremos será ver el formato de los comandos:
 
 | CMD | ARGUMENT | CRC |
 |:---------:|:--------:|:---:|
-| 1 byte    | 4 bytes   | 1 byte| 
+| 1 byte    | 4 bytes   | 1 byte|
 
 Un comando podemos dividirlo en 3 partes:
 - CMD: Indica el comando que tiene que ejecutar la tarjeta SD. Hay que tener cuidado cuando queremos indicar el comando que queremos ejecutar ya que si por ejemplo queremos ejecutar CMD0 (GO_IDLE_STATE), no mandamos un 0 (0x00) y ya está. En realidad, de los 8 bits que se mandan para indicar a la tarjeta SD el comando (1 byte), solo los 6 últimos bits indican el comando, los 2 primeros bits están fijados a 01. Por tanto, el primer byte, el comando que se ejecuta, siempre se verá así:
@@ -1305,9 +1300,9 @@ Un comando podemos dividirlo en 3 partes:
 
 Entendido un poco cómo hablamos con la tarjeta SD, tenemos inicializarla de la siguiente forma para indicarle que queremos hablar usando SPI:
 1. La reseteamos en modo SPI con el comando CMD0 (GO_IDLE_STATE)
-2. Activamos el proceso de inicialización con el comando CMD1 (SEND_OP_COND)
-3. Comprobamos el estado de la tarjeta con el comando CMD1 (SEND_OP_COND)
-4. Establecemos el tamaño de bloque a 512 bytes con el comando CMD16 (SET_BLOCKLEN)
+1. Activamos el proceso de inicialización con el comando CMD1 (SEND_OP_COND)
+1. Comprobamos el estado de la tarjeta con el comando CMD1 (SEND_OP_COND)
+1. Establecemos el tamaño de bloque a 512 bytes con el comando CMD16 (SET_BLOCKLEN)
 
 Hecho esto, ya tendríamos la SD lista para leerla haciendo uso del protocolo SPI. Ya solo faltaría ir pidíendole bloques con el comando CMD17 (READ_SINGLE_BLOCK).
 
@@ -1378,7 +1373,7 @@ Como respuesta, deberemos obtener lo siguiente:
 
 No hemos obtenido ningún error, así que todo bien.
 
-## 5.4. Lectura de bloques<a name="id5_4">
+## Lectura de bloques
 
 Ahora que ya hemos terminado de hacer el paso 2 por completo, ya tenemos la tarjeta SD lista para empezar a pedirle bloques. Para esto hay que tener una cosa en cuenta:
 
@@ -1435,7 +1430,7 @@ import time
 s = serial.Serial(port="/dev/ttyUSB0", baudrate=115200, timeout=5)
 
 # Cambiar modo
-s.write(b"m\n") 
+s.write(b"m\n")
 time.sleep(0.1)
 
 # SPI
@@ -1582,11 +1577,11 @@ cat dreg_flag.txt
 ```
 ![](assets/imagenes_tutorial_sd_spi/image-25.png)
 
-# 6. Emulación de una firmware con Emux<a name="id6"></a>
+# Emulación de una firmware con Emux
 
-A través de la herramienta [**QEMU**](https://www.qemu.org/) podemos emular una firmware, pero su configuración en algunos casos puede ser compleja. Por eso, existen varias herramientas que nos van a ayudar simplicar el proceso de emulación de una firmware. Las herramietas que yo he usado son [**Firmadyne**](https://github.com/firmadyne/firmadyne), [**FirmAE**](https://github.com/pr0v3rbs/FirmAE) y [**Emux**](https://emux.exploitlab.net/). 
+A través de la herramienta [**QEMU**](https://www.qemu.org/) podemos emular una firmware, pero su configuración en algunos casos puede ser compleja. Por eso, existen varias herramientas que nos van a ayudar simplicar el proceso de emulación de una firmware. Las herramietas que yo he usado son [**Firmadyne**](https://github.com/firmadyne/firmadyne), [**FirmAE**](https://github.com/pr0v3rbs/FirmAE) y [**Emux**](https://emux.exploitlab.net/).
 
-Después de realizar varias pruebas, la herramienta que más me gusta por mucho es **Emux**. Ha sido creada por el researcher [Saumil Shah](https://twitter.com/therealsaumil). Al principio esta herramienta sólo era compatible con ARM y se llamaba ARM-X, pero como la mayoría de los dispositivos IoT son MIPS en Octubre del 2021 se añadió el soporte para MIPS, por este motivo se cambio su nombre a **Emux**. Es un entorno [dockerizado](https://es.wikipedia.org/wiki/Docker_(software)) lo que evita bastantes problemas típicos en la configuración de la red y otras incompatibilidades. Aunque es verdad que con algunas firmwares habrá que dedicarle cierto tiempo para "configurarla" correctamente por ejemplo, evitando la carga de algunos módulos y/o servicios para poder emularlas correctamente en **Emux**. 
+Después de realizar varias pruebas, la herramienta que más me gusta por mucho es **Emux**. Ha sido creada por el researcher [Saumil Shah](https://twitter.com/therealsaumil). Al principio esta herramienta sólo era compatible con ARM y se llamaba ARM-X, pero como la mayoría de los dispositivos IoT son MIPS en Octubre del 2021 se añadió el soporte para MIPS, por este motivo se cambio su nombre a **Emux**. Es un entorno [dockerizado](https://es.wikipedia.org/wiki/Docker_(software)) lo que evita bastantes problemas típicos en la configuración de la red y otras incompatibilidades. Aunque es verdad que con algunas firmwares habrá que dedicarle cierto tiempo para "configurarla" correctamente por ejemplo, evitando la carga de algunos módulos y/o servicios para poder emularlas correctamente en **Emux**.
 
 >**Emux** es más sólido y en su página web hay bastante documentación detallada de su arquitectura y varios ejemplos que merece mucho la pena mirarlos para entender como podemos configurar nuestra firmware si tenemos ciertos problemas.
 
@@ -1594,9 +1589,9 @@ Después de realizar varias pruebas, la herramienta que más me gusta por mucho 
 
 En general y resumiendo bastante el proceso del arranque de un dispositivo IoT empieza cuando el [SoC](https://es.wikipedia.org/wiki/Sistema_en_un_chip) pasa el control al bootloader de la memoria ROM, luego puede pasar por una varias fases internas hasta que la última fase copia el sistema de arranque de linux en la memoria RAM, el más usado es U-BOOT, este último finalmente arranca el kernel de linux, y se monta el sistema raiz de ficheros, se inicia el proceso init y se da paso a los servicios y se muestra la ansiada shell. Pues más o menos, esto es lo que vamos hacer de una forma sencilla con **Emux**.
 
-## 6.1 Instalación de EMUX <a name="id6_1"></a>
+## Instalación de EMUX
 
-Yo voy a instalar **Emux** en [**ArchLinux**](https://archlinux.org/) pero en otra distribución o en [Windows](https://docs.docker.com/desktop/install/windows-install/) el proceso de instalación es similar. 
+Yo voy a instalar **Emux** en [**ArchLinux**](https://archlinux.org/) pero en otra distribución o en [Windows](https://docs.docker.com/desktop/install/windows-install/) el proceso de instalación es similar.
 
 Para poder usar **Emux** hay que instalar **Docker** y algunos paquetes e iniciar este servicio en el sistema. En **Arch** se hace de la siguiente forma:
 
@@ -1662,7 +1657,7 @@ De momento, pulsaremos el botón **Quit** del menú y volveremos a la shell de *
 
 ![](assets/emux/emux_firmware_v11.jpeg)
 
-## 6.2 **Añadiendo una nueva firmware a Emux** <a name="id6_2"></a>
+## Añadiendo una nueva firmware a Emux
 
 Lo primero que tenemos que hacer es copiar la firmware en la carpeta que está compartida entre el contenedor de **Emux** y nuestro sistema operativo, en mi caso **ArchLinux**. Desde nuestro sistema está hubicada en **"\<carpeta instalación emux\>/workspace/"** y desde dentro del contenedor de **Docker** (desde la shell EMUX-DOCKER o emux-docker) está hubicada en **"/emux/workspace/"**. Esto es similar a cuando se comparte una carpeta entre VMWare/VirtualBox con nuestro Sistema Operativo.
 
@@ -1718,7 +1713,7 @@ binwalk <fichero firmware>
 
 ![](assets/emux//emux-binwalk-info.jpeg)
 
-Vemos que el fichero **20200** debería contener el kernel así que vamos a buscar su versión utilizando la herramienta **strings**. 
+Vemos que el fichero **20200** debería contener el kernel así que vamos a buscar su versión utilizando la herramienta **strings**.
 
 ```bash
 strings <fichero kernel> | grep -i version
@@ -1728,7 +1723,7 @@ strings <fichero kernel> | grep -i version
 
 La versión del kernel utilizada por nuestra firmware es la **2.6.31** la podemos ver en la línea que dice **Linux version 2.6.31**
 
-Para buscar la arquitectura de la firmware también es muy sencillo, dentro del sistema de ficheros de un dispositivo IoT hay un binario que se llama [**Busybox**](https://es.wikipedia.org/wiki/Busybox) que contiene en su interior las utilidades básicas de un sistema linux como son *ls*, *cp*, *date*, *df*, *chmod*, etc... 
+Para buscar la arquitectura de la firmware también es muy sencillo, dentro del sistema de ficheros de un dispositivo IoT hay un binario que se llama [**Busybox**](https://es.wikipedia.org/wiki/Busybox) que contiene en su interior las utilidades básicas de un sistema linux como son *ls*, *cp*, *date*, *df*, *chmod*, etc...
 
 ![](assets/emux/emux-busybox.jpeg)
 
@@ -1749,7 +1744,7 @@ La arquitectura detectada es **MIPS R3000** y el formato es **big endian**. Esto
 
 **Configurar el entorno**
 
-Desde **EMUX-DOCKER** dentro de la carpeta **"/emux/WR841NDV11/kernel/"** hay que elegir que versión de kernel podría ser compatible con la versión **2.6.31** para una máquina **MIPS** en **big endian**. 
+Desde **EMUX-DOCKER** dentro de la carpeta **"/emux/WR841NDV11/kernel/"** hay que elegir que versión de kernel podría ser compatible con la versión **2.6.31** para una máquina **MIPS** en **big endian**.
 
 Podemos preguntarle a **QEMU** las versiones de MIPS que soporta para big endian con el siguiente comando.
 
@@ -1762,16 +1757,16 @@ Si estas ejecutando linux en una máquina Intel esta herramienta la puedes encon
 
 ![](assets/emux/emux-qemu-malta.jpeg)
 
-El siguiente paso es ver que versiones del kernel de linux tenemos disponibles para nuestro entorno, así que podemos listar el contenido de la carpeta **"/emux/WR841NDV11/kernel/"** 
+El siguiente paso es ver que versiones del kernel de linux tenemos disponibles para nuestro entorno, así que podemos listar el contenido de la carpeta **"/emux/WR841NDV11/kernel/"**
 
 ![](assets/emux/emux-list-kernels.jpeg)
 
-Aunque en el listado no está la versión **2.6.31**, vemos una versión de kernel que podría funcionar. El kernel **vmlinux-2.6.30.9-malta-be** está sorportado por nuestra version de **QEMU** y ademas es big edian (be). 
-Otra opción, sería compilar la misma versión o descargarla de algun sitio confiable en Internet.  
+Aunque en el listado no está la versión **2.6.31**, vemos una versión de kernel que podría funcionar. El kernel **vmlinux-2.6.30.9-malta-be** está sorportado por nuestra version de **QEMU** y ademas es big edian (be).
+Otra opción, sería compilar la misma versión o descargarla de algun sitio confiable en Internet.
 
 Una vez seleccionada la versión que vamos a usar podemos borrar los demás ficheros de kernel del directorio **"/emux/WR841NDV11/kernel/"** ya que no los vamos a usar y así podemos ahorrar algo de espacio en disco.
 
-También vamos a borrar de **"/emux/WR841NDV11/"** los ficheros **nvram.ini**, **mtdparts** y el directorio **preload** que no necesitamos para nuestra configuración. 
+También vamos a borrar de **"/emux/WR841NDV11/"** los ficheros **nvram.ini**, **mtdparts** y el directorio **preload** que no necesitamos para nuestra configuración.
 
 > Hay más información sobre como usar estos ficheros y la carpeta **preload** en el caso de que sean necesarios en la página de [**EMUX**](https://emux.exploitlab.net/).
 
@@ -1800,7 +1795,7 @@ Como último paso hay añadir la nueva firmware al fichero **/emux/devices** par
 WR841NDV11,qemu-system-mips-7.2.0,malta,,,128MB,vmlinux-2.6.30.9-malta-be,MALTA2,TPLINK WR841ND v11
 ```
 
-## 6.3 **Arrancar la nueva firmware** <a name="id6_3"></a>
+## Arrancar la nueva firmware
 
 Desde la consola **EMUX-DOCKER** ejecutamos el comando **launcher** y seleccionamos la opcion **TPLINK WR841ND v11** que es nuestra nueva firmware.
 
@@ -1810,7 +1805,7 @@ Si todo ha ido bien veremos la siguiente pantalla
 
 ![](assets/emux/emux-device-console.jpeg)
 
-Ahora vamos abrir un cliente **Emux**, asi que abrimos otra terminal en linux y desde la carpeta de instalacion de **Emux** vamos a ejecutar el comando  **"./emux-docker-shell"**. Este es el cliente de **Emux** que se conecta automáticamente a **EMUX-DOCKER**, para nosotros este processo es transparente. 
+Ahora vamos abrir un cliente **Emux**, asi que abrimos otra terminal en linux y desde la carpeta de instalacion de **Emux** vamos a ejecutar el comando  **"./emux-docker-shell"**. Este es el cliente de **Emux** que se conecta automáticamente a **EMUX-DOCKER**, para nosotros este processo es transparente.
 
 Ahora desde la consola **emux-docker** ejecutaremos el comando **userspace** y nos saldrá la siguiente venta donde vamos a elegir la opción **2 Start TPLINK WR841ND v11**.
 
@@ -1840,7 +1835,7 @@ Vamos a ver si funciona correctamente, usamos el usuario **admin** y la contrase
 
 ![](assets/emux/emux-web.jpeg)
 
-Por ejemplo, ahora que el servicio web está funcionando podríamos usar un **fuzzer** para testear el aplicativo web. Además de las utilidades que hemos visto antes también tenemos **emuxgdb** para debugear un proceso utilizando **gdb** con [**gef**](https://hugsy.github.io/gef/), **emuxmaps** para mirar la memoria de un proceso y **emuxkill** para matar un proceso, y finalmente pero muy importante está la herramienta **emuxhalt** para cerrar **Emux** de una forma segura y así evitar que se queden ficheros temporales sin borrar que pueden dar algun problema en futuras sesiones de la misma firmware. 
+Por ejemplo, ahora que el servicio web está funcionando podríamos usar un **fuzzer** para testear el aplicativo web. Además de las utilidades que hemos visto antes también tenemos **emuxgdb** para debugear un proceso utilizando **gdb** con [**gef**](https://hugsy.github.io/gef/), **emuxmaps** para mirar la memoria de un proceso y **emuxkill** para matar un proceso, y finalmente pero muy importante está la herramienta **emuxhalt** para cerrar **Emux** de una forma segura y así evitar que se queden ficheros temporales sin borrar que pueden dar algun problema en futuras sesiones de la misma firmware.
 
 > Estas herramientas que tenemos en **Emux** son muy útiles ya que normalmente no vamos a disponer de ellas dentro de nuestra firmware.
 
@@ -1854,7 +1849,7 @@ De esta forma tendremos acceso mediante una **shell** a nuestro dispositivo emul
 
 Happy IoT hacking!!
 
-# 7. Webs, libros, recursos, a quien seguir...<a name="id7"></a>
+# Webs, libros, recursos, a quien seguir...
 
 - https://twitter.com/therealdreg
 - https://twitter.com/wrongbaud
