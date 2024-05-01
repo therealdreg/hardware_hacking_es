@@ -4,64 +4,59 @@
 - Discord: https://discord.gg/wkWr6Dj46D 
 - Telegram: https://t.me/hardwarehackinges
 
-# Índice   
-- n1. [Fundamentos Teóricos](#id1)
-- n1.1. [¿Qué es esto del Hardware Hacking?](#id1_1)
-- n1.2. [¿Qué necesito para empezar en esto?](#id1_2)
-- n1.3. [Protocolos de Datos](#id1_3)
-- n1.4. [¿Qué es un Analizador Lógico?](#id1_4)
-- n1.5. [Tengo un BusPirate v3 pero... ¿Qué es esto?](#id1_5)
-- n1.6. [Pull-up y Pull-down para analfabetos](#id1_6)
-- n1.6.1. [Introducción](#id1_6_1)
-- n1.6.2. [¡Terror a las antenas!](#id1_6_2)
-- n1.6.3. [Conceptos previos: ¿Qué es lo que veo?](#id1_6_3)
-- n1.6.4. [Pull-up: ¡Manos a la obra!](#id1_6_4)
-- n1.6.5. [¡Resistencias, al rescate!](#id1_6_5)
-- n1.6.6. [Pulldown: vamos a ser breves](#id1_6_6)
-- n1.6.7. [Resumen: ¡no des más la chapa!](#id1_6_7)
-- n1.6.8. [¿Dónde encuentro los Pull-Up en el BusPirate?](#id1_6_8)
-- n1.6.9. [Por si se te antojan algunos detalles...](#id1_6_9)
-- n1.7. [Encontrar puerto COM para el Bus Pirate](#id1_7)
+# Índice
 
-- n2. [Hacking EEPROM AT24C256 I2C 5V](#id2)
-- n2.1. [Conectar pinzas a EEPROM](#id2_1)
-- n2.2. [Conectarse al I2C con BusPirate](#id2_2)
-- n2.3. [Localizar direcciones I2C](#id2_3)
-- n2.4. [Como leer y escribir con I2C](#id2_4)
-- n2.5. [Dumpeo o backup](#id2_5)
-- n2.6. [Flasher AT24C256](#id2_6)
-
-- n3. [Hacking FLASH SPI Winbond 25Q64FVSIG](#id3)
-- n3.1. [Conectar pinzas a SPI FLASH](#id3_1)
-- n3.2. [Identificar la SPI Flash](#id3_2)
-- n3.3. [Extraer contenido SPI Flash](#id3_3)
-- n3.4. [Extracción de la imagen](#id3_4)
-
-- n4. [Hacking Router TP-Link TL-WR841N](#id4)
-- n4.1. [Comprar el router](#id4_1)
-- n4.2. [Abriendo el router](#id4_2)
-- n4.3. [Identificar componentes y UART](#id4_3)
-- n4.4. [Soldar pines a UART y ELIMINAR R18](#id4_4)
-- n4.5. [Buscando UART con Analizador Lógico](#id4_5)
-- n4.6. [Encontrar el GND](#id4_6)
-- n4.7. [Conectar Analizador](#id4_7)
-- n4.8. [Averiguar el Baud Rate](#id4_8)
-- n4.9. [Conectarse al UART](#id4_9)
-- n4.10. [Extraer Sistema de archivos y Firmware](#id4_10)
-- n4.11. [Extraccion del Firmware](#id4_11)
-
-- n5. [Hacking SD Transcend TS2GUSD](#id5)
-- n5.1. [Conectar pinzas a lector SD](#id5_1)
-- n5.2. [Conectarse al Bus Pirate](#id5_2)
-- n5.3. [Inicializar la tarjeta SD en modo SPI](#id5_3)
-- n5.4. [Lectura de bloques](#id5_4)
-
-- n6. [Emulación de una firmware con Emux](#id6)    
-- n6.1. [Instalación de EMUX](#id6_1)
-- n6.2. [Añadiendo una nueva firmware a EMUX](#id6_2)
-- n6.3. [Arrancar la nueva firmware en EMUX](#id6_3)
-
-- n7. [Webs, libros, recursos, a quien seguir...](#id7)
+1. [Fundamentos Teóricos](#id1)
+    1. [¿Qué es esto del Hardware Hacking?](#id1_1)
+    1. [¿Qué necesito para empezar en esto?](#id1_2)
+    1. [Protocolos de Datos](#id1_3)
+    1. [¿Qué es un Analizador Lógico?](#id1_4)
+    1. [Tengo un BusPirate v3 pero... ¿Qué es esto?](#id1_5)
+    1. [Pull-up y Pull-down para analfabetos](#id1_6)
+        1. [Introducción](#id1_6_1)
+        1. [¡Terror a las antenas!](#id1_6_2)
+        1. [Conceptos previos: ¿Qué es lo que veo?](#id1_6_3)
+        1. [Pull-up: ¡Manos a la obra!](#id1_6_4)
+        1. [¡Resistencias, al rescate!](#id1_6_5)
+        1. [Pulldown: vamos a ser breves](#id1_6_6)
+        1. [Resumen: ¡no des más la chapa!](#id1_6_7)
+        1. [¿Dónde encuentro los Pull-Up en el BusPirate?](#id1_6_8)
+        1. [Por si se te antojan algunos detalles...](#id1_6_9)
+    1. [Encontrar puerto COM para el Bus Pirate](#id1_7)
+1. [Hacking EEPROM AT24C256 I2C 5V](#id2)
+    1. [Conectar pinzas a EEPROM](#id2_1)
+    1. [Conectarse al I2C con BusPirate](#id2_2)
+    1. [Localizar direcciones I2C](#id2_3)
+    1. [Como leer y escribir con I2C](#id2_4)
+    1. [Dumpeo o backup](#id2_5)
+    1. [Flasher AT24C256](#id2_6)
+1. [Hacking FLASH SPI Winbond 25Q64FVSIG](#id3)
+    1. [Conectar pinzas a SPI FLASH](#id3_1)
+    1. [Identificar la SPI Flash](#id3_2)
+    1. [Extraer contenido SPI Flash](#id3_3)
+    1. [Extracción de la imagen](#id3_4)
+1. [Hacking Router TP-Link TL-WR841N](#id4)
+    1. [Comprar el router](#id4_1)
+    1. [Abriendo el router](#id4_2)
+    1. [Identificar componentes y UART](#id4_3)
+    1. [Soldar pines a UART y ELIMINAR R18](#id4_4)
+    1. [Buscando UART con Analizador Lógico](#id4_5)
+    1. [Encontrar el GND](#id4_6)
+    1. [Conectar Analizador](#id4_7)
+    1. [Averiguar el Baud Rate](#id4_8)
+    1. [Conectarse al UART](#id4_9)
+    1. [Extraer Sistema de archivos y Firmware](#id4_10)
+    1. [Extraccion del Firmware](#id4_11)
+1. [Hacking SD Transcend TS2GUSD](#id5)
+    1. [Conectar pinzas a lector SD](#id5_1)
+    1. [Conectarse al Bus Pirate](#id5_2)
+    1. [Inicializar la tarjeta SD en modo SPI](#id5_3)
+    1. [Lectura de bloques](#id5_4)
+1. [Emulación de una firmware con Emux](#id6)    
+    1. [Instalación de EMUX](#id6_1)
+    1. [Añadiendo una nueva firmware a EMUX](#id6_2)
+    1. [Arrancar la nueva firmware en EMUX](#id6_3)
+1. [Webs, libros, recursos, a quien seguir...](#id7)
 
 ----
 
@@ -81,8 +76,7 @@ Un disclaimer importante es que **no se van a realizar técnicas ilegales** o vi
 ## 1.2. ¿Qué necesito para empezar en esto?<a name="id1_2"></a>
 
 1. **Ganas de estudiar y aprender**: No hay una forma directa y sencilla de adquirir conocimiento sobre esto, normalmente necesitarás estudiar esquemáticos, leer documentación técnica y pasar muchas horas intentando entender qué carajos estás haciendo. Esto es parte de la diversión. Aún así, partiremos de que tienes un nivel básico de conocimientos teóricos de electricidad y electrónica. Más o menos lo que te enseñan en el bachillerato tecnológico bastaría (sistema educativo español).
-
-2. **Material de soldadura**: No te tienes que gastar una millonada, pero sí hay una serie de cosas que son básicas y que vas a necesitar. Hay miles de guías y listas de materiales que podrías seguir, pero todo se resume en:
+1. **Material de soldadura**: No te tienes que gastar una millonada, pero sí hay una serie de cosas que son básicas y que vas a necesitar. Hay miles de guías y listas de materiales que podrías seguir, pero todo se resume en:
     * Soldador de estaño y desoldador. Con el desoldador en un principio te basta con una pipeta desoldadora, en un futuro ya podrás pensar si invertir en un desoldador de verdad
     * Estaño (que sea de buena calidad)
     * Flux (lo mismo que el estaño, gástate algo más en algo de buena calidad)
@@ -90,8 +84,7 @@ Un disclaimer importante es que **no se van a realizar técnicas ilegales** o vi
     * Cables de electrónica (los reconocerás porque son muy finitos y de colorines)
 
     Un añadido opcional pero interesantísimo es un microscopio para electrónica. En AliExpress se pueden encontrar algunos bastante decentes por un presupuesto bastante ajustado. No te precipites y compres algo de menos de 50€, es mejor esperar, ahorrar ese poquito y gastarte entre 50 y 70€ en un microscopio que te va a servir durante muchísimo tiempo.
-    
-3. **Cacharrada**: Llamaremos cacharrada a todo aquello que nos ayudará a extraer el firmware y a manipularlo. Para conseguir el objetivo de llegar hasta el firmware de casi cualquier cosa nos bastará con:
+1. **Cacharrada**: Llamaremos cacharrada a todo aquello que nos ayudará a extraer el firmware y a manipularlo. Para conseguir el objetivo de llegar hasta el firmware de casi cualquier cosa nos bastará con:
     * [Analizador Lógico](https://www.amazon.es/AZDelivery-Logic-Analyzer-compatible-versi%C3%B3n/dp/B01MUFRHQ2/ref=sr_1_1_sspa?keywords=analizador%2Blogico%2Busb&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1)
     * [BusPiratev3](https://www.adafruit.com/product/237)
     * [Pinzas BusPirate](https://www.adafruit.com/product/238)
@@ -148,9 +141,10 @@ Los protocolos más habituales para Arduino son conexión serial, SPI e I2C; per
 ## 1.5. Tengo un BusPirate v3 pero... ¿Qué es esto?<a name="id1_5"></a>
 
 Nos centramos en el BusPirate v3 en concreto, a pesar de que hay actualizaciones posteriores, por varios motivos:
-    1. Es económico. Hoy en día (finales del 2023) no cuesta más allá de 40€ el propio cacharro y sus pinzas.
-    2. Lleva mucho tiempo en el mercado, hay mucha gente usándolo, con lo que está mantenido y hay mucha documentación al respecto (incluída esta que estás leyendo). A más comunidad alrededor de un cacharrete, más mantenible será en el futuro, y más pequeña es su curva de entrada.
-    3. Tiene muchísimas funcionalidades. Esto es consecuencia directa del punto 2, porque se ha ido evolucionando a medida que más gente ha ido usándolo y ampliando su uso.
+
+1. Es económico. Hoy en día (finales del 2023) no cuesta más allá de 40€ el propio cacharro y sus pinzas.
+1. Lleva mucho tiempo en el mercado, hay mucha gente usándolo, con lo que está mantenido y hay mucha documentación al respecto (incluída esta que estás leyendo). A más comunidad alrededor de un cacharrete, más mantenible será en el futuro, y más pequeña es su curva de entrada.
+1. Tiene muchísimas funcionalidades. Esto es consecuencia directa del punto 2, porque se ha ido evolucionando a medida que más gente ha ido usándolo y ampliando su uso.
 
 Para saber exactamente qué tenemos entre manos, puedes acceder a su documentación [aquí](http://dangerousprototypes.com/docs/Bus_Pirate/es), o puedes seguir leyendo. Haremos un resumen de sus funcionalidades centrado en los casos de uso que vamos a ver.
 
@@ -229,17 +223,16 @@ Bueno... Espero que no te asustes. Lo que ves ahora es el esquema de una **resis
 Vamos a suponer que el [voltaje o tensión](https://cursos.mcielectronics.cl/2019/06/18/voltaje-corriente-resistencia-y-ley-de-ohm/###Voltaje) es la "velocidad" de la electricidad que recorre el circuito y el [amperaje o intensidad](https://cursos.mcielectronics.cl/2019/06/18/voltaje-corriente-resistencia-y-ley-de-ohm/) de la corriente es el caudal.
 
 1. GND: es una abreviación del término *ground*. Se denomina GND al punto de **referencia** que tomaremos como **"velocidad" 0**, es decir, el **aparcamiento**. Si te fijas, todos los extremos del circuito acaban en el GND, es decir, que antes de llegar a GND tendrán que frenar un poco...
-2. VCC (Voltage Common Colector): es la fuente de voltaje que genera la diferencia de tensión más alta respecto al GND. Conceptualmente, **se encarga de dar "velocidad"** a la electricidad.
-4. Resistencia: la resistencia **reduce la "velocidad"** de la electricidad. **Cuanta más corriente** pase por el circuito, la **caída de "velocidad" será mayor**. Si esta supuesta velocidad fuese muy alta y "chocase" con GND algo podría salir mal. Se produciría un cortocircuito.
-5. Interruptor: seguro que ya lo conoces, alguno debes apretar para poder leer esto... Pero si aún así no te suena lo que hace: **interrumpe o deja pasar** la electricidad.
-6. Cables: son las líneas rojas que unen cada elemento y **permite que pase por él el "caudal"** que requiera el circuito.
-7. [Sentido de la corriente](http://recursostic.educacion.es/secundaria/edad/3esofisicaquimica/3quincena11/3q11_contenidos_4c.htm): es importante conocer el sentido de la corriente. Usaremos el sentido convencional, que irá del punto negativo al positivo, como muestra la flecha naranja del esquema. 
+1. VCC (Voltage Common Colector): es la fuente de voltaje que genera la diferencia de tensión más alta respecto al GND. Conceptualmente, **se encarga de dar "velocidad"** a la electricidad.
+1. Resistencia: la resistencia **reduce la "velocidad"** de la electricidad. **Cuanta más corriente** pase por el circuito, la **caída de "velocidad" será mayor**. Si esta supuesta velocidad fuese muy alta y "chocase" con GND algo podría salir mal. Se produciría un cortocircuito.
+1. Interruptor: seguro que ya lo conoces, alguno debes apretar para poder leer esto... Pero si aún así no te suena lo que hace: **interrumpe o deja pasar** la electricidad.
+1. Cables: son las líneas rojas que unen cada elemento y **permite que pase por él el "caudal"** que requiera el circuito.
+1. [Sentido de la corriente](http://recursostic.educacion.es/secundaria/edad/3esofisicaquimica/3quincena11/3q11_contenidos_4c.htm): es importante conocer el sentido de la corriente. Usaremos el sentido convencional, que irá del punto negativo al positivo, como muestra la flecha naranja del esquema. 
 
 Para entender los Pull-up/Pull-down no necesitarás realizar cálculos, pero es útil poder interpretar las siguientes expresiones:
 
 1. $Voltaje=Intensidad*Resistencia$ ;     $V= I * R$ 
-
-2. $Potencia=Voltaje*Intensidad$ ;     $P= V * I$
+1. $Potencia=Voltaje*Intensidad$ ;     $P= V * I$
 
 En la primera, nos permite calcular cuánto voltaje es capaz de retener una resistencia según la corriente que pasa por él. Es decir, **la "velocidad" que es capaz de robar al flujo**.
 
@@ -340,9 +333,6 @@ A este modo de funcionamiento del PIN se le denomina [OPEN DRAIN](https://www.an
 
 Te dejo los [esquemáticos](https://www.multisim.com/content/YMY72mDiKxPaKZova2JLzm/pulluppulldown/open) con medidas del circuito.
 
-
-
-
 ## 1.7. Encontrar puerto COM para el Bus Pirate<a name="id1_7"></a>
 
 **Importante hacer estos pasos antes de conectar el Bus Pirate**
@@ -392,33 +382,33 @@ Ahora nos conectaremos usando algun software como TeraTerm o Putty, en mi caso u
 
 1. Lo abrimos y seleccionamos la interfaz COM correspondiente del BusPirate
 
-![](assets/Pasted-image-20230916160959.png)
+    ![](assets/Pasted-image-20230916160959.png)
 
-2. Ahora configuramos la interfaz serial dentro de Setup->Serial Port
+1. Ahora configuramos la interfaz serial dentro de Setup->Serial Port
 
-![](assets/Pasted-image-20230916161256.png)
+    ![](assets/Pasted-image-20230916161256.png)
 
-3. Y lo dejamos con esta configuracion de 115200 baudios de velocidad, 8 bits de datos, ninguno de paridad y uno de stop. 
+1. Y lo dejamos con esta configuracion de 115200 baudios de velocidad, 8 bits de datos, ninguno de paridad y uno de stop.
 
-![](assets/Pasted-image-20230916161412.png)
+    ![](assets/Pasted-image-20230916161412.png)
 
-4. Ahora para no quedarnos ciegos vamos a la configuración de fuente y aumentamos el tamaño y lo dejamos en 14.
+1. Ahora para no quedarnos ciegos vamos a la configuración de fuente y aumentamos el tamaño y lo dejamos en 14.
 
-![](assets/Pasted-image-20230916161528.png)
+    ![](assets/Pasted-image-20230916161528.png)
 
-![](assets/Pasted-image-20230916161613.png)
+    ![](assets/Pasted-image-20230916161613.png)
 
-5. Abrimos el menu del buspirate presionando m+enter
+1. Abrimos el menu del buspirate presionando m+enter
 
-![](assets/Pasted-image-20230921191417.png)
+    ![](assets/Pasted-image-20230921191417.png)
 
-6. Presionamos el 4 y damos enter, dos veces
+1. Presionamos el 4 y damos enter, dos veces
 
-![](assets/Pasted-image-20230921191520.png)
+    ![](assets/Pasted-image-20230921191520.png)
 
-Presionamos W mayúscula y P mayúscula y ya podriamos leer la memoria y escribir
+1. Presionamos W mayúscula y P mayúscula y ya podriamos leer la memoria y escribir
 
-![](assets/Pasted-image-20230921191747.png)
+    ![](assets/Pasted-image-20230921191747.png)
 
 ## 2.3. Localizar direcciones I2C<a name="id2_3"></a>
 
@@ -1080,27 +1070,27 @@ Ahora nos conectaremos usando algun software como TeraTerm o Putty, en mi caso u
 
 1. Lo abrimos y seleccionamos la interfaz COM correspondiente del TTL-USB
 
-![](assets/Pasted-image-20230916160959.png)
+    ![](assets/Pasted-image-20230916160959.png)
 
-2. Ahora configuramos la interfaz serial dentro de Setup->Serial Port
+1. Ahora configuramos la interfaz serial dentro de Setup->Serial Port
 
-![](assets/Pasted-image-20230916161256.png)
+    ![](assets/Pasted-image-20230916161256.png)
 
-3. Y lo dejamos con esta configuracion de 115200 baudios de velocidad, 8 bits de datos, ninguno de paridad y uno de stop. 
+1. Y lo dejamos con esta configuracion de 115200 baudios de velocidad, 8 bits de datos, ninguno de paridad y uno de stop. 
 
-![](assets/Pasted-image-20230916161412.png)
+    ![](assets/Pasted-image-20230916161412.png)
 
-4. Ahora para no quedarnos ciegos vamos a la configuración de fuente y aumentamos el tamaño y lo dejamos en 14.
+1. Ahora para no quedarnos ciegos vamos a la configuración de fuente y aumentamos el tamaño y lo dejamos en 14.
 
-![](assets/Pasted-image-20230916161528.png)
+    ![](assets/Pasted-image-20230916161528.png)
 
-![](assets/Pasted-image-20230916161613.png)
+    ![](assets/Pasted-image-20230916161613.png)
 
-5. Tras esto enchufamos el router a la corriente y veremos el bootloader cargando.
+1. Tras esto enchufamos el router a la corriente y veremos el bootloader cargando.
 
-![](assets/Pasted-image-20230916162016.png)
+    ![](assets/Pasted-image-20230916162016.png)
 
-![](assets/Pasted-image-20230916162303.png)
+    ![](assets/Pasted-image-20230916162303.png)
 
 Tras esto ya podemos escribir comandos pero antes vamos a ver como se haría con el bus pirate.
 
@@ -1114,11 +1104,11 @@ La configuración del emulador de terminal es la misma que en el USB-to-TTL ahor
 
 ![](assets/Pasted-image-20230916163947.png)
 
-1.  Ahora debemos conectar el MOSI(GRIS) al RX y el MISO(NEGRO) al TX, el GND(MARRON) al GND del router además de conectar el VPU(VERDE) al 5V(NARANJA) del propio bus pirate
+1. Ahora debemos conectar el MOSI(GRIS) al RX y el MISO(NEGRO) al TX, el GND(MARRON) al GND del router además de conectar el VPU(VERDE) al 5V(NARANJA) del propio bus pirate
 
-![](assets/photo_5778209212470510399_y.jpg)
-   
-2. Lo siguiente es conectarse usando TeraTerm y con la misma configuración de antes e interactuar con el menu del bus pirate.
+    ![](assets/photo_5778209212470510399_y.jpg)
+
+1. Lo siguiente es conectarse usando TeraTerm y con la misma configuración de antes e interactuar con el menu del bus pirate.
 
 
 Escribimos 'm' y pulsamos intro
@@ -1245,9 +1235,9 @@ sudo tio -b 115200 /dev/ttyUSBX
 Si no sabes el ttyUSB del Bus Pirate, puedes comprobarlo rápidamente de la siguiente forma:
 
 1. Desconecta el USB del Bus Pirate.
-2. Ejecuta el siguiente comando: `sudo dmesg -w`
-3. Vuelve a conectar el Bus Pirate.
-4. Comprueba el dispositivo nuevo que se ha conectado: 
+1. Ejecuta el siguiente comando: `sudo dmesg -w`
+1. Vuelve a conectar el Bus Pirate.
+1. Comprueba el dispositivo nuevo que se ha conectado: 
 
 ![](assets/imagenes_tutorial_sd_spi/image-1.png)
 
@@ -1282,6 +1272,7 @@ Podemos comprobar además que estamos dando voltajes correctos haciendo uso de `
 ![](assets/imagenes_tutorial_sd_spi/image-8.png)
 
 Para la prueba que estamos haciendo, el voltaje que nos interesa es el marcado en rojo. Cuanto más cerca estemos de 3.3V mejor. En mi caso el USB llega a darme 3.26V y me funciona todo, así que entiendo que podeis usarlo como referencia de "voltaje normal".
+
 ## 5.3. Inicializar la tarjeta SD en modo SPI<a name="id5_3"></a>
 
 Para inicializar la tarjeta SD en modo SPI, debemos enviarle una serie de comandos. Lo primero que haremos será ver el formato de los comandos:
@@ -1305,9 +1296,9 @@ Un comando podemos dividirlo en 3 partes:
 
 Entendido un poco cómo hablamos con la tarjeta SD, tenemos inicializarla de la siguiente forma para indicarle que queremos hablar usando SPI:
 1. La reseteamos en modo SPI con el comando CMD0 (GO_IDLE_STATE)
-2. Activamos el proceso de inicialización con el comando CMD1 (SEND_OP_COND)
-3. Comprobamos el estado de la tarjeta con el comando CMD1 (SEND_OP_COND)
-4. Establecemos el tamaño de bloque a 512 bytes con el comando CMD16 (SET_BLOCKLEN)
+1. Activamos el proceso de inicialización con el comando CMD1 (SEND_OP_COND)
+1. Comprobamos el estado de la tarjeta con el comando CMD1 (SEND_OP_COND)
+1. Establecemos el tamaño de bloque a 512 bytes con el comando CMD16 (SET_BLOCKLEN)
 
 Hecho esto, ya tendríamos la SD lista para leerla haciendo uso del protocolo SPI. Ya solo faltaría ir pidíendole bloques con el comando CMD17 (READ_SINGLE_BLOCK).
 
