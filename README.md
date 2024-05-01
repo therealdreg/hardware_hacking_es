@@ -1,7 +1,7 @@
 # Hardware Hacking ES Comunidad
 !["logo oficial"](assets/logoficial.png)
 
-- Discord: https://discord.gg/wkWr6Dj46D 
+- Discord: https://discord.gg/wkWr6Dj46D
 - Telegram: https://t.me/hardwarehackinges
 
 # Índice
@@ -52,7 +52,7 @@
     1. [Conectarse al Bus Pirate](#id5_2)
     1. [Inicializar la tarjeta SD en modo SPI](#id5_3)
     1. [Lectura de bloques](#id5_4)
-1. [Emulación de una firmware con Emux](#id6)    
+1. [Emulación de una firmware con Emux](#id6)
     1. [Instalación de EMUX](#id6_1)
     1. [Añadiendo una nueva firmware a EMUX](#id6_2)
     1. [Arrancar la nueva firmware en EMUX](#id6_3)
@@ -121,7 +121,7 @@ En la siguiente imagen podemos ver las especificaciones técnicas del protocolo 
 !["Imagen extraída de circuitbasics.com"](assets/fundamentoTeorico/Introduction-to-I2C-Message-Frame-and-Bit-2-1024x258.png)
 
 * Start Condition: La línea SDA pasa de un alto voltaje a un bajo voltaje, y a continuación la línea SCL hace lo mismo
-* Address Frame: Una secuencia de 7 o 10 bits única para cada esclavo que le identifica al máster 
+* Address Frame: Una secuencia de 7 o 10 bits única para cada esclavo que le identifica al máster
 * Read/Write bit: Un único bit que indica si el máster envía o pide datos al esclavo
 * ACK/NACK: Cada mensaje está finalizado con una señal de _acknowledge/no-acknowledge_, que confirma que se ha recibido o no correctamente la información. El ACK se devuelve de vuelta hacia el emisor para confirmar que el receptor ha recibido el mensaje
 * Stop Condition: La línea SDA pasa de un bajo voltaje a un alto voltaje, y a continuación la línea SCL hace lo mismo
@@ -227,11 +227,11 @@ Vamos a suponer que el [voltaje o tensión](https://cursos.mcielectronics.cl/201
 1. Resistencia: la resistencia **reduce la "velocidad"** de la electricidad. **Cuanta más corriente** pase por el circuito, la **caída de "velocidad" será mayor**. Si esta supuesta velocidad fuese muy alta y "chocase" con GND algo podría salir mal. Se produciría un cortocircuito.
 1. Interruptor: seguro que ya lo conoces, alguno debes apretar para poder leer esto... Pero si aún así no te suena lo que hace: **interrumpe o deja pasar** la electricidad.
 1. Cables: son las líneas rojas que unen cada elemento y **permite que pase por él el "caudal"** que requiera el circuito.
-1. [Sentido de la corriente](http://recursostic.educacion.es/secundaria/edad/3esofisicaquimica/3quincena11/3q11_contenidos_4c.htm): es importante conocer el sentido de la corriente. Usaremos el sentido convencional, que irá del punto negativo al positivo, como muestra la flecha naranja del esquema. 
+1. [Sentido de la corriente](http://recursostic.educacion.es/secundaria/edad/3esofisicaquimica/3quincena11/3q11_contenidos_4c.htm): es importante conocer el sentido de la corriente. Usaremos el sentido convencional, que irá del punto negativo al positivo, como muestra la flecha naranja del esquema.
 
 Para entender los Pull-up/Pull-down no necesitarás realizar cálculos, pero es útil poder interpretar las siguientes expresiones:
 
-1. $Voltaje=Intensidad*Resistencia$ ;     $V= I * R$ 
+1. $Voltaje=Intensidad*Resistencia$ ;     $V= I * R$
 1. $Potencia=Voltaje*Intensidad$ ;     $P= V * I$
 
 En la primera, nos permite calcular cuánto voltaje es capaz de retener una resistencia según la corriente que pasa por él. Es decir, **la "velocidad" que es capaz de robar al flujo**.
@@ -339,13 +339,13 @@ Te dejo los [esquemáticos](https://www.multisim.com/content/YMY72mDiKxPaKZova2J
 
 La manera más rápida y eficaz es abrir el **Administrador de Dispositivos** (device manager) buscándolo en el sistema.
 
-También podemos usar la secuencia **win+r** escribiendo devmgmt.msc 
+También podemos usar la secuencia **win+r** escribiendo devmgmt.msc
 
 ![](assets/Abrir_Administrador_Dispositivos_1.png)
 
 ![](assets/Abrir_Administrador_Dispositivos_2.png)
 
-Una vez se nos abra el administrador de dispositivos nos interesa la parte **Puertos (COM y LPT)**. 
+Una vez se nos abra el administrador de dispositivos nos interesa la parte **Puertos (COM y LPT)**.
 
 Al desplegarlo obtendremos los puertos previos a conectar el Bus Pirate
 
@@ -370,7 +370,7 @@ Usamos este esquema para conectarnos:
 
 ![](assets/Esquema-buspirate.png)
 
-schema by David Sánchez 
+schema by David Sánchez
 
 Tiene que quedar asi:
 
@@ -428,7 +428,7 @@ Con los corchetes indicamos el principio y el final de cada comando I2C.
 
 El primer byte en hexadecimal es la dirección que indica si escribimos o leemos.
 
-Los dos siguientes bytes son la direccion donde se va a escribir. 
+Los dos siguientes bytes son la direccion donde se va a escribir.
 
 Los bytes 0x41 0x41 0x41 son el contenido que se escribira en la dirección selecionada de manera consecutiva.
 
@@ -534,7 +534,7 @@ def read_eeprom_dump():
                 time.sleep(0.1)
                 data = ser.read(12800)
                 dump_file.write(data)
-                
+
 
         print('Dump guardado en:', DUMP_FILE)
     except Exception as e:
@@ -679,7 +679,7 @@ Usamos este esquema para conectarnos:
 
 ![](assets/Pasted-image-20230927175605.png)
 
-schema by David Sánchez 
+schema by David Sánchez
 
 Tiene que quedar asi:
 
@@ -693,7 +693,7 @@ El modelo es [W25Q64FVSIG](https://html.alldatasheet.com/html-pdf/511943/WINBOND
 
 ## 3.3. Extraer contenido SPI Flash<a name="id3_3"></a>
 
-Descargamos el ultimo release del flashrom desde este [repositorio.](https://github.com/therealdreg/flashrom_build_windows_x64) 
+Descargamos el ultimo release del flashrom desde este [repositorio.](https://github.com/therealdreg/flashrom_build_windows_x64)
 
 Conectamos el bus pirate y revisamos el numero del puerto COM.
 
@@ -795,7 +795,7 @@ Y nos devuelve un 2 que quiere decir que esta habilitada:
 
 ![](assets/Pasted%20image%2020231029103636.png)
 
-Ahora procedemos a borrar la pagina 0x000000 con el comando **\[0x20 0x00 0x00 0x00]** 
+Ahora procedemos a borrar la pagina 0x000000 con el comando **\[0x20 0x00 0x00 0x00]**
 
 ![](assets/Pasted%20image%2020231029105222.png)
 
@@ -809,7 +809,7 @@ El primer byte es la instruccion y los otros 3 la dirección.
 
 Primero el corchete abierto indica bajar el cs y seleccionarlo, después se manda por el MOSI el comando y la dirección , después se manda el corchete cerrado para levantar el CS y desactivarlo.
 
-Ahora leemos la dirección 0x000000 con el comando **\[0x03 0x00 0x00 0x00 r:256]** 
+Ahora leemos la dirección 0x000000 con el comando **\[0x03 0x00 0x00 0x00 r:256]**
 
 El uso de los corchetes es igual siempre, el 0x03 marca la instruccion y los tres bytes de 00 la dirección, después el r:256 es para repetir la acción de lectura 256 veces.
 
@@ -821,7 +821,7 @@ Asi se vería el comando y la respuesta:
 
 Al haber borrado previamente todo este sector hemos puesto todos los bytes en FF.
 
-Ahora volvemos a hablitar la escritura con la orden \[0x06] 
+Ahora volvemos a hablitar la escritura con la orden \[0x06]
 
 ![](assets/Pasted%20image%2020231029111930.png)
 
@@ -836,9 +836,9 @@ Y releemos el registro de estado para comprobar que esta hablitada la escritura,
 
 Y efectivamente la escritura esta habilitada.
 
-Ahora usaremos la instrucción Page Program (0x02) para escribir en la pagina 0x000000 y escribiremos los 3 primeros bytes con la cadena en ASCII "ABC", el comando es **\[0x02 0x00 0x00 0x00 0x41 0x42 0x43]**. 
+Ahora usaremos la instrucción Page Program (0x02) para escribir en la pagina 0x000000 y escribiremos los 3 primeros bytes con la cadena en ASCII "ABC", el comando es **\[0x02 0x00 0x00 0x00 0x41 0x42 0x43]**.
 
-El primer byte es la instrucción, los 3 siguientes la dirección y el resto los bytes a escribir. 
+El primer byte es la instrucción, los 3 siguientes la dirección y el resto los bytes a escribir.
 
 Solo podemos escribir desde 1 byte hasta 256 que es el tamaño de la pagina de esta flash. Si escribimos mas, sobrescribirá el principio de la pagina.
 
@@ -875,7 +875,7 @@ Y aquí vemos como la instrucción de lectura nos devuelve por el MISO todas las
 
 Podéis ver detalladamente la captura con el programa [Logic 2](https://www.saleae.com/downloads/) y la [captura](assets/Archivos_Taller_2/Captura_Manual_SPI.sal) de la carpeta assets.
 
---- 
+---
 
 
 ## 3.4. Extracción de la imagen<a name="id3_4"></a>
@@ -891,16 +891,16 @@ binwalk -eM flash_contenido.img
 
 ![](assets/Pasted-image-20230927210920.png)
 
-Ahora revisamos lo extraído y buscamos la flag. 
+Ahora revisamos lo extraído y buscamos la flag.
 
 ---
 # 4. Hacking Router TP-Link TL-WR841N<a name="id4"></a>
 
 **Material Requerido**
 
-* TP-Link TL-WR841N 
+* TP-Link TL-WR841N
 * Soldador Estaño
-* FLux 
+* FLux
 * USB a TTL o Buspirate
 * Multimetro
 * Cable Ethernet o Wifi
@@ -933,7 +933,7 @@ Una vez abierto el router hay que identificar todos los componentes posibles.
 
 **Cada circulo es una parte interesante de la pcb para nosotros:**
 
-- Circulo Rojo: Es la memoria RAM. Mirando la [ficha técnica](https://openwrt.org/toh/tp-link/tl-wr841nd) de la Versión 14 en OpenWRT podemos ver que tiene 32 MiB.   
+- Circulo Rojo: Es la memoria RAM. Mirando la [ficha técnica](https://openwrt.org/toh/tp-link/tl-wr841nd) de la Versión 14 en OpenWRT podemos ver que tiene 32 MiB.
 
 ![](assets/photo_5773698350053441532_y.jpg)
 
@@ -945,8 +945,8 @@ Una vez abierto el router hay que identificar todos los componentes posibles.
 
 ![](assets/photo_5773698350053441528_y.jpg)
 
-- Circulo Rosa: Es la Interfaz UART que usaremos para obtener terminal de root y obtener el sistema de archivos. La resistencia **R18** bloquea la escritura UART, luego habrá que quitarla. 
- 
+- Circulo Rosa: Es la Interfaz UART que usaremos para obtener terminal de root y obtener el sistema de archivos. La resistencia **R18** bloquea la escritura UART, luego habrá que quitarla.
+
 ![](assets/photo_5773698350053441535_y.jpg)
 
 ## 4.4. Soldar pines a UART y ELIMINAR R18<a name="id4_4"></a>
@@ -959,7 +959,7 @@ Soldar pines a UART no es complicado simplemente necesitaremos:
 
 ![](assets/photo_5775957412656824287_y.jpg)
 
-Aqui vemos como se ha eliminado la **R18** que impide la escritura a través de UART y los pines listos para conectarnos. 
+Aqui vemos como se ha eliminado la **R18** que impide la escritura a través de UART y los pines listos para conectarnos.
 
 Para eliminar la R18 vas a necesitar desoldarlo, **no lo hagas arrancándolo porque te puedes cargar la placa**. En la siguiente imagen puedes ver como una contribuidora (CristinaCTGN) eliminó a las bravas la resistencia creando un surco en la PCB que en este caso no provocó daños mayores, pero pudo haberse cargado alguna pista (ignora la mala calidad de la foto y si puedes ver la mala calidad de la soldadura, también):
 
@@ -975,9 +975,9 @@ En este caso hemos conectado el RX, el TX y el GND. El VCC no es necesario porqu
 ### Material Requerido:
 
 - [Analizador Lógico](https://www.amazon.es/AZDelivery-Logic-Analyzer-compatible-versi%C3%B3n/dp/B01MUFRHQ2/ref=sr_1_1_sspa?keywords=analizador%2Blogico%2Busb&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1)
-- [Router con UART](https://www.amazon.es/dp/B001FWYGJS?psc=1&ref=ppx_yo2ov_dt_b_product_details) 
+- [Router con UART](https://www.amazon.es/dp/B001FWYGJS?psc=1&ref=ppx_yo2ov_dt_b_product_details)
 - [Saleae Logic Pro](https://www.saleae.com/downloads/)
-- [Multimetro](https://www.amazon.es/Multimetro-AoKoZo-Autom%C3%A1tico-Polimetro-Tama%C3%B1o147/dp/B085PVTTST/ref=sxin_18_sbv_search_btf?__mk_es_ES=%C3%85M%C3%85%C5%BD%C3%95%C3%91&content-id=amzn1.sym.bd3d7401-e3ca-409d-87bd-d7a8fe595740%3Aamzn1.sym.bd3d7401-e3ca-409d-87bd-d7a8fe595740&cv_ct_cx=multimetro&keywords=multimetro&pd_rd_i=B085PVTTST&sbo=RZvfv%2F%2FHxDF%2BO5021pAnSA%3D%3D&sr=1-1-9131241a-a358-4619-a7b8-0f5a65d91d81) 
+- [Multimetro](https://www.amazon.es/Multimetro-AoKoZo-Autom%C3%A1tico-Polimetro-Tama%C3%B1o147/dp/B085PVTTST/ref=sxin_18_sbv_search_btf?__mk_es_ES=%C3%85M%C3%85%C5%BD%C3%95%C3%91&content-id=amzn1.sym.bd3d7401-e3ca-409d-87bd-d7a8fe595740%3Aamzn1.sym.bd3d7401-e3ca-409d-87bd-d7a8fe595740&cv_ct_cx=multimetro&keywords=multimetro&pd_rd_i=B085PVTTST&sbo=RZvfv%2F%2FHxDF%2BO5021pAnSA%3D%3D&sr=1-1-9131241a-a358-4619-a7b8-0f5a65d91d81)
 
 ## 4.6. Encontrar el GND<a name="id4_6"></a>
 
@@ -1060,7 +1060,7 @@ Aqui tenemos el arranque del u-boot:
 
 Aqui podemos ver como he conectado todos los pines desde el USB_UART-to-TTL, una cosa IMPORTANTE es que para que funcione la escritura necesitamos que el cable de datos TX vaya a 5V, porque si lo ponemos a 3,3V no funcionara correctamente.
 
-Ahora para conectarnos correctamente lo primero es entender el protocolo [SERIAL](https://learn.sparkfun.com/tutorials/serial-communication) ,lo mas importante es que el pin RX del adaptador TTL-USB tiene que ir al TX del router y el TX del adaptador TTL-USB al RX del router además de conectar los dos GNDs. 
+Ahora para conectarnos correctamente lo primero es entender el protocolo [SERIAL](https://learn.sparkfun.com/tutorials/serial-communication) ,lo mas importante es que el pin RX del adaptador TTL-USB tiene que ir al TX del router y el TX del adaptador TTL-USB al RX del router además de conectar los dos GNDs.
 
 ![](UART.png)
 
@@ -1076,7 +1076,7 @@ Ahora nos conectaremos usando algun software como TeraTerm o Putty, en mi caso u
 
     ![](assets/Pasted-image-20230916161256.png)
 
-1. Y lo dejamos con esta configuracion de 115200 baudios de velocidad, 8 bits de datos, ninguno de paridad y uno de stop. 
+1. Y lo dejamos con esta configuracion de 115200 baudios de velocidad, 8 bits de datos, ninguno de paridad y uno de stop.
 
     ![](assets/Pasted-image-20230916161412.png)
 
@@ -1123,7 +1123,7 @@ Pulsamos enter 4 veces para elegir todo por defecto es decir: Sin bit de paridad
 
 ![](assets/Pasted-image-20230916172153.png)
 
-Pulsamos 'W' mayúscula para dar corriente, pulsamos 'P' mayúscula para activar las resistencias pull-up y solo nos falta activar el live monitor para recibir la shell de UART. 
+Pulsamos 'W' mayúscula para dar corriente, pulsamos 'P' mayúscula para activar las resistencias pull-up y solo nos falta activar el live monitor para recibir la shell de UART.
 
 ![](assets/Pasted-image-20230916172445.png)
 
@@ -1149,7 +1149,7 @@ Tras configurarlo nos conectamos al router por wifi o por cable y revisamos que 
 
 ![](assets/Pasted-image-20230916174805.png)
 
-Con esto ya sabemos que desde el terminal del router tenemos transferir por TFTP a 192.168.0.100 
+Con esto ya sabemos que desde el terminal del router tenemos transferir por TFTP a 192.168.0.100
 
 Para comprobar que estamos conectados al router por red introducimos la puerta de enlace en el navegador:
 
@@ -1160,7 +1160,7 @@ Una vez conectados es el momento de extraer el sistema de archivos y el firmware
 Tenemos una terminal muy limitada, para tener mas herramientas  hay que subir una copia de [busybox-mipsel.](https://busybox.net/downloads/binaries/1.21.1/busybox-mipsel)
 ### Obtención de la flash via MTD
 
-Este router utiliza el subsistema MTD, que se divide en bloques. Concatenamos todos los bloques en orden para obtener el contenido de la flash, para más información de [MTD.](http://linux-mtd.infradead.org/doc/general.html) 
+Este router utiliza el subsistema MTD, que se divide en bloques. Concatenamos todos los bloques en orden para obtener el contenido de la flash, para más información de [MTD.](http://linux-mtd.infradead.org/doc/general.html)
 
 Los bloques se encuentran en el directorio /dev y empiezan por la palabra mtd:
 
@@ -1228,7 +1228,7 @@ El siguiente paso es conectarse al Bus Pirate con un software como Tera Term o P
 Una vez instalado el software (fuera del alcance de esta guía), ejecutar el siguiente comando:
 
 ```bash
-sudo tio -b 115200 /dev/ttyUSBX 
+sudo tio -b 115200 /dev/ttyUSBX
 ```
 ![](assets/imagenes_tutorial_sd_spi/image.png)
 
@@ -1237,7 +1237,7 @@ Si no sabes el ttyUSB del Bus Pirate, puedes comprobarlo rápidamente de la sigu
 1. Desconecta el USB del Bus Pirate.
 1. Ejecuta el siguiente comando: `sudo dmesg -w`
 1. Vuelve a conectar el Bus Pirate.
-1. Comprueba el dispositivo nuevo que se ha conectado: 
+1. Comprueba el dispositivo nuevo que se ha conectado:
 
 ![](assets/imagenes_tutorial_sd_spi/image-1.png)
 
@@ -1279,7 +1279,7 @@ Para inicializar la tarjeta SD en modo SPI, debemos enviarle una serie de comand
 
 | CMD | ARGUMENT | CRC |
 |:---------:|:--------:|:---:|
-| 1 byte    | 4 bytes   | 1 byte| 
+| 1 byte    | 4 bytes   | 1 byte|
 
 Un comando podemos dividirlo en 3 partes:
 - CMD: Indica el comando que tiene que ejecutar la tarjeta SD. Hay que tener cuidado cuando queremos indicar el comando que queremos ejecutar ya que si por ejemplo queremos ejecutar CMD0 (GO_IDLE_STATE), no mandamos un 0 (0x00) y ya está. En realidad, de los 8 bits que se mandan para indicar a la tarjeta SD el comando (1 byte), solo los 6 últimos bits indican el comando, los 2 primeros bits están fijados a 01. Por tanto, el primer byte, el comando que se ejecuta, siempre se verá así:
@@ -1426,7 +1426,7 @@ import time
 s = serial.Serial(port="/dev/ttyUSB0", baudrate=115200, timeout=5)
 
 # Cambiar modo
-s.write(b"m\n") 
+s.write(b"m\n")
 time.sleep(0.1)
 
 # SPI
@@ -1575,9 +1575,9 @@ cat dreg_flag.txt
 
 # 6. Emulación de una firmware con Emux<a name="id6"></a>
 
-A través de la herramienta [**QEMU**](https://www.qemu.org/) podemos emular una firmware, pero su configuración en algunos casos puede ser compleja. Por eso, existen varias herramientas que nos van a ayudar simplicar el proceso de emulación de una firmware. Las herramietas que yo he usado son [**Firmadyne**](https://github.com/firmadyne/firmadyne), [**FirmAE**](https://github.com/pr0v3rbs/FirmAE) y [**Emux**](https://emux.exploitlab.net/). 
+A través de la herramienta [**QEMU**](https://www.qemu.org/) podemos emular una firmware, pero su configuración en algunos casos puede ser compleja. Por eso, existen varias herramientas que nos van a ayudar simplicar el proceso de emulación de una firmware. Las herramietas que yo he usado son [**Firmadyne**](https://github.com/firmadyne/firmadyne), [**FirmAE**](https://github.com/pr0v3rbs/FirmAE) y [**Emux**](https://emux.exploitlab.net/).
 
-Después de realizar varias pruebas, la herramienta que más me gusta por mucho es **Emux**. Ha sido creada por el researcher [Saumil Shah](https://twitter.com/therealsaumil). Al principio esta herramienta sólo era compatible con ARM y se llamaba ARM-X, pero como la mayoría de los dispositivos IoT son MIPS en Octubre del 2021 se añadió el soporte para MIPS, por este motivo se cambio su nombre a **Emux**. Es un entorno [dockerizado](https://es.wikipedia.org/wiki/Docker_(software)) lo que evita bastantes problemas típicos en la configuración de la red y otras incompatibilidades. Aunque es verdad que con algunas firmwares habrá que dedicarle cierto tiempo para "configurarla" correctamente por ejemplo, evitando la carga de algunos módulos y/o servicios para poder emularlas correctamente en **Emux**. 
+Después de realizar varias pruebas, la herramienta que más me gusta por mucho es **Emux**. Ha sido creada por el researcher [Saumil Shah](https://twitter.com/therealsaumil). Al principio esta herramienta sólo era compatible con ARM y se llamaba ARM-X, pero como la mayoría de los dispositivos IoT son MIPS en Octubre del 2021 se añadió el soporte para MIPS, por este motivo se cambio su nombre a **Emux**. Es un entorno [dockerizado](https://es.wikipedia.org/wiki/Docker_(software)) lo que evita bastantes problemas típicos en la configuración de la red y otras incompatibilidades. Aunque es verdad que con algunas firmwares habrá que dedicarle cierto tiempo para "configurarla" correctamente por ejemplo, evitando la carga de algunos módulos y/o servicios para poder emularlas correctamente en **Emux**.
 
 >**Emux** es más sólido y en su página web hay bastante documentación detallada de su arquitectura y varios ejemplos que merece mucho la pena mirarlos para entender como podemos configurar nuestra firmware si tenemos ciertos problemas.
 
@@ -1587,7 +1587,7 @@ En general y resumiendo bastante el proceso del arranque de un dispositivo IoT e
 
 ## 6.1 Instalación de EMUX <a name="id6_1"></a>
 
-Yo voy a instalar **Emux** en [**ArchLinux**](https://archlinux.org/) pero en otra distribución o en [Windows](https://docs.docker.com/desktop/install/windows-install/) el proceso de instalación es similar. 
+Yo voy a instalar **Emux** en [**ArchLinux**](https://archlinux.org/) pero en otra distribución o en [Windows](https://docs.docker.com/desktop/install/windows-install/) el proceso de instalación es similar.
 
 Para poder usar **Emux** hay que instalar **Docker** y algunos paquetes e iniciar este servicio en el sistema. En **Arch** se hace de la siguiente forma:
 
@@ -1709,7 +1709,7 @@ binwalk <fichero firmware>
 
 ![](assets/emux//emux-binwalk-info.jpeg)
 
-Vemos que el fichero **20200** debería contener el kernel así que vamos a buscar su versión utilizando la herramienta **strings**. 
+Vemos que el fichero **20200** debería contener el kernel así que vamos a buscar su versión utilizando la herramienta **strings**.
 
 ```bash
 strings <fichero kernel> | grep -i version
@@ -1719,7 +1719,7 @@ strings <fichero kernel> | grep -i version
 
 La versión del kernel utilizada por nuestra firmware es la **2.6.31** la podemos ver en la línea que dice **Linux version 2.6.31**
 
-Para buscar la arquitectura de la firmware también es muy sencillo, dentro del sistema de ficheros de un dispositivo IoT hay un binario que se llama [**Busybox**](https://es.wikipedia.org/wiki/Busybox) que contiene en su interior las utilidades básicas de un sistema linux como son *ls*, *cp*, *date*, *df*, *chmod*, etc... 
+Para buscar la arquitectura de la firmware también es muy sencillo, dentro del sistema de ficheros de un dispositivo IoT hay un binario que se llama [**Busybox**](https://es.wikipedia.org/wiki/Busybox) que contiene en su interior las utilidades básicas de un sistema linux como son *ls*, *cp*, *date*, *df*, *chmod*, etc...
 
 ![](assets/emux/emux-busybox.jpeg)
 
@@ -1740,7 +1740,7 @@ La arquitectura detectada es **MIPS R3000** y el formato es **big endian**. Esto
 
 **Configurar el entorno**
 
-Desde **EMUX-DOCKER** dentro de la carpeta **"/emux/WR841NDV11/kernel/"** hay que elegir que versión de kernel podría ser compatible con la versión **2.6.31** para una máquina **MIPS** en **big endian**. 
+Desde **EMUX-DOCKER** dentro de la carpeta **"/emux/WR841NDV11/kernel/"** hay que elegir que versión de kernel podría ser compatible con la versión **2.6.31** para una máquina **MIPS** en **big endian**.
 
 Podemos preguntarle a **QEMU** las versiones de MIPS que soporta para big endian con el siguiente comando.
 
@@ -1753,16 +1753,16 @@ Si estas ejecutando linux en una máquina Intel esta herramienta la puedes encon
 
 ![](assets/emux/emux-qemu-malta.jpeg)
 
-El siguiente paso es ver que versiones del kernel de linux tenemos disponibles para nuestro entorno, así que podemos listar el contenido de la carpeta **"/emux/WR841NDV11/kernel/"** 
+El siguiente paso es ver que versiones del kernel de linux tenemos disponibles para nuestro entorno, así que podemos listar el contenido de la carpeta **"/emux/WR841NDV11/kernel/"**
 
 ![](assets/emux/emux-list-kernels.jpeg)
 
-Aunque en el listado no está la versión **2.6.31**, vemos una versión de kernel que podría funcionar. El kernel **vmlinux-2.6.30.9-malta-be** está sorportado por nuestra version de **QEMU** y ademas es big edian (be). 
-Otra opción, sería compilar la misma versión o descargarla de algun sitio confiable en Internet.  
+Aunque en el listado no está la versión **2.6.31**, vemos una versión de kernel que podría funcionar. El kernel **vmlinux-2.6.30.9-malta-be** está sorportado por nuestra version de **QEMU** y ademas es big edian (be).
+Otra opción, sería compilar la misma versión o descargarla de algun sitio confiable en Internet.
 
 Una vez seleccionada la versión que vamos a usar podemos borrar los demás ficheros de kernel del directorio **"/emux/WR841NDV11/kernel/"** ya que no los vamos a usar y así podemos ahorrar algo de espacio en disco.
 
-También vamos a borrar de **"/emux/WR841NDV11/"** los ficheros **nvram.ini**, **mtdparts** y el directorio **preload** que no necesitamos para nuestra configuración. 
+También vamos a borrar de **"/emux/WR841NDV11/"** los ficheros **nvram.ini**, **mtdparts** y el directorio **preload** que no necesitamos para nuestra configuración.
 
 > Hay más información sobre como usar estos ficheros y la carpeta **preload** en el caso de que sean necesarios en la página de [**EMUX**](https://emux.exploitlab.net/).
 
@@ -1801,7 +1801,7 @@ Si todo ha ido bien veremos la siguiente pantalla
 
 ![](assets/emux/emux-device-console.jpeg)
 
-Ahora vamos abrir un cliente **Emux**, asi que abrimos otra terminal en linux y desde la carpeta de instalacion de **Emux** vamos a ejecutar el comando  **"./emux-docker-shell"**. Este es el cliente de **Emux** que se conecta automáticamente a **EMUX-DOCKER**, para nosotros este processo es transparente. 
+Ahora vamos abrir un cliente **Emux**, asi que abrimos otra terminal en linux y desde la carpeta de instalacion de **Emux** vamos a ejecutar el comando  **"./emux-docker-shell"**. Este es el cliente de **Emux** que se conecta automáticamente a **EMUX-DOCKER**, para nosotros este processo es transparente.
 
 Ahora desde la consola **emux-docker** ejecutaremos el comando **userspace** y nos saldrá la siguiente venta donde vamos a elegir la opción **2 Start TPLINK WR841ND v11**.
 
@@ -1831,7 +1831,7 @@ Vamos a ver si funciona correctamente, usamos el usuario **admin** y la contrase
 
 ![](assets/emux/emux-web.jpeg)
 
-Por ejemplo, ahora que el servicio web está funcionando podríamos usar un **fuzzer** para testear el aplicativo web. Además de las utilidades que hemos visto antes también tenemos **emuxgdb** para debugear un proceso utilizando **gdb** con [**gef**](https://hugsy.github.io/gef/), **emuxmaps** para mirar la memoria de un proceso y **emuxkill** para matar un proceso, y finalmente pero muy importante está la herramienta **emuxhalt** para cerrar **Emux** de una forma segura y así evitar que se queden ficheros temporales sin borrar que pueden dar algun problema en futuras sesiones de la misma firmware. 
+Por ejemplo, ahora que el servicio web está funcionando podríamos usar un **fuzzer** para testear el aplicativo web. Además de las utilidades que hemos visto antes también tenemos **emuxgdb** para debugear un proceso utilizando **gdb** con [**gef**](https://hugsy.github.io/gef/), **emuxmaps** para mirar la memoria de un proceso y **emuxkill** para matar un proceso, y finalmente pero muy importante está la herramienta **emuxhalt** para cerrar **Emux** de una forma segura y así evitar que se queden ficheros temporales sin borrar que pueden dar algun problema en futuras sesiones de la misma firmware.
 
 > Estas herramientas que tenemos en **Emux** son muy útiles ya que normalmente no vamos a disponer de ellas dentro de nuestra firmware.
 
