@@ -1,5 +1,5 @@
 # Hardware Hacking ES Comunidad
-!["logo oficial"](assets/logoficial.png)
+!["logo oficial"](assets/logoficial_small.png)
 
 - Discord: https://discord.gg/wkWr6Dj46D
 - Telegram: https://t.me/hardwarehackinges
