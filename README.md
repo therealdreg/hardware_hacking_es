@@ -56,6 +56,7 @@
     1. [Instalación de EMUX](#instalación-de-emux)
     1. [Añadiendo una nueva firmware a EMUX](#añadiendo-una-nueva-firmware-a-emux)
     1. [Arrancar la nueva firmware en EMUX](#arrancar-la-nueva-firmware)
+1. [Otra información a tener en cuenta](#otra-información-a-tener-en-cuenta)
 1. [Webs, libros, recursos, a quien seguir...](#webs-libros-recursos-a-quien-seguir)
 
 ----
