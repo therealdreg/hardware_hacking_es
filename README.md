@@ -56,6 +56,7 @@
     1. [Instalación de EMUX](#instalación-de-emux)
     1. [Añadiendo una nueva firmware a EMUX](#añadiendo-una-nueva-firmware-a-emux)
     1. [Arrancar la nueva firmware en EMUX](#arrancar-la-nueva-firmware)
+1. [Otra información a tener en cuenta](#otra-información-a-tener-en-cuenta)
 1. [Webs, libros, recursos, a quien seguir...](#webs-libros-recursos-a-quien-seguir)
 
 ----
@@ -1848,6 +1849,42 @@ Si queremos acceder a la shell de nuestro dispositivo emulado, simplemente podem
 De esta forma tendremos acceso mediante una **shell** a nuestro dispositivo emulado como su hubiesemos accedido a través de una conexión **telnet**, **ssh** o **UART**. Epero que os haya gustado.
 
 Happy IoT hacking!!
+
+# Otra información a tener en cuenta
+
+## Endianness
+
+Es posible que os encontréis con sistemas en los que, si tratáis de analizar un dump, no os cuadra nada y veis instrucciones que no tienen sentido, o las herramientas de análisis estático no detectan instrucciones.
+
+Por ejemplo, os podéis encontrar con sistemas como los basados en M68K que tienen un bus de datos de 16 bits y trabajan en modo big endian. A veces se usan dos ROMs x8: una para la parte alta y otra para la parte baja. Pero también os podéis encontrar que se está usando una ROM x16.
+
+Al dumpear eso, es posible que os quede intercambiada la parte alta y baja de cada word. Veamos parte de un dump de ejemplo con este problema:
+
+![](assets/rom-endian-dump.png)
+
+He puesto la parte donde aparecen cadenas porque ahí resulta más evidente y se puede ver a ojo. En este caso, para que las herramientas de análisis puedan analizar correctamente, deberíamos intercambiar los bytes de cada palabra. Una forma de hacerlo es usar el comando **dd**:
+
+```
+dd if=dump.bin of=dump-fixed.bin conv=swab
+```
+
+Veamos ahora la misma parte, pero del fichero dump-fixed.bin:
+
+![](assets/rom-endian-dump-fixed.png)
+
+Ahí ya podemos ver mejor las cadenas, y seguramente al usar herramientas de análisis también se van a detectar  correctamente las instrucciones.
+
+## Segmentos
+
+Cada sistema tiene sus pecularidades en cuanto a direcciones de memoria. A veces podéis tratar de analizar un dump y, aunque indiquéis la arquitectura adecuada y sepáis que en la zona que estáis tratando hay código, la herramienta no es capaz de detectarlo correctamente y muestra instrucciones pero no puede detectar referencias a variables o cadenas, ni procedimientos.
+
+Eso puede pasar cuando no se indican bien los segmentos y, por lo tanto, el desensamblador ve referencias a zonas de memoria que no conoce. También puede pasar que el firmware redefina el mapa de memoria o se copie en otra zona y pase a ejecutar ahí.
+
+Hay casos en los que se puede intuir la dirección base en la que corre un código. Tomemos como ejemplo esta parte de un dump de U-Boot:
+
+![](assets/rom-tabla-u-boot.png)
+
+Se puede ver a ojo que el código tiene como dirección base 0xbc000000. Aquí se ve de manera sencilla porque esta versión de U-Boot tiene un array con los handlers de cada comando. Si definimos correctamente el mapa de memoria en Ghidra o lo que se use para análisis estático, podremos seleccionar todo e iniciar el análisis como código para que detecte procedimientos. Luego podremos ir a una cadena como por ejemplo "Hit any key to stop autoboot" y buscar dónde se le hace referencia. Con eso he logrado saber que algunos routers requieren enviar un carácter determinado, como la 't' en lugar de cualquier cosa para entrar en la línea de comandos de U-Boot.
 
 # Webs, libros, recursos, a quien seguir...
 
