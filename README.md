@@ -56,6 +56,12 @@
     1. [Instalación de EMUX](#instalación-de-emux)
     1. [Añadiendo una nueva firmware a EMUX](#añadiendo-una-nueva-firmware-a-emux)
     1. [Arrancar la nueva firmware en EMUX](#arrancar-la-nueva-firmware)
+1. [CTF Hardware Hacking RootedCon 2024](#intro-ctf-rootedcon-2024)
+	1. [Identificación del hardware y las pruebas](#identificando-el-hardware-del-ctf)
+	1. [Lectura del AT24C256](#lectura-del-at24c256-del-ctf)
+	1. [Lectura del Winbond 25Q64FVSIG](#lectura-del-25q64fvsig-del-ctf)
+	1. [Diagnóstico y reparación de una pista cortada de un Arduino Micro](#reparando-un-trazo-del-arduino-uno)
+	1. [Lectura de Arduino mediante Bus Pirate](#leyendo-arduino-uno-mediante-bus-pirate)
 1. [Otra información a tener en cuenta](#otra-información-a-tener-en-cuenta)
 1. [Webs, libros, recursos, a quien seguir...](#webs-libros-recursos-a-quien-seguir)
 
@@ -1850,6 +1856,81 @@ De esta forma tendremos acceso mediante una **shell** a nuestro dispositivo emul
 
 Happy IoT hacking!!
 
+# Intro CTF Rootedcon 2024
+
+## Identificando el hardware del CTF
+Al comenzar el CTF, recibimos herramientas de soldadura (soldador, estaño, malla, pinzas, hilo esmaltado...), las 3 pruebas del CTF (dos placas y un Arduino) y un Bus Pirate con el cableado necesario.
+![](assets/rooted2024/hardware.jpg)
+Comenzamos analizando el hardware sobre el que tenemos que trabajar y a preparar el equipo con el software necesario. En este caso, usaremos un software para conectarnos al puerto serial como Putty o Minicom, y también FlashRom para atacar la Winbond
+Una vez instalado el software y listos los drivers del Bus Pirate, vamos a por la primera lectura.
+## Lectura del AT24C256 del CTF
+En el apartado "Hacking EEPROM AT24C256 I2C 5V", tenemos documentado como realizar la lectura de esta memoria EEPROM paso a paso con el conexionado, así que no repetiré la explicación.
+![](assets/rooted2024/24C256N_PU27.jpg)
+En este caso, al realizar la lectura encontramos el contenido tal que así:
+```bash
+"s p i   f l a s h   e n c r y p t e d   w i t h   k e y : 
+ d r 3 6 A E S 2 5 6 g p g ! _ "
+```
+Todo indica que, en una flash SPI, encontraremos algo cifrado con GPG y nos da la passphrase para descifrarla, tomamos nota y seguimos con la prueba.
+## Lectura del 25q64fvsig del CTF
+También está documentada la lectura de esta memoria SPI en el apartado "Hacking FLASH SPI Winbond 25Q64FVSIG", por lo que atacamos la memoria con Flashrom dumpeando el contenido en un fichero.
+![](assets/rooted2024/25q64fvsig.jpg)
+En principio, al abrirlo con un editor hexadecimal no vemos una flag obvia como en el caso anterior, por lo que analizaremos el fichero para comprender su contenido.
+## Descifrando el Flag
+Usando la herramienta "file" de linux, aplicada al dump que acabamos de generar, recibiremos la siguiente salida:
+```bash
+Wimbond.img: GPG symmetrically encrypted data (AES256 cipher)
+```
+Tal y como nos había cantado la AT24C256, tenemos un fichero cifrado con GPG, por lo que procedemos a descifrarlo:
+```bash
+gpg -d -o out Winbond_cut
+```
+Introducimos la passphrase y volvemos a pasar file al fichero resultante, para ver qué tenemos entre manos:
+```bash
+Dump: Linux rev 1.0 ext2 filesystem data (mounted or unclean), UUID=8f239733-d0fe-4fc3-86a9-cea78fe82c2b (large files)
+```
+El fichero contiene un sistema de ficheros ext2, que debemos montar en un directorio local para ver su contenido:
+```bash
+mkdir /dump
+mount out /dump
+```
+Si vemos el contenido del sistema de ficheros, encontraremos un fichero comprimido en tar, que al descomprimirlo contendrá un fichero xz, que contiene un fichero tar... que contiene un fichero dreg_flag.txt, que contiene lo siguiente:
+"L0ng@Dr3gish0otFl4gl3E7!#69ro0tedMad2024"
+Los pasos seguidos para descomprimir los distintos formatos fueron los siguientes:
+```bash
+ls -la
+file unk
+tar -xz unk
+unxz unk
+mv unk unk.xz
+unxz unk.xz
+ls -la
+file unk
+tar -xf unk
+ls -la
+cat dreg_flag.txt
+```
+## Reparando un trazo del Arduino Uno
+Una vez conseguido el primer flag, nos toca meter mano al hardware, ya que nos dan un Arduino que, al parecer, solo puede ser leído mediante su interfaz SPI, pero que al intentarlo no parece funcionar. Comprobamos conexiones, configuración... y nada, imposible!
+![](assets/rooted2024/Arduino_cables.jpg)
+Revisamos la placa y confirmamos las dudas: La placa ha sido saboteada para no poder leerse:
+![](assets/rooted2024/arduino_cut.jpg)
+Uno de los pines necesarios tiene la pista cortada, por lo que tendremos que rehacerla. Hay muchas maneras de atacar este problema, como buscar de qué punto de la placa viene la pista y restaurarla desde allí, hacer un puente de una zona cómoda de la pista... o intentar hacer un puente justo en la zona cortada, la cual fue mi manera de atacar el problema.
+Haciendo uso del escalpelo, se rasca a izquierda y derecha del corte para poder acceder a la pista, pero sin quitar el esmalte de las pistas cercanas o de los planos de tierra. Una vez listo, con estaño en la punta del soldador y algo de Flux en la zona, intentamos hacer el puente. Cogemos el polímetro y comprobamos la continuidad de la pista, y, sobre todo, que no tenemos ningún corto no deseado.
+## Leyendo Arduino Uno mediante Bus Pirate
+Estamos listos para leer la placa. Reconectamos el Bus Pirate y usamos AVRDude para leer el contenido. En la web de Buzzpirat tenemos documentado el uso de AVRDude con nuestra placa:  "https://buzzpirat.com/docs/avrdude/"
+Hacemos un intento de lectura para detectar el avr a leer:
+```bash
+"avrdude -c buspirate -P COM1 -b 115200 -p m328pb"
+```
+AVRDude confirmará la firma del integrado y podremos seguir:
+```bash
+"avrdude: device signature = 0x1e9516 (probably m328pb)"
+```
+El integrado tiene eeprom y flash, pero en este caso el contenido que nos interesa se encuentra en la eeprom:
+```bash
+"avrdude -c buspirate -p m328pb -P COM1 -b 115200 -U eeprom:r:"eeprom.img":i"
+```
 # Otra información a tener en cuenta
 
 ## Endianness
